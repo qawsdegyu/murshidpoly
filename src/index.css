@@ -1,0 +1,236 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Murshid — BAU Engineering Super App Design System.
+   All colors HSL. Tokens are the single source of truth.
+*/
+
+@layer base {
+  :root {
+    /* Surfaces */
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* BAU Deep Forest Green */
+    --primary: 147 100% 15%;
+    --primary-foreground: 45 70% 92%;
+    --primary-glow: 147 60% 28%;
+
+    /* BAU Gold */
+    --accent: 43 65% 52%;
+    --accent-foreground: 147 100% 12%;
+
+    --secondary: 210 40% 94%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 95%;
+    --muted-foreground: 215 16% 40%;
+
+    --destructive: 351 83% 56%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 147 60% 35%;
+    --success-foreground: 0 0% 100%;
+
+    --border: 214 32% 88%;
+    --input: 214 32% 88%;
+    --ring: 147 100% 18%;
+
+    --radius: 0.85rem;
+
+    /* Glass */
+    --glass-bg: 0 0% 100%;
+    --glass-border: 214 32% 85%;
+
+    /* Gradients & shadows */
+    --gradient-primary: linear-gradient(135deg, hsl(147 100% 12%), hsl(147 70% 22%));
+    --gradient-gold: linear-gradient(135deg, hsl(43 75% 55%), hsl(38 80% 45%));
+    --gradient-hero: linear-gradient(135deg, hsl(147 100% 14%) 0%, hsl(147 60% 22%) 60%, hsl(43 60% 40%) 100%);
+    --shadow-elegant: 0 10px 30px -12px hsl(147 100% 12% / 0.25);
+    --shadow-gold: 0 10px 30px -10px hsl(43 75% 50% / 0.45);
+
+    /* Sidebar */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 30% 20%;
+    --sidebar-primary: 147 100% 15%;
+    --sidebar-primary-foreground: 45 70% 92%;
+    --sidebar-accent: 210 40% 95%;
+    --sidebar-accent-foreground: 147 100% 15%;
+    --sidebar-border: 214 32% 88%;
+    --sidebar-ring: 147 100% 18%;
+  }
+
+  .dark {
+    /* slate-950 base, slate-300 text */
+    --background: 222 47% 5%;
+    --foreground: 215 20% 90%; /* slate-100/200 */
+
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 83%;
+
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 83%;
+
+    /* BAU Forest Green #004d26 */
+    --primary: 150 100% 15%;
+    --primary-foreground: 43 75% 70%;
+    --primary-glow: 150 100% 20%;
+
+    /* BAU Gold #D4AF37 */
+    --accent: 46 65% 52%;
+    --accent-foreground: 0 0% 4%;
+
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 83%;
+
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 65%;
+
+    --destructive: 351 75% 58%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 147 55% 45%;
+    --success-foreground: 0 0% 100%;
+
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 46 65% 52%;
+
+    --glass-bg: 0 0% 6%;
+    --glass-border: 0 0% 15%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(150 100% 12%), hsl(150 65% 22%));
+    --gradient-gold: linear-gradient(135deg, hsl(46 70% 58%), hsl(40 75% 45%));
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 4%) 0%, hsl(150 80% 10%) 55%, hsl(46 60% 25%) 120%);
+    --shadow-elegant: 0 20px 50px -15px hsl(0 0% 0% / 0.7);
+    --shadow-gold: 0 10px 30px -10px hsl(46 75% 50% / 0.4);
+
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 0 0% 83%;
+    --sidebar-primary: 46 65% 52%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 46 65% 52%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 46 65% 52%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv11", "ss01";
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .dark body {
+    color: hsl(0 0% 83%);
+  }
+  h1, h2, h3, h4 {
+    @apply tracking-tight;
+  }
+  /* In dark mode only: premium gold gradient headings */
+  .dark h1, .dark h2, .dark h3 {
+    background-image: linear-gradient(to right, hsl(var(--accent)) 0%, hsl(0 0% 96%) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* In light mode: ensure headings are dark (override gradient) */
+  :root:not(.dark) h1,
+  :root:not(.dark) h2,
+  :root:not(.dark) h3 {
+    background-image: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    color: hsl(222 47% 11%);
+  }
+  /* RTL fonts */
+  [dir="rtl"] body {
+    font-family: 'Cairo', 'Tajawal', 'Inter', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  /* Spatial obsidian canvas with corner radial glows */
+  .canvas-obsidian {
+    background-color: hsl(0 0% 4%); /* bg-neutral-950 */
+    background-image:
+      radial-gradient(50% 50% at 100% 0%, hsl(150 100% 15% / 0.15) 0%, transparent 80%),
+      radial-gradient(50% 50% at 0% 100%, hsl(46 65% 52% / 0.08) 0%, transparent 80%);
+  }
+
+  .glass {
+    background-color: hsl(var(--glass-bg) / 0.4);
+    border: 1px solid hsl(0 0% 100% / 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .glass-strong {
+    background-color: hsl(var(--glass-bg) / 0.65);
+    border: 1px solid hsl(0 0% 100% / 0.10);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+  }
+  .glass-card {
+    @apply rounded-2xl border bg-white/5 backdrop-blur-xl transition-all duration-300;
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+  .glass-card-hover {
+    @apply hover:-translate-y-1;
+  }
+  .glass-card-hover:hover {
+    border-color: hsl(var(--accent) / 0.3);
+    box-shadow: 0 18px 50px -10px hsl(var(--accent) / 0.25), 0 0 0 1px hsl(var(--accent) / 0.15), 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+  .gradient-primary { background: var(--gradient-primary); }
+  .gradient-gold { background: var(--gradient-gold); }
+  .gradient-hero { background: var(--gradient-hero); }
+  .text-gold { color: hsl(var(--accent)); }
+  .shadow-elegant { box-shadow: var(--shadow-elegant); }
+  .shadow-gold { box-shadow: var(--shadow-gold); }
+  .glow-gold {
+    box-shadow: 0 0 24px hsl(var(--accent) / 0.45), 0 0 48px hsl(var(--accent) / 0.2);
+  }
+  /* Shimmering text — used in footer */
+  .text-shimmer {
+    background-image: linear-gradient(to right, hsl(0 0% 90%) 20%, hsl(var(--accent)) 50%, hsl(0 0% 90%) 80%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer-move 4s linear infinite;
+  }
+  @keyframes shimmer-move {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  /* Dashed gold connectors for study plan trees */
+  .tree-connector {
+    border-left: 1px dashed hsl(var(--accent) / 0.45);
+  }
+  [dir="rtl"] .tree-connector {
+    border-left: 0;
+    border-right: 1px dashed hsl(var(--accent) / 0.45);
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 999px; }
+  .active-press { @apply active:scale-95 transition-transform; }
+}

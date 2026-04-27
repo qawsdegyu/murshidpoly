@@ -1,0 +1,149 @@
+import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import { Calculator, Plus, Trash2, RotateCcw } from "lucide-react";
+import PageHeader from "@/components/PageHeader";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { calcGpa, gradeOptions, CourseEntry } from "@/lib/gpa";
+import { usePreferences } from "@/contexts/PreferencesContext";
+
+export default function GPACalculator() {
+  const { t } = usePreferences();
+  const [prevGpa, setPrevGpa] = useState<string>("3.20");
+  const [prevHours, setPrevHours] = useState<string>("60");
+  const [courses, setCourses] = useState<CourseEntry[]>([
+    { id: crypto.randomUUID(), name: "", hours: 3, grade: "A" },
+    { id: crypto.randomUUID(), name: "", hours: 3, grade: "B+" },
+  ]);
+
+  const result = useMemo(
+    () => calcGpa(parseFloat(prevGpa) || 0, parseFloat(prevHours) || 0, courses),
+    [prevGpa, prevHours, courses]
+  );
+
+  const updateCourse = (id: string, patch: Partial<CourseEntry>) => {
+    setCourses(cs => cs.map(c => c.id === id ? { ...c, ...patch } : c));
+  };
+  const addCourse = () => setCourses(cs => [...cs, { id: crypto.randomUUID(), name: "", hours: 3, grade: "A" }]);
+  const removeCourse = (id: string) => setCourses(cs => cs.filter(c => c.id !== id));
+  const reset = () => {
+    setPrevGpa("0"); setPrevHours("0");
+    setCourses([{ id: crypto.randomUUID(), name: "", hours: 3, grade: "A" }]);
+  };
+
+  return (
+    <div>
+      <PageHeader
+        title={t.gpa.title}
+        subtitle={t.gpa.subtitle}
+        icon={<Calculator className="h-6 w-6" />}
+        actions={
+          <Button variant="outline" onClick={reset}>
+            <RotateCcw className="h-4 w-4 mr-2 rtl:ml-2 rtl:mr-0" />
+            {t.gpa.reset}
+          </Button>
+        }
+      />
+
+      <div className="grid lg:grid-cols-3 gap-6">
+        {/* Left: inputs */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Previous record */}
+          <motion.section initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="glass rounded-xl p-6">
+            <h2 className="text-lg font-bold mb-4">{t.gpa.previous}</h2>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <Label>{t.gpa.prevGpa}</Label>
+                <Input type="number" step="0.01" min="0" max="4" value={prevGpa} onChange={e => setPrevGpa(e.target.value)} className="mt-1.5" />
+              </div>
+              <div>
+                <Label>{t.gpa.prevHours}</Label>
+                <Input type="number" min="0" value={prevHours} onChange={e => setPrevHours(e.target.value)} className="mt-1.5" />
+              </div>
+            </div>
+          </motion.section>
+
+          {/* Current semester */}
+          <motion.section initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="glass rounded-xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-bold">{t.gpa.current}</h2>
+              <Button size="sm" onClick={addCourse} className="gradient-primary text-primary-foreground">
+                <Plus className="h-4 w-4 mr-1.5 rtl:ml-1.5 rtl:mr-0" />
+                {t.gpa.addCourse}
+              </Button>
+            </div>
+
+            <div className="space-y-3">
+              {courses.map((c, idx) => (
+                <motion.div
+                  key={c.id}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="grid grid-cols-12 gap-2 items-end"
+                >
+                  <div className="col-span-12 sm:col-span-6">
+                    {idx === 0 && <Label className="text-xs">{t.gpa.courseName}</Label>}
+                    <Input value={c.name} onChange={e => updateCourse(c.id, { name: e.target.value })} placeholder={`${t.gpa.courseName} ${idx + 1}`} className="mt-1" />
+                  </div>
+                  <div className="col-span-5 sm:col-span-2">
+                    {idx === 0 && <Label className="text-xs">{t.gpa.hours}</Label>}
+                    <Input type="number" min="1" max="6" value={c.hours} onChange={e => updateCourse(c.id, { hours: parseInt(e.target.value) || 0 })} className="mt-1" />
+                  </div>
+                  <div className="col-span-5 sm:col-span-3">
+                    {idx === 0 && <Label className="text-xs">{t.gpa.grade}</Label>}
+                    <Select value={c.grade} onValueChange={v => updateCourse(c.id, { grade: v })}>
+                      <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        {gradeOptions.map(g => <SelectItem key={g} value={g}>{g}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <Button variant="ghost" size="icon" onClick={() => removeCourse(c.id)} className="text-destructive hover:text-destructive hover:bg-destructive/10">
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.section>
+        </div>
+
+        {/* Right: results */}
+        <motion.aside initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} className="lg:sticky lg:top-8 self-start">
+          <div className="glass-strong rounded-xl p-6 shadow-elegant border-2 border-accent/20">
+            <div className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">{t.gpa.results}</div>
+
+            <div className="mt-5 space-y-5">
+              <div>
+                <div className="text-sm text-muted-foreground">{t.gpa.semGpa}</div>
+                <div className="text-5xl font-extrabold text-gold mt-1 tabular-nums">
+                  {result.semesterGpa.toFixed(2)}
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  {result.semesterPoints.toFixed(2)} pts / {result.semesterHours} hrs
+                </div>
+              </div>
+
+              <div className="border-t border-border pt-5">
+                <div className="text-sm text-muted-foreground">{t.gpa.newCgpa}</div>
+                <div className="text-5xl font-extrabold text-primary dark:text-accent mt-1 tabular-nums">
+                  {result.newCgpa.toFixed(2)}
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  Total: {result.totalHours} hrs
+                </div>
+              </div>
+
+              <div className="text-xs text-muted-foreground bg-muted/50 rounded-lg p-3">
+                BAU 4.0 scale • Grades: A/A+ = 4.0, A- = 3.75, B+ = 3.5, B = 3.0, ...
+              </div>
+            </div>
+          </div>
+        </motion.aside>
+      </div>
+    </div>
+  );
+}
