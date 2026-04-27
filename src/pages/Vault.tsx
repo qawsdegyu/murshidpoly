@@ -212,8 +212,6 @@ export default function Vault() {
               key={c.id}
               course={c}
               index={i}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
               onClick={() => navigate(`/materials/${c.id}`)}
             />
           ))}

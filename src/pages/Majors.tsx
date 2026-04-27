@@ -77,7 +77,6 @@ export default function Majors() {
                   "hover:border-slate-300 dark:hover:border-white/15 hover:shadow-lg",
                   "flex flex-row md:flex-col h-24 md:h-auto"
                 )}
-                whileTap={{ scale: 0.98 }}
               >
                 {/* Background */}
                 <div className="relative w-24 md:w-full h-full md:absolute md:inset-0 z-0 shrink-0">

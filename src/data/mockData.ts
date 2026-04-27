@@ -367,6 +367,20 @@ export const resourcesByCourse: Record<string, Resource[]> = {
   "plab101": [
     // --- الشروحات المرئية (Videos & Visuals) ---
     { id: "pl1-v1", title: "شرح تجارب المختبر - الدكتور أنور الشيشاني", type: "video", uploader: "د. أنور الشيشاني", size: "Playlist", url: "https://youtube.com/playlist?list=PLwr-ZO8csiWuk78zaVCnLGFX_dOj2Kdx-" },
+    // --- الشروحات والملخصات (Summaries) ---
+    { id: "pl1-s1", title: "ملخص قوانين لاب فيزياء 1", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1yvmNZlp2xxNggQdin9nO5_b4FWq5CJ8Y" },
+    { id: "pl1-s2", title: "شرح د. أنور الشيشاني (لاب فيزياء 1)", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1PUVrOi8Gx16pH8_dzAjX9PrwqLCdxS_a" },
+    { id: "pl1-s3", title: "ملخص حسام زامل (لاب فيزياء 1)", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1TkTi1MD6yHPTFfTbxwYkoCnWUqoI2o5M" },
+    { id: "pl1-s4", title: "شرح تجارب لاب فيزياء (Moh_ali)", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1mjQnzwNWJzTD2hmF0_OEmhM9U_PngO17" },
+    { id: "pl1-s5", title: "ملخص قوانين لاب فيزياء 1 (إضافي)", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1GiQ3ZfGQOIGi3eq_zRJv2ErYa5VRlpq2" },
+
+    // --- أسئلة السنوات والامتحانات (ميد) ---
+    { id: "pl1-e1", title: "ميد لاب فيزياء 1 (شاشات - الجزء الثالث)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1KrmwTATuzTUxajGxP3KBduHa9KBjWxIW" },
+    { id: "pl1-e2", title: "ميد لاب فيزياء 1 (شاشات - الجزء الثاني)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1uWc_rsiwhentHIEwVzfGaV27wrYws-qz" },
+    { id: "pl1-e3", title: "ميد لاب فيزياء 1 (شاشات - الجزء الأول)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1HJ6_C8QZbCcEQJFPUu3OzLFLPw41Cit4" },
+    { id: "pl1-e4", title: "ميد لاب فيزياء 1 (ورقي)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1kdQtpQwCHFGE4z4IpNrzR3DlVMQ2oERU" },
+    { id: "pl1-e5", title: "حلول لاب فيزياء 1 ميد (جديدة)", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1Yoe0b6hu6R8igTcUGwKbvNQpEd7mVZCu" },
+    { id: "pl1-e6", title: "ميد لاب فيزياء 1 (نموذج C)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1z7tKc5rvKIb-ZY0En8U65rhbtcnO2tUB" },
   ],
   "stat101": [
     // --- الشروحات المرئية (Videos & Visuals) ---
@@ -462,30 +476,6 @@ export const resourcesByCourse: Record<string, Resource[]> = {
     // --- حلول وشاشات (Quiz/Books) ---
     { id: "ch-q1", title: "شاشات ميد كيمياء محلولة", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1pW7Y-psz_zx9XX7TgX5g9pdgGsdGlYWH" },
     { id: "ch-b1", title: "حلول كتاب الكيمياء العامة", type: "book", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1pT1EcrDzmQvKOGkub1jPeoUxF-Bn3Mec" }
-  ],
-  "plab101": [
-    // --- الشروحات والملخصات (Summaries) ---
-    { id: "pl1-s1", title: "ملخص قوانين لاب فيزياء 1", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1yvmNZlp2xxNggQdin9nO5_b4FWq5CJ8Y" },
-    { id: "pl1-s2", title: "شرح د. أنور الشيشاني (لاب فيزياء 1)", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1PUVrOi8Gx16pH8_dzAjX9PrwqLCdxS_a" },
-    { id: "pl1-s3", title: "ملخص حسام زامل (لاب فيزياء 1)", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1TkTi1MD6yHPTFfTbxwYkoCnWUqoI2o5M" },
-    { id: "pl1-s4", title: "شرح تجارب لاب فيزياء (Moh_ali)", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1mjQnzwNWJzTD2hmF0_OEmhM9U_PngO17" },
-    { id: "pl1-s5", title: "ملخص قوانين لاب فيزياء 1 (إضافي)", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1GiQ3ZfGQOIGi3eq_zRJv2ErYa5VRlpq2" },
-
-    // --- أسئلة السنوات والامتحانات (ميد) ---
-    { id: "pl1-e1", title: "ميد لاب فيزياء 1 (شاشات - الجزء الثالث)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1KrmwTATuzTUxajGxP3KBduHa9KBjWxIW" },
-    { id: "pl1-e2", title: "ميد لاب فيزياء 1 (شاشات - الجزء الثاني)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1uWc_rsiwhentHIEwVzfGaV27wrYws-qz" },
-    { id: "pl1-e3", title: "ميد لاب فيزياء 1 (شاشات - الجزء الأول)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1HJ6_C8QZbCcEQJFPUu3OzLFLPw41Cit4" },
-    { id: "pl1-e4", title: "ميد لاب فيزياء 1 (ورقي)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1kdQtpQwCHFGE4z4IpNrzR3DlVMQ2oERU" },
-    { id: "pl1-e5", title: "حلول لاب فيزياء 1 ميد (جديدة)", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1Yoe0b6hu6R8igTcUGwKbvNQpEd7mVZCu" },
-    { id: "pl1-e6", title: "ميد لاب فيزياء 1 (نموذج C)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1z7tKc5rvKIb-ZY0En8U65rhbtcnO2tUB" },
-
-    // --- أسئلة السنوات والامتحانات (فاينل) ---
-    { id: "pl1-e7", title: "فاينل لاب فيزياء 1 (شاشات)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1rvHGJqvcWpq31tKGt-gqcU8_JMY99MMp" },
-    { id: "pl1-e8", title: "فاينل لاب فيزياء 1 (ورقي)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1cEXHJ0ozszNFc9fXa0ruZylNpv6T2aKq" },
-    { id: "pl1-e9", title: "حلول تقارير لاب فيزياء 1 (فاينل)", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1eYBUzPg1LJ6MBjMzoUmUPFkjtobZNKvS" },
-    { id: "pl1-e10", title: "فاينل لاب فيزياء (أونلاين)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1egpKj6WUpWH7zD8YVwDqDLW5GDnEBv2Z" },
-    { id: "pl1-e11", title: "سنوات لاب فيزياء 1 إلكتروني", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=12SUDRwzoMguu5EsHGPZ98oZQvwphd9nB" },
-    { id: "pl1-e12", title: "ميد وفاينل لاب فيزياء (محلول)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=18jA2u-Dv7w3zmVjtFSxDKyKTgWzwPvWf" }
   ],
   "cs101": [
     // --- شروحات وسلايدات (Summaries) ---
@@ -609,10 +599,6 @@ export const resourcesByCourse: Record<string, Resource[]> = {
     { id: "is-q-multi", title: "أسئلة اختيار من متعدد - الوحدة الثانية", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1Y5JNkBRkpLNseFX-r77e32AvTPezAaMB" },
     { id: "is-q-jarwan", title: "كويزات ثقافة - أحمد جروان", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1eivLSR-3K0avt7kgAFmj5SpPe-QCqHmv" },
     { id: "is-q-2025", title: "كويز المنهاج الجديد 2025 مع الحل", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1ut3pHDyWsa7uVT34E2QYlXzhUMc909Pn" }
-  ],
-  "programming_cpp": [
-    // --- الشروحات المرئية (Videos & Visuals) ---
-    { id: "cpp-v1", title: "شرح المهندس فتحي علان (CNE) - لغة C++", type: "video", uploader: "م. فتحي علان", size: "Playlist", url: "https://youtube.com/playlist?list=PLJwCQtAhsso_YNp8gh6b6sMkNJ8XzK9AP" },
   ],
   "technical_writing": [
     { id: "tw-pdf", title: "ملف PDF Printing (الشرح الأساسي)", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1K3Cz6MW0lB7dX5gWxme5B6uRuG_bLbrx" }
@@ -752,6 +738,9 @@ export const resourcesByCourse: Record<string, Resource[]> = {
     { id: "ew-years-7", title: "سنوات مشاغل - نموذج 7", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1-biwr8sCO0L3iwm5sGi2mzdvAKW7zJZa" }
   ],
   "programming_cpp": [
+    // --- الشروحات المرئية (Videos & Visuals) ---
+    { id: "cpp-v1", title: "شرح المهندس فتحي علان (CNE) - لغة C++", type: "video", uploader: "م. فتحي علان", size: "Playlist", url: "https://youtube.com/playlist?list=PLJwCQtAhsso_YNp8gh6b6sMkNJ8XzK9AP" },
+
     // --- السلايدات والشروحات (Slides & Resources) ---
     { id: "cpp-slides-samah", title: "سلايدات م. سماح (كاملة مع الأمثلة)", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=133Dw6fKzDclrLZk1aj5Ls61kjnQXZ1Oz" },
     { id: "cpp-slides-allak", title: "سلايدات م. فتحي العلاك", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1bFhkDxusD3N944G0pMqDBpQZ-rbD8NHa" },
