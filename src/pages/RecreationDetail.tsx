@@ -41,7 +41,14 @@ export default function RecreationDetail() {
   const dist = lang === "ar" ? place.distanceAr : place.distance;
 
   return (
-    <div className="font-cairo">
+    <motion.div
+      dir={dir}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className="font-cairo min-h-screen bg-background"
+    >
       <Link
         to={`/recreation/${place.category}`}
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-accent mb-6 transition-colors"
@@ -184,6 +191,6 @@ export default function RecreationDetail() {
           </div>
         </motion.aside>
       </div>
-    </div>
+    </motion.div>
   );
 }

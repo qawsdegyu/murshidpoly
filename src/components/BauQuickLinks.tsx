@@ -17,42 +17,42 @@ const links: QuickLink[] = [
   {
     label: "Official Website",
     labelAr: "الموقع الرسمي",
-    href: "https://bau.edu.jo",
+    href: "https://www.bau.edu.jo/Services/SServices.aspx",
     Icon: Globe,
-    color: "text-emerald-400",
-    tile: "from-emerald-700/40 to-emerald-500/20",
-  },
-  {
-    label: "Facebook",
-    labelAr: "فيسبوك",
-    href: "https://www.facebook.com/bau.edu.jo",
-    Icon: Facebook,
     color: "text-blue-400",
     tile: "from-blue-700/40 to-blue-500/20",
   },
   {
+    label: "Facebook",
+    labelAr: "فيسبوك",
+    href: "https://www.facebook.com/share/1KUSa9Fah7/",
+    Icon: Facebook,
+    color: "text-blue-500",
+    tile: "from-blue-800/40 to-blue-600/20",
+  },
+  {
     label: "Instagram",
     labelAr: "إنستغرام",
-    href: "https://www.instagram.com/bau_edu_jo",
+    href: "https://www.instagram.com/al_balqaapplieduniversity?igsh=eDFteGcxZ3F6dnNq",
     Icon: Instagram,
-    color: "text-pink-400",
-    tile: "from-pink-600/40 to-rose-500/20",
+    color: "text-blue-300",
+    tile: "from-blue-500/40 to-blue-400/20",
   },
   {
     label: "E-Learning",
     labelAr: "التعليم الإلكتروني",
-    href: "https://elearning.bau.edu.jo",
+    href: "https://s3.ebalqa.courses/fet/login/index.php",
     Icon: GraduationCap,
-    color: "text-amber-400",
-    tile: "from-amber-600/40 to-yellow-500/20",
+    color: "text-blue-400",
+    tile: "from-blue-700/40 to-blue-500/20",
   },
   {
     label: "Registration",
     labelAr: "التسجيل",
-    href: "https://reg.bau.edu.jo",
+    href: "http://appserver.fet.edu.jo:7778/reg_new/index.jsp",
     Icon: Key,
-    color: "text-purple-400",
-    tile: "from-purple-700/40 to-fuchsia-500/20",
+    color: "text-blue-600",
+    tile: "from-blue-900/40 to-blue-700/20",
   },
 ];
 
@@ -66,18 +66,18 @@ export default function BauQuickLinks() {
 
   return (
     <section aria-labelledby="bau-quick-links" className="font-cairo">
-      <div className="mb-4">
+      <div className="mb-6">
         <h2
           id="bau-quick-links"
-          className="text-xl md:text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight"
+          className="text-xl md:text-3xl font-black text-content tracking-tight"
         >
           {heading}
         </h2>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{sub}</p>
+        <p className="text-sm text-content/60 mt-1 font-medium">{sub}</p>
       </div>
 
-      <div className="bg-white/80 border border-slate-200 shadow-sm backdrop-blur-xl dark:bg-white/[0.03] dark:border-white/[0.08] dark:backdrop-blur-2xl rounded-2xl p-4 md:p-5">
-        <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+      <div className="bg-surface/80 border border-border shadow-sm backdrop-blur-xl dark:bg-surface/40 dark:border-white/10 dark:backdrop-blur-2xl rounded-[2rem] p-4 md:p-6 transition-all duration-300">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {links.map((l, i) => {
             const label = lang === "ar" ? l.labelAr : l.label;
             return (
@@ -92,10 +92,10 @@ export default function BauQuickLinks() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="group relative flex items-center gap-3 p-3 rounded-xl bg-white/50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/[0.05] hover:border-accent/70 hover:-translate-y-1 hover:shadow-gold transition-all duration-300 overflow-hidden"
+                  className="group relative flex items-center gap-2 p-3 rounded-xl bg-surface/50 dark:bg-surface/10 border border-border dark:border-white/10 hover:border-blue-500/70 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300 overflow-hidden"
                 >
-                  {/* Gold glow on hover */}
-                  <span className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-accent/15 to-transparent transition-opacity duration-300 pointer-events-none" />
+                  {/* Blue glow on hover */}
+                  <span className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-blue-500/10 to-transparent transition-opacity duration-300 pointer-events-none" />
 
                   <span
                     className={`relative h-10 w-10 shrink-0 rounded-lg bg-gradient-to-br ${l.tile} grid place-items-center border border-white/10 shadow-inner`}
@@ -104,15 +104,15 @@ export default function BauQuickLinks() {
                   </span>
 
                   <span className="relative min-w-0 flex-1">
-                    <span className="block text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-accent transition-colors truncate">
+                    <span className="block text-xs font-black text-content group-hover:text-blue-500 transition-colors truncate">
                       {label}
                     </span>
-                    <span className="block text-[11px] text-slate-500 dark:text-slate-400 truncate">
-                      {l.href.replace(/^https?:\/\//, "")}
+                    <span className="block text-[8px] text-content/50 truncate font-medium">
+                      {l.href.replace(/^https?:\/\//, "").split('/')[0]}
                     </span>
                   </span>
 
-                  <ExternalLink className="relative h-3.5 w-3.5 text-muted-foreground group-hover:text-accent shrink-0 opacity-0 group-hover:opacity-100 transition-all" />
+                  <ExternalLink className="relative h-3 w-3 text-content/40 group-hover:text-blue-500 shrink-0 opacity-0 group-hover:opacity-100 transition-all" />
                 </a>
               </motion.li>
             );

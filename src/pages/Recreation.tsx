@@ -13,7 +13,14 @@ export default function Recreation() {
   const cats: RecCategory[] = ["restaurants", "cafes", "sports"];
 
   return (
-    <div className="font-cairo">
+    <motion.div
+      dir={dir}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className="font-cairo min-h-screen bg-background"
+    >
       <PageHeader
         title={t.recreation.title}
         subtitle={t.recreation.subtitle}
@@ -72,6 +79,6 @@ export default function Recreation() {
           );
         })}
       </div>
-    </div>
+    </motion.div>
   );
 }

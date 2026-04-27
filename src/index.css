@@ -8,118 +8,116 @@
 
 @layer base {
   :root {
-    /* Surfaces */
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
+    /* --- Light Theme (#F8FAFC, #FFFFFF, #0F172A) --- */
+    --bg-color: 210 40% 98%;      /* #F8FAFC */
+    --surface-color: 0 0% 100%;    /* #FFFFFF */
+    --text-primary: 222 47% 11%;   /* #0F172A */
+    --text-secondary: 215 16% 34%; /* #475569 */
+    --border-color: 214 32% 91%;   /* #E2E8F0 */
+    --accent-color: 161 84% 39%;   /* #10B981 */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    /* Map to Shadcn/Tailwind standard vars */
+    --background: var(--bg-color);
+    --foreground: var(--text-primary);
+    --card: var(--surface-color);
+    --card-foreground: var(--text-primary);
+    --popover: var(--surface-color);
+    --popover-foreground: var(--text-primary);
+    --primary: var(--accent-color);
+    --primary-foreground: 0 0% 100%;
+    --accent: var(--accent-color);
+    --accent-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: var(--text-primary);
+    --muted: 210 40% 96%;
+    --muted-foreground: var(--text-secondary);
+    --border: var(--border-color);
+    --input: var(--border-color);
+    --ring: var(--accent-color);
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-
-    /* BAU Deep Forest Green */
-    --primary: 147 100% 15%;
-    --primary-foreground: 45 70% 92%;
-    --primary-glow: 147 60% 28%;
-
-    /* BAU Gold */
-    --accent: 43 65% 52%;
-    --accent-foreground: 147 100% 12%;
-
-    --secondary: 210 40% 94%;
-    --secondary-foreground: 222 47% 11%;
-
-    --muted: 210 40% 95%;
-    --muted-foreground: 215 16% 40%;
-
-    --destructive: 351 83% 56%;
-    --destructive-foreground: 0 0% 100%;
-
-    --success: 147 60% 35%;
-    --success-foreground: 0 0% 100%;
-
-    --border: 214 32% 88%;
-    --input: 214 32% 88%;
-    --ring: 147 100% 18%;
-
-    --radius: 0.85rem;
-
-    /* Glass */
+    --radius: 1rem;
     --glass-bg: 0 0% 100%;
-    --glass-border: 214 32% 85%;
+    --glass-border: var(--border-color);
 
-    /* Gradients & shadows */
-    --gradient-primary: linear-gradient(135deg, hsl(147 100% 12%), hsl(147 70% 22%));
-    --gradient-gold: linear-gradient(135deg, hsl(43 75% 55%), hsl(38 80% 45%));
-    --gradient-hero: linear-gradient(135deg, hsl(147 100% 14%) 0%, hsl(147 60% 22%) 60%, hsl(43 60% 40%) 100%);
-    --shadow-elegant: 0 10px 30px -12px hsl(147 100% 12% / 0.25);
-    --shadow-gold: 0 10px 30px -10px hsl(43 75% 50% / 0.45);
-
-    /* Sidebar */
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 222 30% 20%;
-    --sidebar-primary: 147 100% 15%;
-    --sidebar-primary-foreground: 45 70% 92%;
-    --sidebar-accent: 210 40% 95%;
-    --sidebar-accent-foreground: 147 100% 15%;
-    --sidebar-border: 214 32% 88%;
-    --sidebar-ring: 147 100% 18%;
+    --gradient-primary: linear-gradient(135deg, #10B981, #059669);
+    --gradient-gold: linear-gradient(135deg, #10B981, #34D399);
+    --gradient-hero: linear-gradient(135deg, #F8FAFC 0%, #FFFFFF 100%);
+    --shadow-elegant: 0 10px 30px -12px rgba(16, 185, 129, 0.15);
+    --shadow-gold: 0 10px 40px -10px rgba(16, 185, 129, 0.25);
   }
 
   .dark {
-    /* slate-950 base, slate-300 text */
-    --background: 222 47% 5%;
-    --foreground: 215 20% 90%; /* slate-100/200 */
+    /* --- Dark Theme (#020617, #0F172A, #F8FAFC) --- */
+    --bg-color: 229 100% 5%;       /* #020617 */
+    --surface-color: 222 47% 11%;  /* #0F172A */
+    --text-primary: 210 40% 98%;   /* #F8FAFC */
+    --text-secondary: 215 25% 63%; /* #94A3B8 */
+    --border-color: 217 33% 17%;   /* #1E293B */
+    --accent-color: 158 64% 52%;   /* #34D399 */
 
-    --card: 0 0% 6%;
-    --card-foreground: 0 0% 83%;
+    --background: var(--bg-color);
+    --foreground: var(--text-primary);
+    --card: var(--surface-color);
+    --card-foreground: var(--text-primary);
+    --popover: var(--surface-color);
+    --popover-foreground: var(--text-primary);
+    --primary: var(--accent-color);
+    --primary-foreground: 229 100% 5%;
+    --accent: var(--accent-color);
+    --accent-foreground: 229 100% 5%;
+    --secondary: 222 47% 15%;
+    --secondary-foreground: var(--text-primary);
+    --muted: 222 47% 15%;
+    --muted-foreground: var(--text-secondary);
+    --border: var(--border-color);
+    --input: var(--border-color);
+    --ring: var(--accent-color);
 
-    --popover: 0 0% 6%;
-    --popover-foreground: 0 0% 83%;
+    --glass-bg: 222 47% 11%;
+    --glass-border: var(--border-color);
 
-    /* BAU Forest Green #004d26 */
-    --primary: 150 100% 15%;
-    --primary-foreground: 43 75% 70%;
-    --primary-glow: 150 100% 20%;
+    --gradient-primary: linear-gradient(135deg, #34D399, #10B981);
+    --gradient-gold: linear-gradient(135deg, #34D399, #6EE7B7);
+    --gradient-hero: linear-gradient(135deg, #020617 0%, #0F172A 100%);
+    --shadow-elegant: 0 20px 50px -15px rgba(0, 0, 0, 0.8);
+    --shadow-gold: 0 10px 30px -10px rgba(52, 211, 153, 0.3);
+  }
 
-    /* BAU Gold #D4AF37 */
-    --accent: 46 65% 52%;
-    --accent-foreground: 0 0% 4%;
+  [data-theme='pink'], .pink {
+    /* --- Pink Theme (#FFF0F5, #FFFFFF, #4A0E2E) --- */
+    --bg-color: 340 100% 97%;      /* #FFF0F5 */
+    --surface-color: 0 0% 100%;    /* #FFFFFF */
+    --text-primary: 327 68% 17%;   /* #4A0E2E */
+    --text-secondary: 329 34% 46%; /* #9D4E76 */
+    --border-color: 330 73% 86%;   /* #FBCFE8 */
+    --accent-color: 330 70% 51%;   /* #DB2777 */
 
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 0 0% 83%;
+    --background: var(--bg-color);
+    --foreground: var(--text-primary);
+    --card: var(--surface-color);
+    --card-foreground: var(--text-primary);
+    --popover: var(--surface-color);
+    --popover-foreground: var(--text-primary);
+    --primary: var(--accent-color);
+    --primary-foreground: 0 0% 100%;
+    --accent: var(--accent-color);
+    --accent-foreground: 0 0% 100%;
+    --secondary: 330 100% 98%;
+    --secondary-foreground: var(--text-primary);
+    --muted: 330 100% 98%;
+    --muted-foreground: var(--text-secondary);
+    --border: var(--border-color);
+    --input: var(--border-color);
+    --ring: var(--accent-color);
 
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 65%;
+    --glass-bg: 0 0% 100%;
+    --glass-border: var(--border-color);
 
-    --destructive: 351 75% 58%;
-    --destructive-foreground: 0 0% 100%;
-
-    --success: 147 55% 45%;
-    --success-foreground: 0 0% 100%;
-
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 46 65% 52%;
-
-    --glass-bg: 0 0% 6%;
-    --glass-border: 0 0% 15%;
-
-    --gradient-primary: linear-gradient(135deg, hsl(150 100% 12%), hsl(150 65% 22%));
-    --gradient-gold: linear-gradient(135deg, hsl(46 70% 58%), hsl(40 75% 45%));
-    --gradient-hero: linear-gradient(135deg, hsl(0 0% 4%) 0%, hsl(150 80% 10%) 55%, hsl(46 60% 25%) 120%);
-    --shadow-elegant: 0 20px 50px -15px hsl(0 0% 0% / 0.7);
-    --shadow-gold: 0 10px 30px -10px hsl(46 75% 50% / 0.4);
-
-    --sidebar-background: 0 0% 4%;
-    --sidebar-foreground: 0 0% 83%;
-    --sidebar-primary: 46 65% 52%;
-    --sidebar-primary-foreground: 0 0% 4%;
-    --sidebar-accent: 0 0% 10%;
-    --sidebar-accent-foreground: 46 65% 52%;
-    --sidebar-border: 0 0% 15%;
-    --sidebar-ring: 46 65% 52%;
+    --gradient-primary: linear-gradient(135deg, #DB2777, #BE185D);
+    --gradient-gold: linear-gradient(135deg, #DB2777, #F472B6);
+    --gradient-hero: linear-gradient(135deg, #FFF0F5 0%, #FFFFFF 100%);
+    --shadow-elegant: 0 10px 30px -12px rgba(219, 39, 119, 0.15);
+    --shadow-gold: 0 10px 30px -10px rgba(219, 39, 119, 0.25);
   }
 }
 
@@ -136,27 +134,33 @@
     font-feature-settings: "cv11", "ss01";
     transition: background-color 0.3s ease, color 0.3s ease;
   }
-  .dark body {
-    color: hsl(0 0% 83%);
+  .dark body, .pink body {
+    color: hsl(var(--foreground));
   }
   h1, h2, h3, h4 {
     @apply tracking-tight;
   }
-  /* In dark mode only: premium gold gradient headings */
+  /* In dark/pink mode only: premium gradients for headings */
   .dark h1, .dark h2, .dark h3 {
     background-image: linear-gradient(to right, hsl(var(--accent)) 0%, hsl(0 0% 96%) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
+  .pink h1, .pink h2, .pink h3 {
+    background-image: linear-gradient(to right, hsl(var(--primary)) 0%, hsl(330 40% 15%) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
   /* In light mode: ensure headings are dark (override gradient) */
-  :root:not(.dark) h1,
-  :root:not(.dark) h2,
-  :root:not(.dark) h3 {
+  :root:not(.dark):not(.pink) h1,
+  :root:not(.dark):not(.pink) h2,
+  :root:not(.dark):not(.pink) h3 {
     background-image: none;
     -webkit-background-clip: unset;
     background-clip: unset;
-    color: hsl(222 47% 11%);
+    color: hsl(var(--foreground));
   }
   /* RTL fonts */
   [dir="rtl"] body {

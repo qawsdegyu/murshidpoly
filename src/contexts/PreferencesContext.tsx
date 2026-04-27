@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState, ReactNode } from "react";
 import { Lang, translations, Translation } from "@/lib/i18n";
 
-type Theme = "light" | "dark";
+type Theme = "light" | "dark" | "pink";
 
 interface PreferencesValue {
   lang: Lang;
@@ -28,18 +28,23 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     return (localStorage.getItem(THEME_KEY) as Theme) || "dark";
   });
 
-  const dir = "rtl"; // strictly RTL
+  const dir = lang === "ar" ? "rtl" : "ltr";
 
   useEffect(() => {
     const root = document.documentElement;
     root.setAttribute("dir", dir);
     root.setAttribute("lang", lang);
+    root.style.colorScheme = theme === "dark" ? "dark" : "light";
     localStorage.setItem(LANG_KEY, lang);
-  }, [lang, dir]);
+  }, [lang, dir, theme]);
 
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.toggle("dark", theme === "dark");
+    // Remove all possible theme classes
+    root.classList.remove("light", "dark", "pink");
+    // Add the current theme class and attribute
+    root.classList.add(theme);
+    root.setAttribute("data-theme", theme);
     localStorage.setItem(THEME_KEY, theme);
   }, [theme]);
 
@@ -48,7 +53,11 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     setLang: setLangState,
     theme,
     setTheme: setThemeState,
-    toggleTheme: () => setThemeState(t => t === "light" ? "dark" : "light"),
+    toggleTheme: () => setThemeState(t => {
+      if (t === "light") return "dark";
+      if (t === "dark") return "pink";
+      return "light";
+    }),
     t: translations[lang],
     dir,
   }), [lang, theme, dir]);

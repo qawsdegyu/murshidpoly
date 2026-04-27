@@ -184,7 +184,7 @@ export default function MajorDetail() {
                 <Icon className="w-7 h-7 text-white" strokeWidth={1.7} />
               </div>
               <h1
-                className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-slate-100 tracking-tight drop-shadow-sm"
+                className="text-xl md:text-3xl lg:text-5xl font-black text-slate-900 dark:text-slate-100 tracking-tight drop-shadow-sm"
                 style={{ lineHeight: 1.2 }}
               >
                 {name}
@@ -199,9 +199,9 @@ export default function MajorDetail() {
 
         {/* ── About ── */}
         <motion.section {...fadeUp(0.15)}>
-          <SectionHeader icon={<BookOpen className="w-5 h-5" />} label={ar ? "نظرة تفصيلية على التخصص" : "About the Major"} color={major.color} />
-          <div className="mt-6 grid lg:grid-cols-3 gap-5">
-            <div className="lg:col-span-2 rounded-[2rem] bg-white/80 border border-slate-200 shadow-sm backdrop-blur-xl dark:bg-white/[0.03] dark:border-white/[0.08] dark:backdrop-blur-2xl p-8">
+          <SectionHeader icon={<BookOpen className="w-4 h-4 md:w-5 md:h-5" />} label={ar ? "نظرة تفصيلية على التخصص" : "About the Major"} color={major.color} />
+          <div className="mt-4 md:mt-6 grid lg:grid-cols-3 gap-3 md:gap-5">
+            <div className="lg:col-span-2 rounded-[1.5rem] md:rounded-[2rem] bg-white/80 border border-slate-200 shadow-sm backdrop-blur-xl dark:bg-white/[0.03] dark:border-white/[0.08] dark:backdrop-blur-2xl p-4 md:p-8">
               <p
                 className="text-slate-600 dark:text-slate-400 text-base sm:text-lg font-medium"
                 style={{ lineHeight: 1.9 }}
@@ -434,11 +434,11 @@ export default function MajorDetail() {
 /* ── Sub-components ── */
 function SectionHeader({ icon, label, color }: { icon: React.ReactNode; label: string; color: string }) {
   return (
-    <div className="flex items-center gap-3">
-      <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${color} text-white grid place-items-center shadow-md shrink-0`}>
+    <div className="flex items-center gap-2 md:gap-3">
+      <div className={`w-7 h-7 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-gradient-to-br ${color} text-white grid place-items-center shadow-md shrink-0`}>
         {icon}
       </div>
-      <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
+      <h2 className="text-lg md:text-2xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
         {label}
       </h2>
     </div>

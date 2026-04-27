@@ -47,7 +47,14 @@ export default function RecreationCategory() {
     });
 
   return (
-    <div className="font-cairo">
+    <motion.div
+      dir={dir}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className="font-cairo min-h-screen bg-background"
+    >
       <Link
         to="/recreation"
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-accent mb-6 transition-colors"
@@ -111,6 +118,6 @@ export default function RecreationCategory() {
           </motion.div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }

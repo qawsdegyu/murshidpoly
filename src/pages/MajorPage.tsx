@@ -51,8 +51,6 @@ export default function MajorPage() {
   const major = getMajorById(id ?? "");
   const curriculum = majorCurriculum[id ?? ""] ?? [];
 
-  console.log("MajorPage rendering for id:", id, "Major found:", !!major);
-
   // Reset semester to 1 when year changes to ensure consistency
   const handleYearChange = (year: number) => {
     setActiveYear(year);
@@ -60,9 +58,8 @@ export default function MajorPage() {
   };
 
   if (!major || !id) {
-    console.log("MajorPage: Data not found, showing fallback UI");
     return (
-      <div className='bg-slate-950 h-screen flex flex-col items-center justify-center text-white'>
+      <div className='bg-background h-screen flex flex-col items-center justify-center text-foreground transition-colors duration-500'>
         <GraduationCap className="h-20 w-20 text-slate-800 mb-6 animate-pulse" />
         <h2 className="text-2xl font-black mb-4">Loading or Data not found...</h2>
         <button 
@@ -80,22 +77,18 @@ export default function MajorPage() {
     GraduationCap;
 
   return (
-    <div
+    <motion.div
       dir={dir}
-      className="min-h-screen bg-slate-950 text-slate-200 overflow-x-hidden pb-28"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className="min-h-screen bg-background text-foreground overflow-x-hidden pb-28"
       style={{ fontFamily: "'Cairo', 'Tajawal', 'Inter', sans-serif" }}
     >
       {/* ── Global ambient glows ── */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* Grid texture */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(148,163,184,1) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,1) 1px, transparent 1px)",
-            backgroundSize: "72px 72px",
-          }}
-        />
+        {/* Solid theme-aware background — no grid */}
         {/* Accent glow blobs */}
         <div
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-full blur-[160px] opacity-[0.12]"
@@ -106,14 +99,14 @@ export default function MajorPage() {
       </div>
 
       {/* ── Hero ── */}
-      <div className="relative z-10 h-[480px] md:h-[560px] overflow-hidden">
+      <div className="relative z-10 h-[320px] md:h-[560px] overflow-hidden">
         <img
           src={major?.imageUrl}
           alt={isAr ? major?.nameAr : major?.name}
           className="w-full h-full object-cover"
         />
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-950/30" />
+        {/* Hero overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/20 dark:from-black dark:via-black/80 dark:to-transparent" />
         {/* Color tint */}
         <div
           className={cn("absolute inset-0 bg-gradient-to-br opacity-25 mix-blend-overlay", major.color)}
@@ -137,23 +130,23 @@ export default function MajorPage() {
         </motion.button>
 
         {/* Hero content */}
-        <div className="absolute bottom-0 left-0 right-0 px-6 md:px-12 pb-10">
+        <div className="absolute bottom-0 left-0 right-0 px-5 md:px-12 pb-6 md:pb-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
             {/* BAU badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.06] border border-white/[0.10] backdrop-blur-xl mb-5">
-              <Sparkles className="h-3.5 w-3.5" style={{ color: major.accentColor }} />
-              <span className="text-[11px] font-black tracking-[0.2em] uppercase text-slate-400">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 backdrop-blur-xl mb-3 md:mb-5">
+              <Sparkles className="h-3 w-3 md:h-3.5 md:w-3.5" style={{ color: major.accentColor }} />
+              <span className="text-[9px] md:text-[11px] font-black tracking-[0.2em] uppercase text-white/70">
                 {isAr ? "كلية الهندسة التكنولوجية — BAU" : "Faculty of Engineering Technology — BAU"}
               </span>
             </div>
 
             {/* Major title — gradient text */}
             <h1
-              className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-[1.05] mb-4 bg-clip-text text-transparent"
+              className="text-3xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-[1.05] mb-2 md:mb-4 bg-clip-text text-transparent"
               style={{
                 backgroundImage: `linear-gradient(135deg, #ffffff 0%, ${major?.accentColor} 50%, #60a5fa 100%)`,
               }}
@@ -162,7 +155,7 @@ export default function MajorPage() {
             </h1>
 
             {/* Subtitle */}
-            <p className="text-slate-400 text-lg md:text-xl font-medium max-w-2xl leading-relaxed">
+            <p className="text-white/80 text-sm md:text-xl font-medium max-w-2xl leading-relaxed">
               {isAr ? major.descriptionAr : major.description}
             </p>
           </motion.div>
@@ -183,8 +176,8 @@ export default function MajorPage() {
             label={isAr ? "عن التخصص" : "About the Major"}
             color={major.accentColor}
           />
-          <div className="mt-4 p-7 md:p-9 rounded-3xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-2xl">
-            <p className="text-slate-300 text-base md:text-lg leading-[2.1] font-medium">
+          <div className="mt-3 md:mt-4 p-5 md:p-9 rounded-2xl md:rounded-3xl bg-white dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.08] backdrop-blur-2xl shadow-sm dark:shadow-none">
+            <p className="text-slate-600 dark:text-slate-300 text-sm md:text-lg leading-[1.8] md:leading-[2.1] font-medium">
               {isAr ? major.longDescriptionAr : major.descriptionAr}
             </p>
           </div>
@@ -198,12 +191,12 @@ export default function MajorPage() {
             color={major.accentColor}
           />
 
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
             {/* Hour Price */}
             <motion.div
               variants={stagger}
               whileHover={{ scale: 1.02, transition: { duration: 0.25 } }}
-              className="relative overflow-hidden p-7 rounded-3xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-2xl"
+              className="relative overflow-hidden p-5 md:p-7 rounded-2xl md:rounded-3xl bg-white dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.08] backdrop-blur-2xl shadow-sm dark:shadow-none"
             >
               <div
                 className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-2xl opacity-30"
@@ -216,7 +209,7 @@ export default function MajorPage() {
                 >
                   <DollarSign className="h-5 w-5" />
                 </div>
-                <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500 mb-4">
+                <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500 dark:text-slate-400 mb-4">
                   {isAr ? "سعر الساعة المعتمدة" : "Credit Hour Price"}
                 </div>
                 
@@ -252,17 +245,17 @@ export default function MajorPage() {
             <motion.div
               variants={stagger}
               whileHover={{ scale: 1.02, transition: { duration: 0.25 } }}
-              className="relative overflow-hidden p-7 rounded-3xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-2xl"
+              className="relative overflow-hidden p-7 rounded-3xl bg-white dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.08] backdrop-blur-2xl shadow-sm dark:shadow-none"
             >
               <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-2xl opacity-20 bg-emerald-400" />
               <div className="relative">
                 <div className="inline-flex items-center justify-center w-11 h-11 rounded-2xl mb-4 bg-emerald-400/15 text-emerald-400">
                   <Briefcase className="h-5 w-5" />
                 </div>
-                <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500 mb-2">
+                <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500 dark:text-slate-400 mb-2">
                   {isAr ? "الراتب المتوقع" : "Expected Salary"}
                 </div>
-                <div className="text-xl font-black text-slate-100 leading-snug">{major.expectedSalaryAr}</div>
+                <div className="text-xl font-black text-slate-900 dark:text-slate-100 [data-theme=pink]:text-rose-950 leading-snug">{major.expectedSalaryAr}</div>
               </div>
             </motion.div>
 
@@ -270,7 +263,7 @@ export default function MajorPage() {
             <motion.div
               variants={stagger}
               whileHover={{ scale: 1.005, transition: { duration: 0.25 } }}
-              className="relative overflow-hidden p-7 md:p-9 rounded-3xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-2xl md:col-span-2"
+              className="relative overflow-hidden p-5 md:p-9 rounded-2xl md:rounded-3xl bg-white dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.08] backdrop-blur-2xl md:col-span-2 shadow-sm dark:shadow-none"
             >
               <div className="absolute -bottom-12 -left-12 w-56 h-56 rounded-full blur-3xl opacity-10 bg-blue-400" />
               <div className="relative">
@@ -278,24 +271,24 @@ export default function MajorPage() {
                   <div className="inline-flex items-center justify-center w-11 h-11 rounded-2xl bg-blue-400/15 text-blue-400">
                     <Briefcase className="h-5 w-5" />
                   </div>
-                  <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500">
+                  <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500 dark:text-slate-400">
                     {isAr ? "مجالات العمل والوظائف" : "Career Fields"}
                   </div>
                 </div>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {major.careerFieldsAr.map((field, i) => (
+                  {major?.careerFieldsAr?.map((field, i) => (
                     <motion.div
                       key={i}
                       initial={{ opacity: 0, x: -8 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.3 + i * 0.06, duration: 0.4 }}
-                      className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-white/[0.04] border border-white/[0.06] group hover:border-white/[0.14] transition-colors duration-300"
+                      className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-slate-50 dark:bg-white/[0.04] border border-slate-100 dark:border-white/[0.06] group hover:border-slate-300 dark:hover:border-white/[0.14] transition-colors duration-300"
                     >
                       <CheckCircle2
                         className="h-4 w-4 shrink-0 transition-transform group-hover:scale-110"
                         style={{ color: major.accentColor }}
                       />
-                      <span className="text-sm font-semibold text-slate-300 group-hover:text-slate-100 transition-colors">
+                      <span className="text-sm font-semibold text-slate-600 dark:text-slate-300 [data-theme=pink]:text-rose-900 group-hover:text-slate-900 dark:group-hover:text-slate-100 transition-colors">
                         {field}
                       </span>
                     </motion.div>
@@ -316,8 +309,8 @@ export default function MajorPage() {
             />
 
             {/* Tier 1: Year Tabs (Scrollable on mobile) */}
-            <div className="mt-4 relative flex gap-2 p-1.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] overflow-x-auto scrollbar-none">
-              {curriculum.map((yr) => (
+            <div className="mt-4 relative flex gap-2 p-1 md:p-1.5 rounded-2xl bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] overflow-x-auto scrollbar-none">
+              {curriculum?.map((yr) => (
                 <button
                   key={yr.year}
                   onClick={() => handleYearChange(yr.year)}
@@ -325,7 +318,7 @@ export default function MajorPage() {
                     "relative flex-shrink-0 px-5 py-2.5 rounded-xl text-sm font-black transition-colors duration-200 z-10",
                     activeYear === yr.year
                       ? "text-white"
-                      : "text-slate-500 hover:text-slate-300"
+                      : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
                   )}
                 >
                   {activeYear === yr.year && (
@@ -343,15 +336,15 @@ export default function MajorPage() {
 
             {/* Tier 2: Semester Selection */}
             <div className="mt-4 flex gap-3">
-              {[1, 2].map((sem) => (
+              {[1, 2]?.map((sem) => (
                 <button
                   key={sem}
                   onClick={() => setActiveSemester(sem as 1 | 2)}
                   className={cn(
                     "relative px-6 py-2.5 rounded-2xl text-xs font-black transition-all duration-300 border overflow-hidden",
                     activeSemester === sem
-                      ? "text-white border-white/20 bg-white/[0.08]"
-                      : "text-slate-500 border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.05]"
+                      ? "text-white border-white/20 bg-slate-900 dark:bg-white/[0.08]"
+                      : "text-slate-500 dark:text-slate-400 border-slate-200 dark:border-white/[0.05] bg-white dark:bg-white/[0.02] hover:bg-slate-50 dark:hover:bg-white/[0.05]"
                   )}
                 >
                   {activeSemester === sem && (
@@ -373,23 +366,39 @@ export default function MajorPage() {
               {(() => {
                 const yearData = curriculum.find(yr => yr.year === activeYear);
                 const semesterData = yearData?.semesters.find(s => s.semester === activeSemester);
-                const courseList = semesterData?.courseIds
-                  .map(cid => allMaterials.find(c => c.id === cid))
-                  .filter(Boolean) || [];
+                
+                // Safe mapping with strict filtering for orphaned IDs
+                const validCourses = (semesterData?.courseIds || [])
+                  .map(cid => allMaterials?.find(c => c.id === cid))
+                  .filter((c): c is NonNullable<typeof c> => !!c) || [];
 
-                if (courseList.length === 0) {
+                if (validCourses.length === 0) {
                   return (
                     <motion.div
                       key={`empty-${activeYear}-${activeSemester}`}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="mt-8 py-12 flex flex-col items-center justify-center rounded-3xl bg-white/[0.02] border border-dashed border-white/[0.08]"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      className="mt-8 relative overflow-hidden"
                     >
-                      <ScrollText className="h-10 w-10 text-slate-800 mb-4" />
-                      <p className="text-slate-500 font-bold text-center">
-                        {isAr ? "سيتم إضافة مواد هذا الفصل قريباً" : "Course materials for this semester will be added soon"}
-                      </p>
+                      <div className="absolute inset-0 bg-slate-100 dark:bg-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] border border-dashed border-slate-200 dark:border-white/[0.1] -z-10" />
+                      <div className="py-20 flex flex-col items-center justify-center text-center px-6">
+                        <div 
+                          className="w-20 h-20 rounded-full flex items-center justify-center mb-6 relative"
+                          style={{ background: `${major.accentColor}15` }}
+                        >
+                          <div className="absolute inset-0 rounded-full blur-xl opacity-50" style={{ background: major.accentColor }} />
+                          <LucideIcons.Layers className="h-10 w-10 relative z-10" style={{ color: major.accentColor }} />
+                        </div>
+                        <h3 className="text-xl font-black text-slate-900 dark:text-slate-200 mb-2">
+                          {isAr ? "سيتم إضافة مواد هذا التخصص قريباً" : "Materials coming soon"}
+                        </h3>
+                        <p className="text-slate-600 dark:text-slate-500 text-sm max-w-xs font-medium">
+                          {isAr 
+                            ? "نحن نعمل على جمع وتنقيح أفضل المصادر الدراسية لهذا القسم." 
+                            : "We are working on collecting and curating the best academic resources for this section."}
+                        </p>
+                      </div>
                     </motion.div>
                   );
                 }
@@ -403,18 +412,15 @@ export default function MajorPage() {
                     transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] as const }}
                     className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
                   >
-                    {courseList.map((course, i) => {
-                      if (!course) return null;
-                      return (
-                        <CourseCard
-                          key={course.id}
-                          course={course}
-                          index={i}
-                          accentColor={major.accentColor}
-                          onClick={() => navigate(`/materials/${course.id}`)}
-                        />
-                      );
-                    })}
+                    {validCourses?.map((course, i) => (
+                      <CourseCard
+                        key={course?.id || i}
+                        course={course}
+                        index={i}
+                        accentColor={major.accentColor}
+                        onClick={() => navigate(`/materials/${course?.id}`)}
+                      />
+                    ))}
                   </motion.div>
                 );
               })()}
@@ -440,7 +446,7 @@ export default function MajorPage() {
                   boxShadow: `0 20px 60px ${major.accentColor}55`,
                 }}
                 whileTap={{ scale: 0.98 }}
-                className="group flex items-center justify-between gap-6 w-full px-8 md:px-10 py-6 md:py-7 rounded-full relative overflow-hidden transition-all duration-300"
+                className="group flex items-center justify-between gap-4 md:gap-6 w-full px-6 md:px-10 py-5 md:py-7 rounded-2xl md:rounded-full relative overflow-hidden transition-all duration-300"
                 style={{
                   background: `linear-gradient(135deg, ${major.accentColor}dd 0%, ${major.accentColor}99 100%)`,
                   boxShadow: `0 8px 32px ${major.accentColor}44`,
@@ -470,13 +476,13 @@ export default function MajorPage() {
                 />
               </motion.a>
             ) : (
-              <div className="flex items-center gap-5 px-8 py-6 rounded-full bg-white/[0.03] border border-dashed border-white/[0.10]">
-                <Download className="h-8 w-8 text-slate-600 shrink-0" />
+              <div className="flex items-center gap-5 px-8 py-6 rounded-full bg-white dark:bg-white/[0.03] border border-dashed border-slate-200 dark:border-white/[0.10] shadow-sm dark:shadow-none">
+                <Download className="h-8 w-8 text-slate-400 dark:text-slate-600 shrink-0" />
                 <div>
-                  <div className="font-black text-slate-500">
+                  <div className="font-black text-slate-900 dark:text-slate-500 [data-theme=pink]:text-rose-950">
                     {isAr ? "الخطة الدراسية غير متاحة حالياً" : "Study plan not available yet"}
                   </div>
-                  <div className="text-sm text-slate-600 mt-0.5">
+                  <div className="text-sm text-slate-500 dark:text-slate-600 mt-0.5">
                     {isAr ? "سيتم إضافتها قريباً" : "Coming soon"}
                   </div>
                 </div>
@@ -485,7 +491,7 @@ export default function MajorPage() {
           </div>
         </motion.section>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 

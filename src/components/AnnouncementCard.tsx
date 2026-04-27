@@ -34,7 +34,7 @@ export default function AnnouncementCard({ id }: AnnouncementCardProps) {
       <Link
         to={`/announcement/${ann.id}`}
         aria-label={title}
-        className="group relative block overflow-hidden rounded-2xl bg-white/80 border border-slate-200 shadow-sm backdrop-blur-xl dark:bg-white/[0.03] dark:border-white/[0.08] dark:backdrop-blur-2xl hover:scale-[1.01] hover:border-accent/60 transition-all duration-300"
+        className="group relative block overflow-hidden rounded-2xl bg-card/80 border border-border shadow-sm backdrop-blur-xl hover:scale-[1.01] hover:border-accent/60 transition-all duration-300"
       >
         {/* Gradient wash: BAU green → gold */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-primary/10 to-accent/25 pointer-events-none" />
@@ -52,7 +52,7 @@ export default function AnnouncementCard({ id }: AnnouncementCardProps) {
               <Sparkles className="h-5 w-5 text-accent shrink-0" />
               <span>{title}</span>
             </h3>
-            <p className="text-sm md:text-[15px] text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
+            <p className="text-sm md:text-[15px] text-muted-foreground leading-relaxed max-w-2xl">
               {desc}
             </p>
             <div className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-accent group-hover:gap-3 transition-all">

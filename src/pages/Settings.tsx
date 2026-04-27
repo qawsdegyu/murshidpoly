@@ -17,7 +17,13 @@ export default function Settings() {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto w-full mt-6 md:mt-12">
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className="max-w-4xl mx-auto w-full mt-6 md:mt-12"
+    >
       {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: 16 }}
@@ -30,8 +36,8 @@ export default function Settings() {
           <SettingsIcon className="relative h-7 w-7 text-accent drop-shadow-[0_0_8px_hsl(var(--accent)/0.6)]" />
         </div>
         <div>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-none">{t.settings.title}</h1>
-          <p className="text-neutral-400 text-sm md:text-base mt-2">{t.settings.subtitle}</p>
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight leading-none text-content">{t.settings.title}</h1>
+          <p className="text-content/60 text-sm md:text-base mt-2 font-medium">{t.settings.subtitle}</p>
         </div>
       </motion.header>
 
@@ -40,29 +46,31 @@ export default function Settings() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.05 }}
-        className="relative grid grid-cols-2 gap-1 p-2 rounded-2xl border border-neutral-200 dark:border-white/10 bg-neutral-100 dark:bg-neutral-900/60 backdrop-blur-xl mb-8 shadow-sm dark:shadow-[0_8px_30px_rgb(0,0,0,0.35)]"
+        className="relative grid grid-cols-2 gap-1 p-2 rounded-2xl border border-border bg-surface/50 dark:bg-surface/10 backdrop-blur-xl mb-8 shadow-sm"
       >
         {tabs.map(({ id, label, icon: Icon }) => {
           const active = tab === id;
           return (
-            <button
+            <motion.button
               key={id}
               onClick={() => setTab(id)}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               className={cn(
                 "relative z-10 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-sm font-semibold transition-colors duration-300",
-                active ? "text-white" : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200"
+                active ? "text-white" : "text-content/50 hover:text-content"
               )}
             >
               {active && (
                 <motion.span
                   layoutId="settings-tab-pill"
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  className="absolute inset-0 rounded-xl bg-[hsl(147_100%_15%)] shadow-[0_4px_18px_hsl(147_100%_15%/0.6),inset_0_1px_0_hsl(0_0%_100%/0.08)] ring-1 ring-accent/30"
+                  className="absolute inset-0 rounded-xl bg-primary shadow-[0_4px_18px_hsl(var(--primary)/0.4),inset_0_1px_0_hsl(0_0%_100%/0.08)] ring-1 ring-primary/30"
                 />
               )}
               <Icon className="relative h-4 w-4" />
               <span className="relative">{label}</span>
-            </button>
+            </motion.button>
           );
         })}
       </motion.div>
@@ -78,14 +86,14 @@ export default function Settings() {
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
             <Label className="mb-5 block text-neutral-700 dark:text-neutral-300 text-base">{t.settings.theme}</Label>
-            <div className="grid sm:grid-cols-2 gap-5">
+            <div className="grid sm:grid-cols-3 gap-5">
               <ThemeCard
                 active={theme === "light"}
                 onClick={() => setTheme("light")}
                 title={t.settings.light}
                 preview={
-                  <div className="h-32 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-200 grid place-items-center">
-                    <Sun className="h-10 w-10 text-amber-500" />
+                  <div className="h-32 rounded-2xl bg-[#F8FAFC] border border-slate-200 grid place-items-center">
+                    <Sun className="h-10 w-10 text-[#10B981]" />
                   </div>
                 }
               />
@@ -94,8 +102,18 @@ export default function Settings() {
                 onClick={() => setTheme("dark")}
                 title={t.settings.dark}
                 preview={
-                  <div className="h-32 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 grid place-items-center">
-                    <Moon className="h-10 w-10 text-accent" />
+                  <div className="h-32 rounded-2xl bg-[#020617] border border-white/10 grid place-items-center">
+                    <Moon className="h-10 w-10 text-[#34D399]" />
+                  </div>
+                }
+              />
+              <ThemeCard
+                active={theme === "pink"}
+                onClick={() => setTheme("pink")}
+                title={t.settings.pink}
+                preview={
+                  <div className="h-32 rounded-2xl bg-[#FFF0F5] border border-[#FBCFE8] grid place-items-center">
+                    <div className="h-10 w-10 rounded-full bg-[#DB2777] shadow-[0_0_20px_rgba(219,39,119,0.5)]" />
                   </div>
                 }
               />
@@ -131,7 +149,7 @@ export default function Settings() {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }
 
@@ -141,7 +159,7 @@ function CornerCheck() {
       initial={{ scale: 0.5, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ type: "spring", stiffness: 380, damping: 22 }}
-      className="absolute top-4 end-4 h-9 w-9 rounded-full grid place-items-center bg-accent text-accent-foreground shadow-[0_0_20px_hsl(var(--accent)/0.7)]"
+      className="absolute top-4 end-4 h-9 w-9 rounded-full grid place-items-center bg-primary text-white shadow-[0_0_20px_hsl(var(--primary)/0.7)]"
     >
       <Check className="h-5 w-5 stroke-[3]" />
     </motion.div>
@@ -158,16 +176,17 @@ function ThemeCard({ active, onClick, title, preview }: ThemeCardProps) {
   return (
     <motion.button
       onClick={onClick}
+      whileHover={{ scale: 1.02, y: -4 }}
       whileTap={{ scale: 0.98 }}
       className={cn(
         "relative p-5 rounded-2xl border text-start transition-all duration-300 backdrop-blur-xl overflow-hidden",
         active
-          ? "border-amber-500 bg-white dark:bg-neutral-900/60 shadow-[0_0_30px_hsl(var(--accent)/0.35),inset_0_0_30px_hsl(var(--accent)/0.08)]"
-          : "border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/30 hover:-translate-y-1 hover:border-amber-500/50"
+          ? "border-primary bg-surface shadow-[0_0_30px_hsl(var(--primary)/0.2),inset_0_0_30px_hsl(var(--primary)/0.05)]"
+          : "border-border bg-surface/40 hover:border-primary/50"
       )}
     >
       {preview}
-      <div className={cn("font-bold text-lg mt-4", active ? "text-accent" : "text-neutral-700 dark:text-neutral-300")}>
+      <div className={cn("font-black text-lg mt-4", active ? "text-primary" : "text-content")}>
         {title}
       </div>
       {active && <CornerCheck />}
@@ -186,23 +205,24 @@ function LanguageCard({ active, onClick, flag, title, subtitle }: LanguageCardPr
   return (
     <motion.button
       onClick={onClick}
+      whileHover={{ scale: 1.02, y: -4 }}
       whileTap={{ scale: 0.98 }}
       className={cn(
         "relative p-8 rounded-2xl border text-start transition-all duration-300 backdrop-blur-xl overflow-hidden min-h-[180px]",
         active
-          ? "border-amber-500 bg-white dark:bg-neutral-900/60 shadow-[0_0_36px_hsl(var(--accent)/0.4),inset_0_0_40px_hsl(var(--accent)/0.10)]"
-          : "border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/30 hover:-translate-y-1 hover:border-amber-500/50"
+          ? "border-primary bg-surface shadow-[0_0_36px_hsl(var(--primary)/0.2),inset_0_0_40px_hsl(var(--primary)/0.05)]"
+          : "border-border bg-surface/40 hover:border-primary/50"
       )}
     >
       {active && (
-        <div className="absolute -bottom-16 -end-16 h-48 w-48 rounded-full bg-accent/20 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-16 -end-16 h-48 w-48 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
       )}
       <div className="relative">
         <div className="text-5xl mb-4">{flag}</div>
-        <div className={cn("font-bold text-2xl", active ? "text-accent" : "text-neutral-800 dark:text-neutral-200")}>
+        <div className={cn("font-black text-2xl", active ? "text-primary" : "text-content")}>
           {title}
         </div>
-        <div className="text-sm text-neutral-500 dark:text-neutral-400 mt-2">{subtitle}</div>
+        <div className="text-sm text-content/60 mt-2 font-medium">{subtitle}</div>
       </div>
       {active && <CornerCheck />}
     </motion.button>

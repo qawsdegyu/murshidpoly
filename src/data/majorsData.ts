@@ -144,7 +144,7 @@ export const majorsData: MajorInfo[] = [
     description: "Transforming raw materials into useful products through chemical processes.",
     descriptionAr: "تحويل المواد الخام إلى منتجات مفيدة من خلال العمليات الكيميائية.",
     longDescriptionAr: "هندسة الصناعات الكيميائية تُحوّل المواد الخام إلى منتجات ذات قيمة عالية عبر عمليات كيميائية وفيزيائية دقيقة. يدرس الطالب عمليات الانتقال (نقل الحرارة والمادة)، تصميم المفاعلات الكيميائية، هندسة العمليات، والتحكم في الجودة. يعمل خريجو هذا التخصص في مصافي النفط، الصناعات الدوائية، صناعات الأغذية، ومعالجة المياه. يُركّز البرنامج حديثاً على الهندسة الخضراء والطاقة النظيفة.",
-    imageUrl: "https://images.unsplash.com/photo-1518709779341-56cf4535e94a?auto=format&fit=crop&q=80&w=1200",
+    imageUrl: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&q=80&w=1200",
     icon: "FlaskConical",
     color: "from-rose-700 to-orange-600",
     accentColor: "#f43f5e",

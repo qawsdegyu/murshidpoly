@@ -32,7 +32,14 @@ export default function AnnouncementDetail() {
   const backLabel = lang === "ar" ? "العودة إلى الرئيسية" : "Back to Dashboard";
 
   return (
-    <div className="font-cairo">
+    <motion.div
+      dir={dir}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className="font-cairo min-h-screen bg-background"
+    >
       {/* Back */}
       <Link
         to="/"
@@ -118,7 +125,7 @@ export default function AnnouncementDetail() {
           </Link>
         </Button>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 

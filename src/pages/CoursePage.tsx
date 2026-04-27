@@ -46,14 +46,14 @@ export default function CoursePage() {
   const course = courses.find((c) => c.id === id);
   const resources = resourcesByCourse[id ?? ""] ?? [];
   const instructorIds = instructorsByCourse[id ?? ""] || [];
-  const courseInstructors = instructorIds.map(insId => faculty.find(f => f.id === insId)).filter(Boolean) as typeof faculty;
+  const courseInstructors = (instructorIds || [])?.map(insId => faculty?.find(f => f.id === insId)).filter(Boolean) as typeof faculty;
   
   // New: Get simple instructor names from course object
   const simpleInstructors = course?.instructors || [];
 
   if (!course) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground">
         <m.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
           <GraduationCap className="h-20 w-20 text-slate-800 mb-6 mx-auto" />
           <h2 className="text-2xl font-black mb-4">{isAr ? "المادة غير موجودة" : "Course Not Found"}</h2>
@@ -90,7 +90,14 @@ export default function CoursePage() {
   const currentTabInfo = tabs.find(t => t.id === activeTab);
 
   return (
-    <div dir={dir} className="min-h-screen pb-24 bg-slate-50 dark:bg-slate-950 selection:bg-cyan-500/30 transition-colors duration-300">
+    <m.div 
+      dir={dir} 
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className="min-h-screen pb-24 bg-background selection:bg-cyan-500/30 transition-colors duration-300"
+    >
       {/* Background Effects */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(59,130,246,0.05)_0%,transparent_70%)]" />
@@ -160,7 +167,7 @@ export default function CoursePage() {
         {/* Sleek Tabs Navigation */}
         <div className="sticky top-6 z-40 mb-12 flex justify-center">
           <div className="p-1.5 rounded-[2.5rem] bg-white/60 dark:bg-slate-900/40 border border-white/40 dark:border-white/10 backdrop-blur-3xl shadow-2xl shadow-blue-500/5 flex items-center gap-1 overflow-x-auto scrollbar-hide max-w-full">
-            {tabs.map((tab) => {
+            {tabs?.map((tab) => {
               const isActive = activeTab === tab.id;
               const Icon = tab.icon;
               return (
@@ -192,7 +199,7 @@ export default function CoursePage() {
 
         {/* Tab Content with AnimatePresence */}
         <div className="min-h-[400px]">
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             <m.div
               key={activeTab}
               initial={{ opacity: 0, y: 10 }}
@@ -205,7 +212,7 @@ export default function CoursePage() {
                 /* Instructors Tab Content */
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {simpleInstructors.length > 0 ? (
-                    simpleInstructors.map((name, index) => (
+                    simpleInstructors?.map((name, index) => (
                       <m.div
                         key={index}
                         whileHover={{ y: -5 }}
@@ -226,7 +233,7 @@ export default function CoursePage() {
                     ))
                   ) : (
                     /* Fallback to original instructors section data if new array is empty */
-                    courseInstructors.map((ins) => (
+                    courseInstructors?.map((ins) => (
                       <m.div 
                         key={ins.id}
                         whileHover={{ y: -5 }}
@@ -265,7 +272,7 @@ export default function CoursePage() {
                 /* Original Tabs Content */
                 filteredResources.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredResources.map((item) => {
+                    {filteredResources?.map((item) => {
                       const isVideo = item.type === "video";
                       return (
                         <m.div
@@ -362,7 +369,7 @@ export default function CoursePage() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {courseInstructors.map((ins) => (
+              {courseInstructors?.map((ins) => (
                 <m.div 
                   key={ins.id}
                   whileHover={{ y: -5 }}
@@ -485,6 +492,6 @@ export default function CoursePage() {
           </div>
         </m.section>
       </m.div>
-    </div>
+    </m.div>
   );
 }

@@ -222,7 +222,14 @@ export default function CampusMap() {
   const ar = lang === "ar";
 
   return (
-    <div dir={dir} className="min-h-screen pb-20">
+    <motion.div
+      dir={dir}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className="min-h-screen pb-20"
+    >
 
       {/* ── Page Header ── */}
       <PageHeader
@@ -237,14 +244,15 @@ export default function CampusMap() {
               { label: ar ? "إجمالي المباني" : "Total Buildings", value: "17", icon: "🏛️" },
               { label: ar ? "أقسام هندسية" : "Engineering Depts.", value: "6", icon: "⚙️" },
             ].map((s) => (
-              <div
+              <motion.div
                 key={s.label}
+                whileHover={{ scale: 1.05 }}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-100 dark:bg-white/[0.05] border border-neutral-200 dark:border-white/10"
               >
                 <span className="text-lg">{s.icon}</span>
                 <span className="text-xs font-black text-neutral-900 dark:text-white">{s.value}</span>
                 <span className="text-xs text-muted-foreground">{s.label}</span>
-              </div>
+              </motion.div>
             ))}
           </div>
         }
@@ -256,7 +264,9 @@ export default function CampusMap() {
           <motion.article
             key={b.id}
             {...fadeUp(0.04 + i * 0.03)}
-            className="group relative flex flex-col rounded-[2rem] overflow-hidden border border-neutral-200 dark:border-white/10 bg-white dark:bg-white/[0.03] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="group relative flex flex-col rounded-[2rem] overflow-hidden border border-neutral-200 dark:border-white/10 bg-white dark:bg-white/[0.03] shadow-sm transition-all duration-300"
           >
             {/* Image */}
             <div className="relative h-44 overflow-hidden">
@@ -300,16 +310,18 @@ export default function CampusMap() {
               <div className={`h-1 rounded-full bg-gradient-to-r ${b.color} opacity-70`} />
 
               {/* Action button */}
-              <a
+              <motion.a
                 href={b.mapUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-gradient-to-r ${b.color} text-white text-sm font-bold shadow-md hover:opacity-90 active:scale-95 transition-all`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-gradient-to-r ${b.color} text-white text-sm font-bold shadow-md transition-all`}
               >
                 <Navigation className="w-4 h-4 shrink-0" />
                 <span>{ar ? "الانتقال عبر الخريطة" : "Open in Maps"}</span>
                 <ExternalLink className="w-3.5 h-3.5 shrink-0 opacity-70" />
-              </a>
+              </motion.a>
             </div>
 
             {/* Hover glow border */}
@@ -328,6 +340,6 @@ export default function CampusMap() {
           ? "جامعة البلقاء التطبيقية — البلقاء، السلط، الأردن"
           : "Al-Balqa Applied University — Al-Balqa, Salt, Jordan"}
       </motion.p>
-    </div>
+    </motion.div>
   );
 }

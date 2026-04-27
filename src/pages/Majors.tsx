@@ -25,9 +25,9 @@ const cardVariants: Variants = {
 };
 
 function getBentoClass(index: number): string {
-  if (index === 0) return "md:col-span-8 row-span-2";
-  if (index === 1) return "md:col-span-4 row-span-2";
-  return "md:col-span-4 row-span-1";
+  if (index === 0) return "md:col-span-8 md:row-span-2";
+  if (index === 1) return "md:col-span-4 md:row-span-2";
+  return "md:col-span-4 md:row-span-1";
 }
 
 export default function Majors() {
@@ -36,13 +36,14 @@ export default function Majors() {
   const isAr = lang === "ar";
 
   return (
-    <div dir={dir} className="min-h-screen pb-24 bg-[#020617] selection:bg-cyan-500/30">
-      {/* Ambient bg */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(34,211,238,0.06)_0%,transparent_65%)]" />
-        <div className="absolute inset-0 opacity-[0.07]"
-          style={{ backgroundImage: "linear-gradient(#1e293b 1px, transparent 1px), linear-gradient(90deg, #1e293b 1px, transparent 1px)", backgroundSize: "80px 80px" }} />
-      </div>
+    <motion.div
+      dir={dir}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className="min-h-screen pb-24 bg-background transition-colors duration-500"
+    >
 
       <div className="relative z-10 px-4 md:px-8 pt-8">
         <PageHeader
@@ -55,7 +56,7 @@ export default function Majors() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-4 md:grid-cols-12 auto-rows-[260px] gap-4 mt-10"
+          className="grid grid-cols-1 md:grid-cols-12 auto-rows-fr md:auto-rows-[260px] gap-2 md:gap-6 mt-6 md:mt-10 px-4 md:px-0"
         >
           {majorsData.map((major, i) => {
             const Icon =
@@ -67,24 +68,26 @@ export default function Majors() {
                 key={major.id}
                 variants={cardVariants}
                 onClick={() => navigate(`/major/${major.id}`)}
-                whileHover={{ y: -6, scale: 1.015 }}
+                whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className={cn(
                   getBentoClass(i),
-                  "col-span-4 group relative rounded-[2.5rem] overflow-hidden border border-white/5",
-                  "bg-neutral-950 shadow-2xl transition-shadow duration-500 text-start",
-                  "hover:border-white/15 hover:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)]"
+                  "group relative p-0 rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-slate-100 dark:border-slate-800 shadow-sm",
+                  "bg-white dark:bg-slate-900 transition-all duration-500 text-start",
+                  "hover:border-slate-300 dark:hover:border-white/15 hover:shadow-lg",
+                  "flex flex-row md:flex-col h-24 md:h-auto"
                 )}
+                whileTap={{ scale: 0.98 }}
               >
                 {/* Background */}
-                <div className="absolute inset-0 z-0">
+                <div className="relative w-24 md:w-full h-full md:absolute md:inset-0 z-0 shrink-0">
                   <img
                     src={major.imageUrl}
                     alt={isAr ? major.nameAr : major.name}
-                    className="w-full h-full object-cover opacity-55 transition-transform duration-700 group-hover:scale-110 grayscale-[0.3] group-hover:grayscale-0"
+                    className="w-full h-full object-cover object-center opacity-100 md:opacity-90 dark:md:opacity-60 transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-                  <div className={cn("absolute inset-0 bg-gradient-to-br opacity-20 mix-blend-overlay", major.color)} />
+                  <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent md:from-slate-950 md:via-slate-900/40" />
+                  <div className={cn("hidden md:block absolute inset-0 bg-gradient-to-br opacity-20 mix-blend-overlay", major.color)} />
                 </div>
 
                 {/* Accent glow */}
@@ -92,20 +95,20 @@ export default function Majors() {
                   style={{ background: `radial-gradient(circle at 50% 90%, ${major.accentColor}22 0%, transparent 70%)` }} />
 
                 {/* Content */}
-                <div className="relative z-10 h-full p-8 md:p-10 flex flex-col justify-end min-h-[240px]">
-                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl mb-5 transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
+                <div className="relative z-10 flex-1 h-full p-4 md:p-6 flex flex-col items-start justify-center md:justify-end">
+                  <div className="hidden md:inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl mb-5 transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
                     <Icon className="w-7 h-7 text-white" strokeWidth={1.5} />
                   </div>
 
-                  <h3 className="text-2xl md:text-3xl font-black text-white mb-2 tracking-tight leading-tight">
+                  <h3 className="text-base md:text-3xl font-black text-slate-900 dark:text-white [data-theme=pink]:text-rose-950 dark:[data-theme=pink]:text-rose-100 mb-0.5 md:mb-2 tracking-tight leading-tight group-hover:text-accent transition-colors">
                     {isAr ? major.nameAr : major.name}
                   </h3>
-
-                  <p className="text-neutral-400 text-sm leading-relaxed line-clamp-2 mb-5 font-medium group-hover:text-neutral-200 transition-colors duration-300">
+                  
+                  <p className="text-slate-500 dark:text-slate-400 text-[10px] md:text-sm leading-relaxed line-clamp-1 md:line-clamp-2 mb-0 md:mb-5 font-medium">
                     {isAr ? major.descriptionAr : major.description}
                   </p>
 
-                  <div className="flex items-center justify-between border-t border-white/8 pt-4">
+                  <div className="hidden md:flex items-center justify-between border-t border-slate-200 dark:border-white/8 pt-4 w-full">
                     <span
                       className="inline-flex items-center gap-2 text-xs font-black tracking-widest uppercase transition-all duration-300 group-hover:gap-3"
                       style={{ color: major.accentColor }}
@@ -114,21 +117,25 @@ export default function Majors() {
                       <ChevronRight className={cn("w-4 h-4", dir === "rtl" ? "rotate-180" : "")} />
                     </span>
                     {major.studyPlanUrl && (
-                      <span className="text-[10px] font-black text-white/30 uppercase tracking-widest">
+                      <span className="text-[10px] font-black text-slate-400 dark:text-white/30 uppercase tracking-widest">
                         {isAr ? "PDF متاح" : "PDF available"}
                       </span>
                     )}
                   </div>
                 </div>
 
+                <div className="md:hidden pr-4 rtl:pl-4">
+                  <ChevronRight className={cn("w-5 h-5 text-slate-300", dir === "rtl" ? "rotate-180" : "")} />
+                </div>
+
                 {/* Corner lines */}
-                <div className="absolute top-0 left-0 w-10 h-10 border-t-2 border-l-2 border-white/10 rounded-tl-[2.5rem] group-hover:border-white/25 transition-colors duration-500" />
-                <div className="absolute bottom-0 right-0 w-10 h-10 border-b-2 border-r-2 border-white/10 rounded-br-[2.5rem] group-hover:border-white/25 transition-colors duration-500" />
+                <div className="absolute top-0 left-0 w-10 h-10 border-t-2 border-l-2 border-slate-200 dark:border-white/10 rounded-tl-[2.5rem] group-hover:border-white/25 transition-colors duration-500" />
+                <div className="absolute bottom-0 right-0 w-10 h-10 border-b-2 border-r-2 border-slate-200 dark:border-white/10 rounded-br-[2.5rem] group-hover:border-white/25 transition-colors duration-500" />
               </motion.button>
             );
           })}
         </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }
