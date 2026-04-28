@@ -17,8 +17,8 @@ export default function Marketplace() {
     >
       {/* ── Cyberpunk Ambient Glows ── */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[120px] opacity-20 bg-blue-500 animate-pulse" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full blur-[100px] opacity-15 bg-emerald-500 animate-bounce-slow" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[120px] opacity-20 bg-blue-500 animate-pulse hidden md:block" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full blur-[100px] opacity-15 bg-emerald-500 animate-bounce-slow hidden md:block" />
       </div>
 
       <motion.div
@@ -43,7 +43,7 @@ export default function Marketplace() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="text-5xl md:text-9xl font-black tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-emerald-400 to-blue-500 bg-[length:200%_auto] animate-gradient-x"
+          className="text-3xl sm:text-5xl md:text-9xl font-black tracking-tighter mb-4 md:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-emerald-400 to-blue-500 bg-[length:200%_auto] animate-gradient-x"
         >
           {isAr ? "قريباً" : "Soon"}
         </motion.h1>
@@ -53,7 +53,7 @@ export default function Marketplace() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="text-sm md:text-xl text-slate-400 font-medium max-w-xl mx-auto leading-relaxed mb-10"
+          className="text-xs sm:text-sm md:text-xl text-slate-400 font-medium max-w-xl mx-auto leading-relaxed mb-8 md:mb-10"
         >
           {isAr 
             ? "سوق مرشد للمعدات والخدمات الهندسية.. قيد التجهيز لخدمتكم بأفضل صورة." 
@@ -75,7 +75,7 @@ export default function Marketplace() {
             <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200" />
             <div className="relative px-8 py-4 bg-slate-950 border border-white/[0.08] rounded-2xl backdrop-blur-xl flex items-center gap-3">
               <Sparkles className="h-5 w-5 text-emerald-400" />
-              <span className="text-slate-200 font-black text-sm uppercase tracking-widest">
+              <span className="text-slate-200 font-black text-[10px] sm:text-sm uppercase tracking-widest">
                 {isAr ? "انتظروا مفاجآت مرشد قريباً" : "Expect Murshid surprises soon"}
               </span>
             </div>

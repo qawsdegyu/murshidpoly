@@ -36,7 +36,7 @@ export default function Settings() {
           <SettingsIcon className="relative h-7 w-7 text-accent drop-shadow-[0_0_8px_hsl(var(--accent)/0.6)]" />
         </div>
         <div>
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight leading-none text-content">{t.settings.title}</h1>
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight leading-none text-content">{t.settings.title}</h1>
           <p className="text-content/60 text-sm md:text-base mt-2 font-medium">{t.settings.subtitle}</p>
         </div>
       </motion.header>

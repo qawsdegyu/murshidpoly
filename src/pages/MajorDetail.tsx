@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import * as LucideIcons from "lucide-react";
@@ -58,9 +59,9 @@ const courseIcons: Record<string, string> = {
 };
 
 const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
+  initial: { opacity: 0, y: 12 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5, ease: "easeOut" as const, delay },
+  transition: { duration: 0.3, ease: "easeOut" as const, delay },
 });
 
 /* ════════════════════════════════════════════════════════ */
@@ -143,6 +144,8 @@ export default function MajorDetail() {
         <img
           src={major?.imageUrl}
           alt={name}
+          loading="lazy"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover"
           onError={(e) => {
             (e.target as HTMLImageElement).src =
@@ -251,8 +254,8 @@ export default function MajorDetail() {
           <SectionHeader icon={<Briefcase className="w-5 h-5" />} label={ar ? "المسارات المهنية" : "Career Paths"} color={major.color} />
           <div className="mt-6 rounded-[2rem] bg-slate-900 border border-white/5 p-8 relative overflow-hidden">
             {/* blobs */}
-            <div className={`absolute -top-16 -right-16 w-60 h-60 rounded-full bg-gradient-to-br ${major.color} opacity-15 blur-[70px]`} />
-            <div className={`absolute -bottom-16 -left-16 w-52 h-52 rounded-full bg-gradient-to-br ${major.color} opacity-10 blur-[70px]`} />
+            <div className={`absolute -top-16 -right-16 w-60 h-60 rounded-full bg-gradient-to-br ${major.color} opacity-15 blur-[70px] hidden md:block`} />
+            <div className={`absolute -bottom-16 -left-16 w-52 h-52 rounded-full bg-gradient-to-br ${major.color} opacity-10 blur-[70px] hidden md:block`} />
             <div className="relative z-10 flex flex-wrap gap-3">
               {fieldBadges.map((field, i) => (
                 <motion.span
@@ -432,7 +435,7 @@ export default function MajorDetail() {
 }
 
 /* ── Sub-components ── */
-function SectionHeader({ icon, label, color }: { icon: React.ReactNode; label: string; color: string }) {
+const SectionHeader = memo(({ icon, label, color }: { icon: React.ReactNode; label: string; color: string }) => {
   return (
     <div className="flex items-center gap-2 md:gap-3">
       <div className={`w-7 h-7 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-gradient-to-br ${color} text-white grid place-items-center shadow-md shrink-0`}>
@@ -443,9 +446,11 @@ function SectionHeader({ icon, label, color }: { icon: React.ReactNode; label: s
       </h2>
     </div>
   );
-}
+});
 
-function QuickStat({ icon, label, value, color }: { icon: React.ReactNode; label: string; value: string; color: string }) {
+SectionHeader.displayName = "SectionHeader";
+
+const QuickStat = memo(({ icon, label, value, color }: { icon: React.ReactNode; label: string; value: string; color: string }) => {
   return (
     <div className="flex items-center gap-4 p-5 rounded-2xl bg-white/80 border border-slate-200 shadow-sm backdrop-blur-xl dark:bg-white/[0.03] dark:border-white/[0.08] dark:backdrop-blur-2xl">
       <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${color} text-white grid place-items-center shadow-md shrink-0`}>
@@ -457,4 +462,6 @@ function QuickStat({ icon, label, value, color }: { icon: React.ReactNode; label
       </div>
     </div>
   );
-}
+});
+
+QuickStat.displayName = "QuickStat";

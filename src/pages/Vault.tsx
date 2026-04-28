@@ -99,10 +99,11 @@ export default function Vault() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+      style={{ willChange: "transform, opacity" }}
       className="pb-20"
     >
       <PageHeader 
@@ -116,9 +117,10 @@ export default function Vault() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ scale: 1.01 }}
+        style={{ willChange: "transform, opacity" }}
         className="mb-8 p-5 md:p-8 rounded-3xl md:rounded-[2.5rem] bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent border border-emerald-500/20 backdrop-blur-xl relative overflow-hidden group"
       >
-        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 blur-[80px] -mr-32 -mt-32 rounded-full" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 blur-[80px] -mr-32 -mt-32 rounded-full hidden md:block" />
         
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-5">
@@ -128,15 +130,16 @@ export default function Vault() {
                 rotate: [0, 5, -5, 0]
               }}
               transition={{ duration: 4, repeat: Infinity }}
-              className="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0"
+              style={{ willChange: "transform" }}
+              className="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0 hidden md:flex"
             >
               <Upload className="w-6 h-6 md:w-7 md:h-7" />
             </motion.div>
             <div className="text-center md:text-start">
-              <h3 className="text-lg md:text-xl font-black text-white mb-1">
+              <h3 className="text-base md:text-xl font-black text-slate-900 dark:text-white mb-1">
                 {lang === "ar" ? "شاركنا ملفاتك أو تلاخيصك" : "Share your files or summaries"}
               </h3>
-              <p className="text-sm text-slate-400 font-medium max-w-md">
+              <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 font-medium max-w-md">
                 {lang === "ar" 
                   ? "ساعد زملائك من خلال مشاركة مصادرك الدراسية في خزانة مرشد." 
                   : "Help your colleagues by sharing your study resources in Murshid's Vault."}
@@ -150,6 +153,7 @@ export default function Vault() {
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            style={{ willChange: "transform" }}
             className="flex items-center gap-3 px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl bg-emerald-500 text-white font-black hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/20"
           >
             <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
@@ -202,11 +206,10 @@ export default function Vault() {
       </div>
 
       {/* Course Grid */}
-      <motion.div 
-        layout
+      <div 
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
       >
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence mode="popLayout" initial={false}>
           {filtered?.map((c, i) => (
             <CourseCard
               key={c.id}
@@ -216,7 +219,7 @@ export default function Vault() {
             />
           ))}
         </AnimatePresence>
-      </motion.div>
+      </div>
 
       {filtered.length === 0 && (
         <motion.div 

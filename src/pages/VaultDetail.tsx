@@ -105,6 +105,8 @@ function VideoGrid({ items, empty }: ResourceListProps) {
                 src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`} 
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-90" 
                 alt={r.title}
+                loading="lazy"
+                decoding="async"
                 onError={(e) => { e.currentTarget.src = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`; }}
               />
               <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -173,10 +175,11 @@ function InstructorCards({ department, courseName }: { department: string; cours
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      style={{ willChange: "transform, opacity" }}
       className="space-y-6"
     >
       {/* Search Bar */}
@@ -313,10 +316,11 @@ export default function VaultDetail() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      style={{ willChange: "transform, opacity" }}
     >
       <button
         onClick={() => nav(-1)}
@@ -328,7 +332,7 @@ export default function VaultDetail() {
 
       {/* Course header */}
       <div className="bg-surface/80 border border-border shadow-sm backdrop-blur-xl dark:bg-surface/40 dark:border-white/10 dark:backdrop-blur-2xl rounded-3xl p-6 md:p-10 mb-8 relative overflow-hidden group">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-3xl -z-10 rounded-full group-hover:bg-primary/10 transition-colors" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-3xl -z-10 rounded-full group-hover:bg-primary/10 transition-colors hidden md:block" />
         <div className="flex flex-wrap items-center gap-3 mb-4">
           <span className="text-[10px] font-black tracking-widest uppercase px-3 py-1 rounded-full bg-primary/10 text-primary dark:text-accent border border-primary/20">
             {course?.code || "N/A"}

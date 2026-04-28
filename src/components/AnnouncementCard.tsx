@@ -1,19 +1,16 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Megaphone, Sparkles, ArrowRight, ImageIcon } from "lucide-react";
+import { Megaphone, Sparkles, ArrowRight } from "lucide-react";
 import { usePreferences } from "@/contexts/PreferencesContext";
-import { announcements, type Announcement } from "@/data/announcements";
+import { memo } from "react";
+import { announcements } from "../data/mockData";
+import type { Announcement } from "../data/mockData";
 
-export interface AnnouncementCardProps {
-  /** Optional id — defaults to the first announcement. */
+interface AnnouncementCardProps {
   id?: string;
 }
 
-/**
- * AnnouncementCard — clickable promo banner that routes to /announcement/:id.
- * Glassmorphic dark container with BAU green→gold gradient accent.
- */
-export default function AnnouncementCard({ id }: AnnouncementCardProps) {
+const AnnouncementCard = memo(({ id }: AnnouncementCardProps) => {
   const { dir, lang } = usePreferences();
 
   const ann: Announcement | undefined =
@@ -27,20 +24,20 @@ export default function AnnouncementCard({ id }: AnnouncementCardProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 14 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, ease: "easeOut" }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      style={{ willChange: "transform, opacity" }}
     >
       <Link
         to={`/announcement/${ann.id}`}
         aria-label={title}
         className="group relative block overflow-hidden rounded-2xl bg-card/80 border border-border shadow-sm backdrop-blur-xl hover:scale-[1.01] hover:border-accent/60 transition-all duration-300"
       >
-        {/* Gradient wash: BAU green → gold */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-primary/10 to-accent/25 pointer-events-none" />
-        <div className="absolute -top-24 ltr:-right-24 rtl:-left-24 h-64 w-64 rounded-full bg-accent/20 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 ltr:-left-24 rtl:-right-24 h-64 w-64 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
-
+        {/* Optimized background wash */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/5 to-accent/15 pointer-events-none" />
+        <div className="absolute -top-24 ltr:-right-24 rtl:-left-24 h-64 w-64 rounded-full bg-accent/15 blur-3xl pointer-events-none hidden md:block" />
+        
         <div className="relative grid md:grid-cols-[1fr_auto] gap-6 p-6 md:p-8 items-center">
           {/* Content */}
           <div className="min-w-0">
@@ -61,20 +58,19 @@ export default function AnnouncementCard({ id }: AnnouncementCardProps) {
             </div>
           </div>
 
-          {/* Promo image / placeholder */}
+          {/* Optimized image */}
           <div className="hidden md:block w-48 lg:w-56 aspect-[4/3] rounded-xl overflow-hidden border border-accent/30 bg-background/30 backdrop-blur-md shrink-0">
             {ann.imageUrl ? (
-              <img src={ann.imageUrl} alt={title} className="w-full h-full object-cover" />
+              <img 
+                src={ann.imageUrl} 
+                alt={title} 
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+              />
             ) : (
-              <div className="w-full h-full grid place-items-center text-center px-3">
-                <div>
-                  <div className="mx-auto h-10 w-10 rounded-lg bg-accent/15 grid place-items-center border border-accent/30 mb-2">
-                    <ImageIcon className="h-5 w-5 text-accent" />
-                  </div>
-                  <div className="text-[11px] text-muted-foreground font-medium">
-                    {lang === "ar" ? "أضف صورة الإعلان" : "Promo image"}
-                  </div>
-                </div>
+              <div className="w-full h-full bg-accent/5 grid place-items-center">
+                <Megaphone className="h-12 w-12 text-accent/20" />
               </div>
             )}
           </div>
@@ -82,4 +78,8 @@ export default function AnnouncementCard({ id }: AnnouncementCardProps) {
       </Link>
     </motion.div>
   );
-}
+});
+
+AnnouncementCard.displayName = "AnnouncementCard";
+
+export default AnnouncementCard;

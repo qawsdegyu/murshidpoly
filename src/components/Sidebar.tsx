@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -7,7 +7,7 @@ import {
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { cn } from "@/lib/utils";
 
-export default function Sidebar() {
+const Sidebar = memo(() => {
   const { t, dir } = usePreferences();
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
@@ -59,13 +59,13 @@ export default function Sidebar() {
       <aside className={sideClasses}>
         {/* Logo */}
         <div className="p-4 md:p-5 flex items-center gap-2 md:gap-3 border-b border-sidebar-border">
-          <div className="h-8 w-8 md:h-12 md:w-12 rounded-lg md:rounded-xl bg-white p-1 md:p-1.5 shadow-gold shrink-0 border border-border/40">
-            <img 
-              src="/logo.png" 
-              alt="Murshid Logo" 
-              className="w-full h-full object-contain"
-            />
-          </div>
+          <img 
+            src="/rs.png" 
+            alt="Murshid Logo" 
+            className="h-10 w-10 md:h-12 md:w-12 rounded-full object-contain shadow-md shrink-0 border border-border/40"
+            loading="lazy"
+            decoding="async"
+          />
           {!collapsed && (
             <div className="overflow-hidden">
               <div className="font-extrabold text-xl tracking-tighter leading-none text-foreground">{t.appName}</div>
@@ -83,6 +83,7 @@ export default function Sidebar() {
                 key={it.to}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                style={{ willChange: "transform" }}
               >
                 <Link
                   to={it.to}
@@ -116,6 +117,7 @@ export default function Sidebar() {
           <motion.div
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            style={{ willChange: "transform" }}
           >
             <Link
               to="/settings"
@@ -145,4 +147,8 @@ export default function Sidebar() {
       <div className={cn("hidden md:block transition-all", collapsed ? "w-20" : "w-64")} />
     </>
   );
-}
+});
+
+Sidebar.displayName = "Sidebar";
+
+export default Sidebar;

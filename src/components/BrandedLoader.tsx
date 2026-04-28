@@ -7,16 +7,15 @@ export default function BrandedLoader() {
         {/* Hardware-accelerated Golden Pulse Effect */}
         <motion.div
           animate={{
-            scale: [1, 1.8, 1],
-            opacity: [0.3, 0.05, 0.3],
+            opacity: [0.2, 0.4, 0.2],
           }}
           transition={{
-            duration: 2.5,
+            duration: 2,
             repeat: Infinity,
-            ease: [0.4, 0, 0.2, 1],
+            ease: "easeInOut",
           }}
-          style={{ willChange: "transform, opacity" }}
-          className="absolute inset-0 rounded-full bg-accent blur-[100px]"
+          style={{ willChange: "opacity" }}
+          className="absolute inset-0 rounded-full bg-accent blur-[60px] md:blur-[100px]"
         />
         
         <motion.div

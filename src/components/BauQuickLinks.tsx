@@ -76,48 +76,36 @@ export default function BauQuickLinks() {
         <p className="text-sm text-content/60 mt-1 font-medium">{sub}</p>
       </div>
 
-      <div className="bg-surface/80 border border-border shadow-sm backdrop-blur-xl dark:bg-surface/40 dark:border-white/10 dark:backdrop-blur-2xl rounded-[2rem] p-4 md:p-6 transition-all duration-300">
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-          {links.map((l, i) => {
-            const label = lang === "ar" ? l.labelAr : l.label;
-            return (
-              <motion.li
-                key={l.label}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.04 * i, duration: 0.35, ease: "easeOut" }}
+      <div className="flex flex-wrap items-center justify-center gap-4 px-4 sm:gap-6 py-2">
+        {links.map((l, i) => {
+          const label = lang === "ar" ? l.labelAr : l.label;
+          return (
+            <motion.li
+              key={l.label}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ delay: 0.04 * i, duration: 0.3, ease: "easeOut" }}
+              className="list-none"
+            >
+              <a
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="group flex flex-col items-center"
               >
-                <a
-                  href={l.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="group relative flex items-center gap-2 p-3 rounded-xl bg-surface/50 dark:bg-surface/10 border border-border dark:border-white/10 hover:border-blue-500/70 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300 overflow-hidden"
-                >
-                  {/* Blue glow on hover */}
-                  <span className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-blue-500/10 to-transparent transition-opacity duration-300 pointer-events-none" />
-
-                  <span
-                    className={`relative h-10 w-10 shrink-0 rounded-lg bg-gradient-to-br ${l.tile} grid place-items-center border border-white/10 shadow-inner`}
-                  >
-                    <l.Icon className={`h-5 w-5 ${l.color}`} strokeWidth={1.8} />
-                  </span>
-
-                  <span className="relative min-w-0 flex-1">
-                    <span className="block text-xs font-black text-content group-hover:text-blue-500 transition-colors truncate">
-                      {label}
-                    </span>
-                    <span className="block text-[8px] text-content/50 truncate font-medium">
-                      {l.href.replace(/^https?:\/\//, "").split('/')[0]}
-                    </span>
-                  </span>
-
-                  <ExternalLink className="relative h-3 w-3 text-content/40 group-hover:text-blue-500 shrink-0 opacity-0 group-hover:opacity-100 transition-all" />
-                </a>
-              </motion.li>
-            );
-          })}
-        </ul>
+                <div className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-full bg-slate-100/50 dark:bg-slate-800/50 flex items-center justify-center transition-all duration-300 group-hover:bg-slate-200/80 dark:group-hover:bg-slate-700/80 shadow-sm border border-slate-200 dark:border-white/5">
+                  <l.Icon className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-slate-700 dark:text-white transition-transform duration-300 group-hover:scale-110" strokeWidth={1.5} />
+                </div>
+                <span className="text-[10px] sm:text-xs font-medium text-slate-800 dark:text-slate-200 mt-1.5 text-center max-w-[100px] sm:max-w-[110px] lg:max-w-[120px] leading-tight line-clamp-2 break-words">
+                  {label}
+                </span>
+              </a>
+            </motion.li>
+          );
+        })}
       </div>
     </section>
   );

@@ -98,21 +98,22 @@ export default function MurshidAssistant() {
           <motion.button
             key="fab"
             onClick={() => { setOpen(true); setMinimized(false); }}
-            initial={{ opacity: 0, scale: 0.7 }}
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.7 }}
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.92 }}
-            transition={{ type: "spring", stiffness: 320, damping: 22 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            style={{ willChange: "transform, opacity" }}
             aria-label={s.open}
-            className="fixed bottom-24 left-8 z-[100] h-14 w-14 rounded-full flex items-center justify-center bg-gradient-to-br from-accent via-accent to-amber-500 shadow-[0_0_25px_hsl(var(--accent)/0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
+            className="fixed bottom-24 left-8 z-[100] h-14 w-14 rounded-full flex items-center justify-center bg-gradient-to-br from-accent via-accent to-amber-500 shadow-[0_0_20px_hsl(var(--accent)/0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
           >
-            {/* Breathing rings */}
-            <span className="absolute inset-0 rounded-full bg-accent/40 animate-pulse scale-150 blur-md pointer-events-none" />
+            {/* Breathing rings - Optimized */}
+            <span className="absolute inset-0 rounded-full bg-accent/30 animate-pulse scale-125 blur-md pointer-events-none hidden md:block" />
             <motion.span
-              className="absolute inset-0 rounded-full bg-accent/50"
-              animate={{ scale: [1, 1.8, 1], opacity: [0.6, 0, 0.6] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+              className="absolute inset-0 rounded-full bg-accent/40"
+              animate={{ scale: [1, 1.5, 1], opacity: [0.4, 0, 0.4] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
             />
             <motion.span
               className="absolute inset-0 rounded-full bg-accent/40"

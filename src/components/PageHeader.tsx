@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, memo } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -10,11 +10,13 @@ interface PageHeaderProps {
   className?: string;
 }
 
-export default function PageHeader({ title, subtitle, icon, actions, className }: PageHeaderProps) {
+const PageHeader = memo(({ title, subtitle, icon, actions, className }: PageHeaderProps) => {
   return (
     <motion.header
-      initial={{ opacity: 0, y: -12 }}
+      initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      style={{ willChange: "transform, opacity" }}
       className={cn("relative flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-6 mb-6 md:mb-10 pb-4 md:pb-8 border-b border-border/60", className)}
     >
       <div className="flex items-start gap-3 md:gap-5">
@@ -26,8 +28,10 @@ export default function PageHeader({ title, subtitle, icon, actions, className }
         <div className="space-y-0.5">
           <div className="flex items-center gap-2 mb-0.5">
             <img 
-              src="https://upload.wikimedia.org/wikipedia/en/2/2d/Al-Balqa_Applied_University_logo.png" 
+              src="/rs.png" 
               alt="BAU" 
+              loading="lazy"
+              decoding="async"
               className="h-4 w-4 object-contain opacity-80"
             />
             <span className="text-[9px] font-black tracking-[0.2em] uppercase text-accent">BAU Engineering Hub</span>
@@ -39,4 +43,8 @@ export default function PageHeader({ title, subtitle, icon, actions, className }
       {actions && <div className="flex items-center gap-2 md:gap-3 pt-2 md:pt-0">{actions}</div>}
     </motion.header>
   );
-}
+});
+
+PageHeader.displayName = "PageHeader";
+
+export default PageHeader;

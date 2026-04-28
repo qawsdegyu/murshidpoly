@@ -16,8 +16,8 @@ import { cn } from "@/lib/utils";
 import { motion as m, AnimatePresence, type Variants } from "framer-motion";
 
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } }
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" as const } }
 };
 
 const stagger: Variants = {
@@ -92,16 +92,17 @@ export default function CoursePage() {
   return (
     <m.div 
       dir={dir} 
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      style={{ willChange: "transform, opacity" }}
       className="min-h-screen pb-24 bg-background selection:bg-cyan-500/30 transition-colors duration-300"
     >
       {/* Background Effects */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(59,130,246,0.05)_0%,transparent_70%)]" />
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-[120px] opacity-10 bg-blue-600" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-[120px] opacity-10 bg-blue-600 hidden md:block" />
       </div>
 
       <m.div
@@ -186,7 +187,7 @@ export default function CoursePage() {
                       layoutId="activeTab"
                       className="absolute inset-0 rounded-[2rem] z-0"
                       style={{ background: `linear-gradient(135deg, ${tab.color}, ${tab.color}dd)` }}
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
                     />
                   )}
                   <Icon className={cn("relative z-10 w-4 h-4 transition-transform duration-300", isActive && "scale-110")} />

@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { motion, type Variants } from "framer-motion";
-import { Calculator, Users, BookOpen, GraduationCap, ShoppingBag, ArrowRight, MapPin, ExternalLink, FileText } from "lucide-react";
+import { Calculator, Users, BookOpen, GraduationCap, ShoppingBag, ArrowRight, MapPin, ExternalLink, FileText, BookOpenText, BrainCircuit } from "lucide-react";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import AnnouncementCard from "@/components/AnnouncementCard";
+import QuickLinkCard from "@/components/QuickLinkCard";
 import BauQuickLinks from "@/components/BauQuickLinks";
 import { buildings } from "@/data/mockData";
 import { cn } from "@/lib/utils";
@@ -14,8 +15,8 @@ const container: Variants = {
   },
 };
 const item: Variants = {
-  hidden: { opacity: 0, y: 18 },
-  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 220, damping: 24 } },
+  hidden: { opacity: 0, y: 12 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
 };
 
 export default function Dashboard() {
@@ -30,45 +31,34 @@ export default function Dashboard() {
 
   const quickActions = [
     { 
+      to: "/vault", 
+      icon: BookOpenText, 
+      label: lang === "ar" ? "خزانة المواد" : "Subject Vault", 
+      desc: lang === "ar" ? "ملخصات، كتب، سنوات سابقة" : "Summaries, books, exams, quizzes"
+    },
+    { 
       to: "/gpa", 
       icon: Calculator, 
-      label: t.nav.gpa, 
-      desc: lang === "ar" ? "احسب معدلك الفصلي والتراكمي بدقة" : "Calculate semester & cumulative GPA", 
-      featured: true, 
-      image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=1600",
-      iconImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=400",
-      effect: "swirl"
+      label: lang === "ar" ? "حاسبة المعدل" : "GPA Calculator", 
+      desc: lang === "ar" ? "احسب معدلك الفصلي والتراكمي بدقة" : "Calculate semester & cumulative GPA"
     },
-    { 
-      to: "/vault", 
-      icon: BookOpen, 
-      label: t.nav.vault, 
-      desc: lang === "ar" ? "ملخصات، كتب، سنوات سابقة" : "Summaries, books, exams, quizzes", 
-      image: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=1600" 
-    },
-    { 
-      to: "/majors", 
-      icon: GraduationCap, 
-      label: lang === "ar" ? "استكشف تخصصات الهندسة التكنولوجية" : "Explore Engineering Majors", 
-      desc: lang === "ar" ? "دليل شامل لتخصصات كلية الهندسة التكنولوجية ومجالاتها" : "Comprehensive guide to engineering departments and fields", 
-      image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1600",
-      iconImage: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&q=80&w=400"
-    },
-
     { 
       to: "/marketplace", 
       icon: ShoppingBag, 
-      label: t.nav.marketplace, 
-      desc: lang === "ar" ? "بيع وشراء الأدوات الهندسية" : "Buy & sell engineering tools", 
-      image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=1600" 
+      label: lang === "ar" ? "السوق" : "Marketplace", 
+      desc: lang === "ar" ? "بيع وشراء الأدوات الهندسية" : "Buy & sell engineering tools"
+    },
+    { 
+      to: "/roadmap", 
+      icon: BrainCircuit, 
+      label: lang === "ar" ? "الخطة الدراسية" : "Study Plan", 
+      desc: lang === "ar" ? "تتبع مسارك الأكاديمي" : "Track your academic journey"
     },
     { 
       to: "/faculty", 
       icon: Users, 
       label: t.nav.faculty, 
-      desc: lang === "ar" ? "ابحث عن المدرسين ومعلومات التواصل" : "Find professors & contact info", 
-      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1600",
-      patternOverlay: true
+      desc: lang === "ar" ? "ابحث عن المدرسين ومعلومات التواصل" : "Find professors & contact info"
     },
   ];
 
@@ -85,6 +75,8 @@ export default function Dashboard() {
             src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80&w=1600" 
             alt="Engineering Tech" 
             className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent opacity-80" />
@@ -93,13 +85,13 @@ export default function Dashboard() {
 
         <div className="relative z-10 p-5 md:p-14 w-full">
           <div className="flex items-center gap-4 mb-8">
-            <div className="h-16 w-16 p-2 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden group hover:scale-110 transition-transform duration-500">
-              <img 
-                src="/logo.png" 
-                alt="Murshid Logo" 
-                className="w-full h-full object-contain filter drop-shadow-lg"
-              />
-            </div>
+            <img 
+              src="/rs.png" 
+              alt="Murshid Logo" 
+              className="h-16 w-16 rounded-full object-contain shadow-md border border-white/20 hover:scale-110 transition-transform duration-500"
+              loading="lazy"
+              decoding="async"
+            />
             <div className="h-10 w-[1px] bg-white/20 mx-1" />
             <div className="flex flex-col">
               <div className="text-white font-black text-xl md:text-2xl tracking-tighter leading-none">{t.appName}</div>
@@ -125,7 +117,7 @@ export default function Dashboard() {
         </div>
 
         {/* Decorative Element */}
-        <div className="absolute -right-24 -bottom-24 h-96 w-96 rounded-full bg-accent/20 blur-[120px] pointer-events-none" />
+        <div className="absolute -right-24 -bottom-24 h-96 w-96 rounded-full bg-accent/20 blur-[120px] pointer-events-none hidden md:block" />
       </motion.section>
 
       {/* Public Resource Stats */}
@@ -159,120 +151,22 @@ export default function Dashboard() {
         <AnnouncementCard />
       </motion.div>
 
-      {/* Quick Actions — Bento with featured GPA spanning */}
-      <motion.section variants={item}>
+      <motion.section variants={item} className="relative z-10">
         <div className="flex items-center gap-4 mb-6 md:mb-8">
           <h2 className="text-xl md:text-2xl lg:text-3xl font-black tracking-tight text-foreground">{t.dashboard.quickActions}</h2>
           <div className="h-[2px] flex-1 bg-gradient-to-r from-accent/50 via-accent/5 to-transparent rounded-full" />
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr md:auto-rows-[220px] gap-3 md:gap-5">
-          {quickActions?.map((a, i) => (
-            <motion.div
-              key={a.to}
-              variants={item}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className={a.featured ? "md:col-span-2 lg:row-span-2 lg:h-full" : ""}
-            >
-              <Link
+        
+        
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:flex lg:justify-center lg:gap-12">
+            {quickActions?.map((a) => (
+              <QuickLinkCard
+                key={a.to}
                 to={a.to}
-                className={cn(
-                  "group relative block h-full rounded-2xl md:rounded-[2.5rem] overflow-hidden bg-card/80 border border-border shadow-sm backdrop-blur-xl transition-all duration-500",
-                  "aspect-square md:aspect-auto"
-                )}
-              >
-                <div className="absolute inset-0 z-0">
-                  <img 
-                    src={a.image} 
-                    alt={a.label} 
-                    className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 grayscale-[0.2] group-hover:grayscale-0 ${(a as any).effect === 'swirl' ? 'scale-125 rotate-12 blur-sm' : ''}`} 
-                  />
-                  <div className={`absolute inset-0 transition-all duration-500 ${(a as any).effect === 'swirl' ? 'bg-primary/40 backdrop-blur-md' : 'bg-black/60 group-hover:bg-black/40'}`} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
-                  
-                  {/* Swirling Gold Highlight for GPA */}
-                  {(a as any).effect === 'swirl' && (
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,hsl(var(--accent)/0.3)_0%,transparent_70%)] animate-pulse" />
-                  )}
-
-                  {/* Overlay image for Majors */}
-                  {(a as any).overlayImage && (
-                    <div className="absolute inset-y-0 right-0 w-1/2 overflow-hidden pointer-events-none">
-                      <img 
-                        src={(a as any).overlayImage} 
-                        alt="" 
-                        className="h-full w-full object-contain object-right opacity-80 mix-blend-screen scale-110 group-hover:scale-125 transition-transform duration-700 drop-shadow-[0_0_15px_rgba(var(--accent-rgb),0.3)]" 
-                      />
-                    </div>
-                  )}
-
-                  {/* Pattern overlay for Faculty */}
-                  {(a as any).patternOverlay && (
-                    <div className="absolute inset-0 opacity-40 mix-blend-overlay pointer-events-none" 
-                         style={{ backgroundImage: `url(${a.image})`, backgroundSize: '400px' }} />
-                  )}
-                </div>
-
-                <div className="relative z-10 h-full p-3 md:p-8 flex flex-col items-center justify-center text-center md:items-start md:text-start md:justify-between">
-                  <div className="flex items-start justify-between">
-                    <div className={cn(
-                      "rounded-xl md:rounded-2xl overflow-hidden grid place-items-center bg-black/5 dark:bg-white/10 backdrop-blur-xl border border-black/10 dark:border-white/20 shadow-2xl group-hover:bg-accent group-hover:border-accent group-hover:shadow-[0_0_20px_rgba(var(--accent-rgb),0.4)] transition-all duration-500",
-                      a.featured ? "h-12 w-12 md:h-16 md:w-16 mb-2 md:mb-0" : "h-10 w-10 md:h-12 md:w-12 mb-2 md:mb-0"
-                    )}>
-                      {(a as any).iconImage ? (
-                        <img src={(a as any).iconImage} alt="" className="w-full h-full object-contain p-1" />
-                      ) : (
-                        <a.icon className={cn(
-                          "transition-colors duration-500",
-                          a.featured ? "h-6 w-6 md:h-8 md:w-8" : "h-5 w-5 md:h-6 md:w-6",
-                          a.featured ? "text-accent group-hover:text-neutral-950" : "text-foreground group-hover:text-neutral-950"
-                        )} />
-                      )}
-                    </div>
-                    {a.featured && (
-                      <div className="hidden md:flex px-4 py-2 rounded-xl bg-accent/20 backdrop-blur-md border border-accent/30 text-accent text-[10px] font-black uppercase tracking-widest items-center gap-2">
-                        <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-                        Active Widget
-                      </div>
-                    )}
-                    <div className="hidden md:grid h-10 w-10 rounded-full bg-white/5 border border-white/10 place-items-center opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
-                      <ArrowRight className="h-5 w-5 text-white ltr:rotate-0 rtl:rotate-180" />
-                    </div>
-                  </div>
-                  
-                  <div className={a.featured ? "mt-auto" : ""}>
-                    {a.featured && (
-                      <div className="mb-6 grid grid-cols-2 gap-4">
-                        <div className="p-4 rounded-2xl bg-surface/10 border border-white/20 backdrop-blur-2xl shadow-xl">
-                          <div className="text-[10px] text-white/60 uppercase font-black tracking-widest mb-1">Target GPA</div>
-                          <div className="text-3xl font-black text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">4.00</div>
-                        </div>
-                        <div className="p-4 rounded-2xl bg-surface/10 border border-white/20 backdrop-blur-2xl shadow-xl">
-                          <div className="text-[10px] text-white/60 uppercase font-black tracking-widest mb-1">Status</div>
-                          <div className="text-sm font-black text-accent uppercase drop-shadow-[0_0_10px_rgba(var(--accent-rgb),0.5)]">On Track</div>
-                        </div>
-                      </div>
-                    )}
-                    <div className={cn(
-                      "font-black text-white transition-colors duration-300 group-hover:text-accent",
-                      a.featured ? "text-sm md:text-3xl lg:text-4xl mb-1 md:mb-3" : "text-sm md:text-xl mb-1"
-                    )}>
-                      {a.label}
-                    </div>
-                    <div className={cn(
-                      "hidden md:block text-white/80 leading-relaxed font-medium transition-colors duration-300 group-hover:text-white",
-                      a.featured ? "text-sm md:text-lg max-w-sm" : "text-[10px] md:text-xs"
-                    )}>
-                      {a.desc}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Glass shine effect */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-tr from-transparent via-white/5 to-transparent transition-opacity duration-1000 pointer-events-none" />
-              </Link>
-            </motion.div>
-          ))}
+                icon={a.icon}
+                label={a.label}
+              />
+            ))}
         </div>
       </motion.section>
 
@@ -294,7 +188,13 @@ export default function Dashboard() {
               className="group bg-card/80 border border-border shadow-sm backdrop-blur-xl overflow-hidden rounded-2xl md:rounded-[2rem] flex flex-col transition-all duration-300"
             >
               <div className="h-40 w-full relative overflow-hidden">
-                <img src={b.imageUrl} alt={b.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <img 
+                  src={b.imageUrl} 
+                  alt={b.name} 
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 to-transparent" />
                 <div className="absolute top-3 ltr:right-3 rtl:left-3 h-8 w-8 rounded-full bg-black/30 backdrop-blur-md grid place-items-center text-white border border-white/10">
                   <ExternalLink className="h-4 w-4" />

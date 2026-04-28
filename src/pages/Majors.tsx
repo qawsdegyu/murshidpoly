@@ -17,10 +17,10 @@ const containerVariants: Variants = {
 };
 
 const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 32, scale: 0.96 },
+  hidden: { opacity: 0, y: 16 },
   visible: {
-    opacity: 1, y: 0, scale: 1,
-    transition: { type: "spring", stiffness: 200, damping: 22 },
+    opacity: 1, y: 0,
+    transition: { duration: 0.3, ease: "easeOut" },
   },
 };
 
@@ -38,10 +38,11 @@ export default function Majors() {
   return (
     <motion.div
       dir={dir}
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      style={{ willChange: "transform, opacity" }}
       className="min-h-screen pb-24 bg-background transition-colors duration-500"
     >
 
@@ -83,7 +84,9 @@ export default function Majors() {
                   <img
                     src={major.imageUrl}
                     alt={isAr ? major.nameAr : major.name}
-                    className="w-full h-full object-cover object-center opacity-100 md:opacity-90 dark:md:opacity-60 transition-transform duration-700 group-hover:scale-110"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover object-center opacity-100 md:opacity-90 dark:md:opacity-60 transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent md:from-slate-950 md:via-slate-900/40" />
                   <div className={cn("hidden md:block absolute inset-0 bg-gradient-to-br opacity-20 mix-blend-overlay", major.color)} />

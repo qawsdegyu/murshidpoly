@@ -149,7 +149,7 @@ export default function Roadmap() {
         />
 
         {/* Global Navigation Tabs */}
-        <div className="flex flex-wrap gap-3 mb-8 overflow-x-auto pb-4 scrollbar-hide">
+        <div className="flex flex-wrap gap-2 md:gap-3 mb-6 md:mb-8 overflow-x-auto pb-4 scrollbar-hide">
           {roadmapCategories.map((cat) => {
             const Icon = cat.icon;
             const isActive = activeTab === cat.id;
@@ -160,7 +160,7 @@ export default function Roadmap() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className={cn(
-                  "flex items-center gap-3 px-6 py-4 rounded-2xl whitespace-nowrap transition-all border relative overflow-hidden group",
+                  "flex items-center gap-2 md:gap-3 px-3 py-2.5 md:px-6 md:py-4 rounded-xl md:rounded-2xl whitespace-nowrap transition-all border relative overflow-hidden group text-xs md:text-sm",
                   isActive 
                     ? "bg-cyan-500/10 border-cyan-400/50 text-cyan-600 dark:text-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.2)]" 
                     : "bg-white/80 border-slate-200 shadow-sm backdrop-blur-xl dark:bg-white/[0.03] dark:border-white/[0.08] dark:backdrop-blur-2xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
@@ -172,15 +172,15 @@ export default function Roadmap() {
                     className="absolute inset-0 bg-cyan-400/10 blur-xl -z-10"
                   />
                 )}
-                <Icon className={cn("h-5 w-5", isActive ? "text-cyan-400" : "text-slate-500 group-hover:text-cyan-300")} />
-                <span className="font-bold text-sm tracking-wide">{lang === "ar" ? cat.nameAr : cat.nameEn}</span>
+                <Icon className={cn("h-4 w-4 md:h-5 md:w-5", isActive ? "text-cyan-400" : "text-slate-500 group-hover:text-cyan-300")} />
+                <span className="font-bold tracking-wide">{lang === "ar" ? cat.nameAr : cat.nameEn}</span>
               </motion.button>
             );
           })}
         </div>
 
         {/* Roadmap Canvas Interface */}
-        <div className="relative h-[calc(100vh-250px)] min-h-[750px] w-full rounded-[2.5rem] border border-slate-200 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-3xl overflow-hidden shadow-2xl transition-colors duration-300">
+        <div className="relative h-[60vh] md:h-[calc(100vh-250px)] min-h-[400px] md:min-h-[750px] w-full rounded-2xl md:rounded-[2.5rem] border border-slate-200 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-3xl overflow-hidden shadow-2xl transition-colors duration-300">
           {/* Controls HUD */}
           <div className="absolute top-6 right-6 z-40 flex flex-col gap-2">
             <ControlButton onClick={() => handleZoom(0.1)} icon={<Maximize2 className="h-4 w-4" />} label="Zoom In" />
@@ -205,7 +205,7 @@ export default function Roadmap() {
             drag
             dragElastic={0}
             dragMomentum={false}
-            style={{ x, y, scale }}
+            style={{ x, y, scale, willChange: "transform" }}
             className="w-[4000px] h-[3000px] relative origin-top-left cursor-grab active:cursor-grabbing p-20"
           >
             {/* Year Markers */}
@@ -425,7 +425,7 @@ function RoadmapNodeElement({ node, course, isDummy, isActive, isHighlighted, is
 
   return (
     <Component
-      layout
+      layout="position"
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ 
         opacity: isDimmed ? (isDummy ? 0.2 : 0.3) : (isDummy ? 0.6 : 1), 
@@ -445,7 +445,8 @@ function RoadmapNodeElement({ node, course, isDummy, isActive, isHighlighted, is
       style={{ 
         left: `${xPos}px`, 
         top: `${yPos}px`,
-        boxShadow: isHighlighted ? `0 0 30px rgba(34, 211, 238, 0.15)` : ''
+        boxShadow: isHighlighted ? `0 0 30px rgba(34, 211, 238, 0.15)` : '',
+        willChange: "transform, opacity"
       }}
     >
       {/* Background Glow when highlighted */}

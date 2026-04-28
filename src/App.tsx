@@ -38,9 +38,8 @@ const AppRoutes = () => {
   
   return (
     <AppLayout>
-      <Suspense fallback={<BrandedLoader />}>
-        <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
+      <Suspense fallback={null}>
+          <Routes location={location}>
             <Route path="/" element={<PageTransition><Dashboard /></PageTransition>} />
             <Route path="/gpa" element={<PageTransition><GPACalculator /></PageTransition>} />
             <Route path="/faculty" element={<PageTransition><Faculty /></PageTransition>} />
@@ -57,7 +56,6 @@ const AppRoutes = () => {
             <Route path="/announcement/:id" element={<PageTransition><AnnouncementDetail /></PageTransition>} />
             <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
           </Routes>
-        </AnimatePresence>
       </Suspense>
     </AppLayout>
   );

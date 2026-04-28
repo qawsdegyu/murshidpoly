@@ -1,4 +1,7 @@
 // Mock data for Murshid super app.
+import { announcements, Announcement } from './announcements';
+export { announcements };
+export type { Announcement };
 
 export interface Faculty {
   id: string;
@@ -514,26 +517,40 @@ export const resourcesByCourse: Record<string, Resource[]> = {
     { id: "calc_v3", title: "شرح المهندس أنس أبو زهرة", type: "video", uploader: "م. أنس أبو زهرة", size: "Playlist", url: "https://youtube.com/playlist?list=PLvuToPs04FnDqVhNAH5kQCVtWbTB1NymX" },
     { id: "calc_v4", title: "شرح عباده الهباهبه (الجامعة الأردنية)", type: "video", uploader: "عباده الهباهبه", size: "Playlist", url: "https://youtube.com/playlist?list=PL0TpXNlUp4HZiW9h906sApfVd0xs6MMxr" },
 
-    // --- ملخصات دراسية (Study Summaries) ---
-    { id: "calc_s1", title: "دوسية كالكولس 1 الشاملة", type: "summary", uploader: "Admin", size: "4.2 MB", url: "https://drive.google.com/uc?export=download&id=1rOYuZHy013AsyOofeZMCV7ov6GC-ZYB_" },
-    { id: "calc_s2", title: "ملخص مادة الميد - رياضيات 1", type: "summary", uploader: "Admin", size: "2.8 MB", url: "https://drive.google.com/uc?export=download&id=1fk39FmmQ18v8cYgsFBQMjIN4gSn1Xf70" },
+    // --- ملخصات ودوسيات (Summaries & Handouts) ---
+    { id: "calc_new_s1", title: "مراجعة الوحدات (5-7)", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1D-cRbMT-WMskWN2UcxDIdh1uLsvA73GY" },
+    { id: "calc_new_s2", title: "ملخص رياضيات 1", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1f9-Fa8ThGvAHn1wToQcGfoLlsn71XjEO" },
+    { id: "calc_new_s3", title: "دوسية كالكولاس 1", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1nkvBNdg-E3nc7AX8dMyUMHIEPLMLQTIR" },
 
-    // --- الامتحانات والسنوات (Exams) ---
-    { id: "calc_e1", title: "فاينل كالك 1 اونلاين", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1fXdmepiwdP1Xq6VorXEYvQd4TDBDo418" },
-    { id: "calc_e2", title: "بروبليم فاينال محلولة", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1uzu4o6QdVpeOmfyQhwkffEfSL2uSDz3_" },
-    { id: "calc_e3", title: "ميد كالك 1 اونلاين", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1By2TN3to5cB2mOSgpwTH_RETLqm9acM5" },
-    { id: "calc_e4", title: "امتحان فيرست (5)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=19mbGMNb8INInAxnqU-aZNV-SRj6shGo5" },
-    { id: "calc_e5", title: "امتحان سكند (4)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1j_O9SPJ0rDqizotrtYLZ3cmiiV_febLO" },
-    { id: "calc_e6", title: "فاينال كالكولاس 1", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=15OcttV4vwkeqScl_P56MiMgC3hqvNUag" },
-    { id: "calc_e7", title: "ميد كالكولاس 1 جديد", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1JLu5vrJPyoc7jPg6uTmGsvlTpwKnq6kL" },
-    { id: "calc_e8", title: "كالك ورقي 3 فانال", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1RiegB2PTDFlpL444L_ChJE6xiasGnM8d" },
-    { id: "calc_e9", title: "كالكولاس 1 ميد (ورقي)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1XWeht3OW7A3TEgBlPzFm_eftkqvAD5fx" },
-    { id: "calc_e10", title: "Calculus 101 EL Bank", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1mDPsD2FryZUtT8cLetIrX1SLZEIOCXU4" },
-    { id: "calc_e11", title: "Final T1 2023-2024", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=12QiTA8qUr0wklYqd1ZwD_XMEy8i7bKst" },
+    // --- امتحانات سابقة (Past Papers) ---
+    { id: "calc_new_e1", title: "بروبليم فاينال محلولة", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1mzp0Mh2Pde1fMQR7RlqrveFW9U4HsoIx" },
+    { id: "calc_new_e2", title: "فاينل كالك 1 اونلاين", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1KZTucWEwc9ZXJc2jwnp-qv6iVuTP__6m" },
+    { id: "calc_new_e3", title: "ميد كالك 1 اونلاين", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1WVNzoB3ZQe7vleRaf6uu9GrVuFI-FbGa" },
+    { id: "calc_new_e4", title: "ميد كالكولاس 1 جديد", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1xciUhXPHfYAE6izrwE0ddFzmbTinykhU" },
+    { id: "calc_new_e5", title: "امتحان فيرست", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1qG4dKYJtJ2xYKtR_-c0zxZBoo99geY0j" },
+    { id: "calc_new_e6", title: "فاينال كالكولاس 1", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=11RC-XX61tW072fomxeJCT5D4_99bvWrz" },
+    { id: "calc_new_e7", title: "كالك ورقي فاينال", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1WjzjiSMw0uFOMTDh9qQuIQu8Nsb8kk-l" },
+    { id: "calc_new_e8", title: "امتحان سكند", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1UN4EP9mwWcjI6Gkrjb-9YKjIeyUOsmCh" },
+    { id: "calc_new_e9", title: "كالكولاس 1 ميد", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1aj7b9ozPNPBxKxB2pXn3n2L262ptETt6" },
+    { id: "calc_new_e10", title: "فاينال - جزء 1", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1x1lmvSp7Gk_j7nipFK9B88McQjO5ShcR" },
+    { id: "calc_new_e11", title: "فاينال - جزء 2", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1DYPfubRCniRDNBq-SSDciS4JFk6Yu3mR" },
+    { id: "calc_new_e12", title: "فاينال - جزء 3", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1tcPn3aKtrNnlKII0SXSp1-02Ak1w8hRx" },
+    { id: "calc_new_e13", title: "فاينال (عام)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1qRbBgVAABfAEbhci2C-e0R7jGbwGtoV7" },
+    { id: "calc_new_e14", title: "أسئلة ميد محلولة", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1ShZ0ZT2RecvjwOwhmOcL2KoKiEpdtldx" },
+    { id: "calc_new_e15", title: "أسئلة ميد محلولة (نسخة 2)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1mdjmZ0JHxn4NwZ1jODLNlr-N7SFlwMjA" },
+    { id: "calc_new_e16", title: "فاينال 2020", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1tAKTtlHjKT1hjZpLGIwwEaL--p5-PfJf" },
+    { id: "calc_new_e17", title: "ميد (نسخة ورقية)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1kW1kJ1rL4YXm_UpO3nzFWUith7oXY5Q3" },
+    { id: "calc_new_e18", title: "ميد 2019", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1LOtlduT3nd_7pBs2d7ZFd_lBIT9UIDBr" },
+    { id: "calc_new_e19", title: "ميد كالكولس 1", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1TzIuacXj_R7DXt4Vp_c8V6pDkvePoxeT" },
+    { id: "calc_new_e20", title: "فاينال جديد", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1sLn7YkAxTum3sGcDcmijXasl91HpONuN" },
+    { id: "calc_new_e21", title: "فاينال ليث عمرو", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1SflASfrjrCnufY8fDryoOfO_nv8-joD9" },
+    { id: "calc_new_e22", title: "بنك أسئلة 101", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1Y2rxL-5_WC92t8MPx_QcjwUG42bWuzSu" },
+    { id: "calc_new_e23", title: "فاينال 2024", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1L84-T4hHMaClCnawQbuhdwuvPvb4Gmw6" },
 
-    // --- الكتب والمراجع (Books) ---
-    { id: "calc_b1", title: "كالكولاس 1 د. غالب ناصر", type: "book", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1ypwx-kIyFpkQLgY7ozzbTCXWms08ORyJ" },
-    { id: "calc_b2", title: "Calculus Reference PDF", type: "book", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1poaTdEvKsal1m1J5FhMgZ7US-DnkMMGy" }
+    // --- كتب ومراجع (Books & References) ---
+    { id: "calc_new_b1", title: "مرجع Calculus - Anton", type: "book", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1S4Te1nzBuI1DhMbUSZMmVqH68pSAIUA4" },
+    { id: "calc_new_b2", title: "كتاب Calculus العام", type: "book", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1LrOGb7OLFTFWb6YnlykDyS1fcfuZyb9r" },
+    { id: "calc_new_b3", title: "كتاب د. غالب ناصر", type: "book", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1CTQBoTDuYUMqunUHPrdPy0VdT7qB8QZy" }
   ],
   "ee201": [
     // --- شروحات وملخصات (Summaries & Books) ---

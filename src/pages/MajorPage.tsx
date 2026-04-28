@@ -79,23 +79,23 @@ export default function MajorPage() {
   return (
     <motion.div
       dir={dir}
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      style={{ willChange: "transform, opacity", fontFamily: "'Cairo', 'Tajawal', 'Inter', sans-serif" }}
       className="min-h-screen bg-background text-foreground overflow-x-hidden pb-28"
-      style={{ fontFamily: "'Cairo', 'Tajawal', 'Inter', sans-serif" }}
     >
       {/* ── Global ambient glows ── */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         {/* Solid theme-aware background — no grid */}
         {/* Accent glow blobs */}
         <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-full blur-[160px] opacity-[0.12]"
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-full blur-[160px] opacity-[0.12] hidden md:block"
           style={{ background: major.accentColor }}
         />
-        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full blur-[180px] opacity-[0.06] bg-blue-500" />
-        <div className="absolute top-1/2 left-0 w-[400px] h-[400px] rounded-full blur-[160px] opacity-[0.05] bg-emerald-400" />
+        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full blur-[180px] opacity-[0.06] bg-blue-500 hidden md:block" />
+        <div className="absolute top-1/2 left-0 w-[400px] h-[400px] rounded-full blur-[160px] opacity-[0.05] bg-emerald-400 hidden md:block" />
       </div>
 
       {/* ── Hero ── */}
@@ -326,7 +326,7 @@ export default function MajorPage() {
                       layoutId={`year-pill-${major.id}`}
                       className="absolute inset-0 rounded-xl z-[-1]"
                       style={{ background: major.accentColor + "33", border: `1px solid ${major.accentColor}55` }}
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      transition={{ duration: 0.2, ease: "easeOut" }}
                     />
                   )}
                   {isAr ? yr.labelAr : yr.labelEn}

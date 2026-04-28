@@ -101,7 +101,7 @@ export default function GPACalculator() {
                   key={c.id}
                   initial={{ opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="grid grid-cols-12 gap-2 items-end"
+                  className="grid grid-cols-12 gap-1.5 sm:gap-2 items-end"
                 >
                   <div className="col-span-12 sm:col-span-6">
                     {idx === 0 && <Label className="text-xs">{t.gpa.courseName}</Label>}
@@ -160,7 +160,7 @@ export default function GPACalculator() {
                   transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 >
                   <div className="text-sm text-muted-foreground font-medium">{t.gpa.semGpa}</div>
-                  <div className="text-6xl font-black text-accent mt-1 tabular-nums drop-shadow-gold">
+                  <div className="text-4xl md:text-6xl font-black text-accent mt-1 tabular-nums drop-shadow-gold">
                     {result.semesterGpa.toFixed(2)}
                   </div>
                   <div className="text-xs text-muted-foreground mt-1 font-bold">
@@ -170,7 +170,7 @@ export default function GPACalculator() {
 
                 <div className="border-t border-white/10 pt-5">
                   <div className="text-sm text-muted-foreground font-medium">{t.gpa.newCgpa}</div>
-                  <div className="text-5xl font-black text-white mt-1 tabular-nums">
+                  <div className="text-3xl md:text-5xl font-black text-white mt-1 tabular-nums">
                     {result.newCgpa.toFixed(2)}
                   </div>
                   <div className="text-xs text-muted-foreground mt-1 font-bold">

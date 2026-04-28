@@ -29,6 +29,7 @@ const CourseCard = memo(forwardRef<HTMLButtonElement, CourseCardProps>(
         transition={{ delay: index * 0.04, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
         whileTap={{ scale: 0.98 }}
+        style={{ willChange: "transform, opacity" }}
         onClick={onClick}
         className="group relative text-start p-4 md:p-6 rounded-xl md:rounded-2xl bg-card/40 border border-border hover:border-accent/30 hover:bg-card/60 transition-all duration-300 overflow-hidden flex flex-col h-full"
       >
