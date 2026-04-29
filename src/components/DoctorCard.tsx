@@ -1,8 +1,9 @@
 import { memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Mail, Copy, ExternalLink, GraduationCap, BookOpen, Briefcase } from "lucide-react";
+import { Search, Mail, Copy, ExternalLink, GraduationCap, BookOpen, Briefcase, MapPin } from "lucide-react";
 import { type FacultyMember } from "@/data/facultyData";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 interface DoctorCardProps {
   faculty: FacultyMember;
@@ -14,6 +15,7 @@ interface DoctorCardProps {
 }
 
 const DoctorCard = memo(function DoctorCard({ faculty: f, index: i, lang, isExpanded, onToggle, onCopy }: DoctorCardProps) {
+  const navigate = useNavigate();
   const initials = f.name
     .split(" ")
     .filter(n => n.length > 2)
@@ -46,11 +48,38 @@ const DoctorCard = memo(function DoctorCard({ faculty: f, index: i, lang, isExpa
             <h3 className="font-black text-xl text-slate-900 dark:text-slate-100 group-hover:text-accent transition-colors leading-tight">
               {f.name.startsWith("د.") ? f.name : `د. ${f.name}`}
             </h3>
-            <div className="flex items-center gap-1.5 mt-1">
-              <GraduationCap className="h-4 w-4 text-accent/70" />
-              <p className="text-base text-slate-500 dark:text-slate-400 font-bold">
-                {f.department}
-              </p>
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1">
+              {f.rank && (
+                <span className="text-[10px] font-black px-2 py-0.5 rounded-md bg-accent/10 text-accent uppercase tracking-wider">
+                  {f.rank}
+                </span>
+              )}
+              {f.buildingId && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/campus-map?id=${f.buildingId}`);
+                  }}
+                  className="flex items-center gap-1 text-[10px] font-black px-2 py-0.5 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all uppercase tracking-wider border border-primary/20 navy-pop"
+                >
+                  <MapPin className="h-3 w-3" />
+                  {lang === "ar" ? `مبنى ${f.buildingId}` : `Bldg ${f.buildingId}`}
+                </button>
+              )}
+              {f.email && (
+                <div className="flex items-center gap-1 text-[10px] font-black px-2 py-0.5 rounded-md bg-[#4B53BC]/10 text-[#4B53BC] uppercase tracking-wider border border-[#4B53BC]/20 navy-pop">
+                  <svg viewBox="0 0 24 24" className="w-3 h-3 fill-current">
+                    <path d="M12.5 13.5C12.5 14.88 11.38 16 10 16C8.62 16 7.5 14.88 7.5 13.5C7.5 12.12 8.62 11 10 11C11.38 11 12.5 12.12 12.5 13.5ZM17 12V16.5C17 17.33 16.33 18 15.5 18H12.75L10 21V18H10C7.79 18 6 16.21 6 14C6 11.79 7.79 10 10 10H15.5C16.33 10 17 10.67 17 11.5V12ZM21 8.5C21 9.33 20.33 10 19.5 10H19V11.5C19 12.08 18.78 12.61 18.42 13C18.79 13 19 13.47 19 14V14.5C19 15.33 18.33 16 17.5 16H17V11.5C17 10.12 15.88 9 14.5 9H10C10 7.34 11.34 6 13 6H19.5C20.33 6 21 6.67 21 7.5V8.5Z" />
+                  </svg>
+                  Teams
+                </div>
+              )}
+              <div className="flex items-center gap-1.5">
+                <GraduationCap className="h-4 w-4 text-slate-400" />
+                <p className="text-sm text-slate-500 dark:text-slate-400 font-bold">
+                  {f.department}
+                </p>
+              </div>
             </div>
           </div>
           <motion.div
@@ -61,6 +90,7 @@ const DoctorCard = memo(function DoctorCard({ faculty: f, index: i, lang, isExpa
           </motion.div>
         </div>
       </div>
+
 
       <AnimatePresence initial={false}>
         {isExpanded && (
@@ -105,28 +135,47 @@ const DoctorCard = memo(function DoctorCard({ faculty: f, index: i, lang, isExpa
 
                 {/* Contact */}
                 {f.email && (
-                  <div className="flex items-center gap-2 pt-2 border-t border-slate-200/60 dark:border-white/10 mt-2">
-                    <motion.button
-                      whileTap={{ scale: 0.97 }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onCopy(f.email);
-                      }}
-                      className="flex-1 flex items-center gap-2 px-3 py-2 rounded-lg bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-accent/30 transition-all text-xs text-slate-600 dark:text-slate-300 group/btn overflow-hidden"
-                    >
-                      <Mail className="h-3.5 w-3.5 text-accent shrink-0" />
-                      <span className="break-all">{f.email}</span>
-                      <Copy className="h-3 w-3 opacity-30 group-hover/btn:opacity-100 transition-opacity shrink-0 ltr:ml-auto rtl:mr-auto" />
-                    </motion.button>
-                    <motion.a
-                      whileTap={{ scale: 0.97 }}
-                      href={`mailto:${f.email}`}
-                      onClick={(e) => e.stopPropagation()}
-                      className="h-9 w-9 rounded-lg bg-accent flex items-center justify-center text-white shadow-md shadow-accent/20 shrink-0 hover:shadow-accent/40 transition-shadow"
-                      aria-label="Send Email"
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                    </motion.a>
+                  <div className="pt-2 border-t border-slate-200/60 dark:border-white/10 mt-2 space-y-3">
+                    <div className="flex items-center gap-2">
+                      <motion.button
+                        whileTap={{ scale: 0.97 }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onCopy(f.email);
+                        }}
+                        className="flex-1 flex items-center gap-2 px-3 py-2 rounded-lg bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-accent/30 transition-all text-xs text-slate-600 dark:text-slate-300 group/btn overflow-hidden"
+                      >
+                        <Mail className="h-3.5 w-3.5 text-accent shrink-0" />
+                        <span className="break-all">{f.email}</span>
+                        <Copy className="h-3 w-3 opacity-30 group-hover/btn:opacity-100 transition-opacity shrink-0 ltr:ml-auto rtl:mr-auto" />
+                      </motion.button>
+                      <motion.a
+                        whileTap={{ scale: 0.97 }}
+                        href={`mailto:${f.email}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="h-9 w-9 rounded-lg bg-accent flex items-center justify-center text-white shadow-md shadow-accent/20 shrink-0 hover:shadow-accent/40 transition-shadow"
+                        aria-label="Send Email"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                      </motion.a>
+                    </div>
+
+                    {/* Teams Tip */}
+                    <div className="bg-red-600 dark:bg-red-700 rounded-xl p-4 border border-red-500/50 flex gap-4 rtl:text-right shadow-lg shadow-red-500/20" dir="rtl">
+                      <div className="shrink-0 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm border border-white/30">
+                        <svg viewBox="0 0 24 24" className="w-6 h-6 text-white fill-current">
+                          <path d="M12.5 13.5C12.5 14.88 11.38 16 10 16C8.62 16 7.5 14.88 7.5 13.5C7.5 12.12 8.62 11 10 11C11.38 11 12.5 12.12 12.5 13.5ZM17 12V16.5C17 17.33 16.33 18 15.5 18H12.75L10 21V18H10C7.79 18 6 16.21 6 14C6 11.79 7.79 10 10 10H15.5C16.33 10 17 10.67 17 11.5V12ZM21 8.5C21 9.33 20.33 10 19.5 10H19V11.5C19 12.08 18.78 12.61 18.42 13C18.79 13 19 13.47 19 14V14.5C19 15.33 18.33 16 17.5 16H17V11.5C17 10.12 15.88 9 14.5 9H10C10 7.34 11.34 6 13 6H19.5C20.33 6 21 6.67 21 7.5V8.5Z" />
+                        </svg>
+                      </div>
+                      <div className="flex flex-col gap-1.5 justify-center">
+                        <p className="text-[13px] font-black text-white leading-tight">
+                          ملاحظة: حساب التيمز (Teams) هو نفس البريد الجامعي للدكتور ({f.email.split('@')[0]}).
+                        </p>
+                        <p className="text-[11px] text-red-50 font-bold leading-relaxed opacity-90">
+                          يمكنك التواصل عبر Teams باستخدام اليوزر (Username) الخاص بالجيميل بدون @bau.edu.jo
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>

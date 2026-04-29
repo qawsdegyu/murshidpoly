@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   MapPin, Navigation, Building2, ExternalLink, Search, X, 
@@ -18,7 +19,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-import { facultyList } from "@/data/facultyData";
 
 interface BuildingItem {
   nameAr: string;
@@ -617,9 +617,18 @@ const buildings: Building[] = [
 
 export default function BuildingsPage() {
   const { lang, dir } = usePreferences();
+  const [searchParams] = useSearchParams();
   const ar = lang === "ar";
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedBuilding, setSelectedBuilding] = useState<Building | null>(null);
+
+  useEffect(() => {
+    const buildingId = searchParams.get("id");
+    if (buildingId) {
+      const b = buildings.find(b => b.id.toString() === buildingId);
+      if (b) setSelectedBuilding(b);
+    }
+  }, [searchParams]);
 
   const filteredBuildings = useMemo(() => {
     // Sort buildings list in ascending order based on their numbers/IDs
@@ -829,21 +838,20 @@ function BuildingDetailModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-4 touch-none">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-4">
       <motion.div 
         initial={{ opacity: 0 }} 
         animate={{ opacity: 1 }} 
         exit={{ opacity: 0 }} 
         onClick={onClose} 
-        className="absolute inset-0 bg-black/80 backdrop-blur-md cursor-pointer" 
-        style={{ touchAction: 'none' }}
+        className="absolute inset-0 bg-black/80 backdrop-blur-md" 
       />
       
       <motion.div
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        className="relative w-full max-w-4xl h-full sm:h-[85vh] bg-white dark:bg-neutral-950 sm:rounded-[3rem] shadow-2xl overflow-hidden flex flex-col touch-auto"
+        className="relative w-full max-w-4xl h-full sm:h-[85vh] bg-white dark:bg-neutral-950 sm:rounded-[3rem] shadow-2xl overflow-hidden flex flex-col"
       >
         {/* Sticky Modal Header/Image */}
         <div className="relative h-48 sm:h-60 shrink-0 sticky top-0 z-20">
@@ -917,60 +925,27 @@ function BuildingDetailModal({
                         </AccordionTrigger>
                         <AccordionContent className="px-5 pb-5">
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
-                            {wing.items.map((item, iIdx) => {
-                              // Lookup faculty info for offices
-                              const facultyInfo = item.type === 'office' 
-                                ? facultyList.find(f => {
-                                    const cleanName = item.nameAr.replace(/^(د\.|أ\.د\.|م\.)\s*/, '').trim();
-                                    return f.name.includes(cleanName);
-                                  })
-                                : null;
-
-                              return (
-                                <div 
-                                  key={iIdx}
-                                  className="flex flex-col gap-2 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-100 dark:border-white/5 transition-all group hover:border-primary/30"
-                                >
-                                  <div className="flex items-center gap-3">
-                                    <div className="w-9 h-9 rounded-lg bg-white dark:bg-white/5 flex items-center justify-center text-lg group-hover:bg-primary/10 transition-colors">
-                                      {getItemIcon(item.type)}
-                                    </div>
-                                    <div className="flex flex-col">
-                                      <span className="text-[13px] font-bold text-neutral-800 dark:text-neutral-200 leading-tight">
-                                        {ar ? item.nameAr : item.nameEn}
-                                      </span>
-                                      <span className="text-[9px] text-neutral-500 font-black uppercase tracking-wider">
-                                        {item.type === 'lab' ? (ar ? 'مختبر' : 'Laboratory') : 
-                                         item.type === 'office' ? (ar ? 'مكتب' : 'Office') : 
-                                         item.type === 'room' ? (ar ? 'قاعة' : 'Classroom') : 
-                                         item.type === 'dept' ? (ar ? 'قسم' : 'Department') : ''}
-                                      </span>
-                                    </div>
-                                  </div>
-
-                                  {/* Teams Tip for Instructors */}
-                                  {item.type === 'office' && (
-                                    <div className="mt-1 pt-2 border-t border-neutral-200/50 dark:border-white/5 flex gap-2 rtl:text-right" dir="rtl">
-                                      <div className="shrink-0 w-5 h-5 rounded bg-[#4B53BC] flex items-center justify-center">
-                                        <svg viewBox="0 0 24 24" className="w-3 h-3 text-white fill-current">
-                                          <path d="M12.5 13.5C12.5 14.88 11.38 16 10 16C8.62 16 7.5 14.88 7.5 13.5C7.5 12.12 8.62 11 10 11C11.38 11 12.5 12.12 12.5 13.5ZM17 12V16.5C17 17.33 16.33 18 15.5 18H12.75L10 21V18H10C7.79 18 6 16.21 6 14C6 11.79 7.79 10 10 10H15.5C16.33 10 17 10.67 17 11.5V12ZM21 8.5C21 9.33 20.33 10 19.5 10H19V11.5C19 12.08 18.78 12.61 18.42 13C18.79 13 19 13.47 19 14V14.5C19 15.33 18.33 16 17.5 16H17V11.5C17 10.12 15.88 9 14.5 9H10C10 7.34 11.34 6 13 6H19.5C20.33 6 21 6.67 21 7.5V8.5Z" />
-                                        </svg>
-                                      </div>
-                                      <div className="flex flex-col gap-0.5">
-                                        <p className="text-[9px] font-bold text-[#4B53BC] dark:text-blue-400 leading-tight">
-                                          تواصل Teams: نفس البريد الجامعي {facultyInfo?.email ? `(${facultyInfo.email.split('@')[0]})` : `(${item.nameEn.split(' ').pop()})`}
-                                        </p>
-                                        {facultyInfo?.email && (
-                                          <p className="text-[8px] text-neutral-500 dark:text-neutral-400">
-                                            استخدم اليوزر (Username) الخاص بالدكتور.
-                                          </p>
-                                        )}
-                                      </div>
-                                    </div>
-                                  )}
+                            {wing.items.map((item, iIdx) => (
+                              <div 
+                                key={iIdx}
+                                className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-100 dark:border-white/5 transition-all group hover:border-primary/30"
+                              >
+                                <div className="w-9 h-9 rounded-lg bg-white dark:bg-white/5 flex items-center justify-center text-lg group-hover:bg-primary/10 transition-colors">
+                                  {getItemIcon(item.type)}
                                 </div>
-                              );
-                            })}
+                                <div className="flex flex-col">
+                                  <span className="text-[13px] font-bold text-neutral-800 dark:text-neutral-200 leading-tight">
+                                    {ar ? item.nameAr : item.nameEn}
+                                  </span>
+                                  <span className="text-[9px] text-neutral-500 font-black uppercase tracking-wider">
+                                    {item.type === 'lab' ? (ar ? 'مختبر' : 'Laboratory') : 
+                                     item.type === 'office' ? (ar ? 'مكتب' : 'Office') : 
+                                     item.type === 'room' ? (ar ? 'قاعة' : 'Classroom') : 
+                                     item.type === 'dept' ? (ar ? 'قسم' : 'Department') : ''}
+                                  </span>
+                                </div>
+                              </div>
+                            ))}
                           </div>
                         </AccordionContent>
                       </AccordionItem>

@@ -23,6 +23,6 @@ export const PAGE_IMPORTS = {
   RecreationCategory: () => import("../pages/RecreationCategory"),
   RecreationDetail: () => import("../pages/RecreationDetail"),
   AnnouncementDetail: () => import("../pages/AnnouncementDetail"),
-  BuildingsPage: () => import("../pages/BuildingsPage_v2"),
+  BuildingsPage: () => import("../pages/BuildingsPage_Final"),
   NotFound: () => import("../pages/NotFound"),
 };

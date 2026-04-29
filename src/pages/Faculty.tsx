@@ -23,12 +23,21 @@ const Faculty = memo(function Faculty() {
   }, []);
 
   const filtered = useMemo(() => {
-    return facultyList.filter(f => {
+    const list = facultyList.filter(f => {
       const matchesQ = !query ||
         f.name.toLowerCase().includes(query.toLowerCase()) ||
         f.department.toLowerCase().includes(query.toLowerCase());
       const matchesD = dept === "all" || f.department === dept;
       return matchesQ && matchesD;
+    });
+
+    // Deduplicate by name or email
+    const seen = new Set();
+    return list.filter(f => {
+      const key = f.email || f.name;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
     });
   }, [query, dept]);
 

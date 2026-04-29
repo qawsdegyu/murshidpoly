@@ -29,6 +29,7 @@ const Sidebar = memo(() => {
     { to: "/", icon: LayoutDashboard, label: t.nav.dashboard, end: true, prefetch: PAGE_IMPORTS.Dashboard },
     { to: "/majors", icon: GraduationCap, label: t.nav.majors, prefetch: PAGE_IMPORTS.Majors },
     { to: "/vault", icon: BookOpen, label: t.nav.vault, prefetch: PAGE_IMPORTS.Vault },
+    { to: "/instructors", icon: Users, label: t.nav.faculty, prefetch: PAGE_IMPORTS.Faculty },
     { to: "/gpa", icon: Calculator, label: t.nav.gpa, prefetch: PAGE_IMPORTS.GPACalculator },
     { to: "/campus-map", icon: MapPin, label: t.nav.campusMap, prefetch: PAGE_IMPORTS.BuildingsPage },
     { to: "/marketplace", icon: ShoppingBag, label: t.nav.marketplace, prefetch: PAGE_IMPORTS.Marketplace },

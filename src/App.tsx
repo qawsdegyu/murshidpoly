@@ -50,6 +50,7 @@ const AppRoutes = () => {
           <Route path="/major/:id" element={<PageTransition><MajorPage /></PageTransition>} />
           <Route path="/materials/:id" element={<PageTransition><CoursePage /></PageTransition>} />
           <Route path="/vault" element={<PageTransition><Vault /></PageTransition>} />
+          <Route path="/instructors" element={<PageTransition><Faculty /></PageTransition>} />
           <Route path="/marketplace" element={<PageTransition><Marketplace /></PageTransition>} />
           <Route path="/recreation" element={<PageTransition><Recreation /></PageTransition>} />
           <Route path="/recreation/:category" element={<PageTransition><RecreationCategory /></PageTransition>} />

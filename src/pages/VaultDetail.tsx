@@ -126,6 +126,26 @@ function InstructorCards({ department, courseName }: { department: string; cours
                   </div>
                 )}
               </div>
+
+              {/* Teams Tip */}
+              <div className="mt-4 pt-4 border-t border-slate-200/50 dark:border-white/5 bg-blue-50/30 dark:bg-blue-900/5 rounded-xl p-3 flex gap-2.5 rtl:text-right" dir="rtl">
+                <div className="shrink-0 w-6 h-6 rounded-md bg-[#4B53BC] flex items-center justify-center shadow-sm">
+                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 text-white fill-current">
+                    <path d="M12.5 13.5C12.5 14.88 11.38 16 10 16C8.62 16 7.5 14.88 7.5 13.5C7.5 12.12 8.62 11 10 11C11.38 11 12.5 12.12 12.5 13.5ZM17 12V16.5C17 17.33 16.33 18 15.5 18H12.75L10 21V18H10C7.79 18 6 16.21 6 14C6 11.79 7.79 10 10 10H15.5C16.33 10 17 10.67 17 11.5V12ZM21 8.5C21 9.33 20.33 10 19.5 10H19V11.5C19 12.08 18.78 12.61 18.42 13C18.79 13 19 13.47 19 14V14.5C19 15.33 18.33 16 17.5 16H17V11.5C17 10.12 15.88 9 14.5 9H10C10 7.34 11.34 6 13 6H19.5C20.33 6 21 6.67 21 7.5V8.5Z" />
+                  </svg>
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  <p className="text-[10px] font-bold text-[#4B53BC] dark:text-blue-400">
+                    ملاحظة: حساب التيمز هو نفس البريد الجامعي {f.email ? `(${f.email.split('@')[0]})` : ''}.
+                  </p>
+                  {f.email && (
+                    <p className="text-[9px] text-slate-500 dark:text-slate-500 leading-tight">
+                      يمكنك التواصل عبر Teams باستخدام اليوزر (Username) بدون @bau.edu.jo
+                    </p>
+                  )}
+                </div>
+              </div>
+
               <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/10 opacity-40 group-hover:animate-shine pointer-events-none" />
             </motion.article>
           ))}
