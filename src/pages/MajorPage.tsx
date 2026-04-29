@@ -195,14 +195,13 @@ export default function MajorPage() {
             {/* Hour Price */}
             <motion.div
               variants={stagger}
-              whileHover={{ scale: 1.02, transition: { duration: 0.25 } }}
-              className="relative overflow-hidden p-5 md:p-7 rounded-2xl md:rounded-3xl bg-white dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.08] backdrop-blur-2xl shadow-sm dark:shadow-none"
+              whileHover={{ y: -2, transition: { duration: 0.25 } }}
+              className="relative overflow-hidden p-5 md:p-7 rounded-2xl md:rounded-3xl bg-white dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.08] backdrop-blur-2xl shadow-sm dark:shadow-none isolation-isolate"
             >
-              <div
-                className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-2xl opacity-30"
-                style={{ background: major.accentColor }}
+              <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-2xl opacity-30 pointer-events-none"
+                style={{ background: major.accentColor }} 
               />
-              <div className="relative">
+              <div className="relative pointer-events-none">
                 <div
                   className="inline-flex items-center justify-center w-11 h-11 rounded-2xl mb-4"
                   style={{ background: `${major.accentColor}20`, color: major.accentColor }}
@@ -244,11 +243,11 @@ export default function MajorPage() {
             {/* Expected Salary */}
             <motion.div
               variants={stagger}
-              whileHover={{ scale: 1.02, transition: { duration: 0.25 } }}
-              className="relative overflow-hidden p-7 rounded-3xl bg-white dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.08] backdrop-blur-2xl shadow-sm dark:shadow-none"
+              whileHover={{ y: -2, transition: { duration: 0.25 } }}
+              className="relative overflow-hidden p-7 rounded-3xl bg-white dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.08] backdrop-blur-2xl shadow-sm dark:shadow-none isolation-isolate"
             >
-              <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-2xl opacity-20 bg-emerald-400" />
-              <div className="relative">
+              <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-2xl opacity-20 bg-emerald-400 pointer-events-none" />
+              <div className="relative pointer-events-none">
                 <div className="inline-flex items-center justify-center w-11 h-11 rounded-2xl mb-4 bg-emerald-400/15 text-emerald-400">
                   <Briefcase className="h-5 w-5" />
                 </div>
@@ -262,11 +261,11 @@ export default function MajorPage() {
             {/* Career Fields — full width */}
             <motion.div
               variants={stagger}
-              whileHover={{ scale: 1.005, transition: { duration: 0.25 } }}
-              className="relative overflow-hidden p-5 md:p-9 rounded-2xl md:rounded-3xl bg-white dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.08] backdrop-blur-2xl md:col-span-2 shadow-sm dark:shadow-none"
+              whileHover={{ y: -1, transition: { duration: 0.25 } }}
+              className="relative overflow-hidden p-5 md:p-9 rounded-2xl md:rounded-3xl bg-white dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.08] backdrop-blur-2xl md:col-span-2 shadow-sm dark:shadow-none isolation-isolate"
             >
-              <div className="absolute -bottom-12 -left-12 w-56 h-56 rounded-full blur-3xl opacity-10 bg-blue-400" />
-              <div className="relative">
+              <div className="absolute -bottom-12 -left-12 w-56 h-56 rounded-full blur-3xl opacity-10 bg-blue-400 pointer-events-none" />
+              <div className="relative pointer-events-none">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="inline-flex items-center justify-center w-11 h-11 rounded-2xl bg-blue-400/15 text-blue-400">
                     <Briefcase className="h-5 w-5" />
@@ -443,20 +442,20 @@ export default function MajorPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{
-                  scale: 1.02,
+                  y: -3,
                   boxShadow: `0 20px 60px ${major.accentColor}55`,
                 }}
                 whileTap={{ scale: 0.98 }}
-                className="group flex items-center justify-between gap-4 md:gap-6 w-full px-6 md:px-10 py-5 md:py-7 rounded-2xl md:rounded-full relative overflow-hidden transition-all duration-300"
+                className="group flex items-center justify-between gap-4 md:gap-6 w-full px-6 md:px-10 py-5 md:py-7 rounded-2xl md:rounded-full relative overflow-hidden transition-all duration-300 isolation-isolate"
                 style={{
                   background: `linear-gradient(135deg, ${major.accentColor}dd 0%, ${major.accentColor}99 100%)`,
                   boxShadow: `0 8px 32px ${major.accentColor}44`,
                 }}
               >
                 {/* Shine sweep */}
-                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out" />
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out pointer-events-none" />
 
-                <div className="flex items-center gap-5 relative z-10">
+                <div className="flex items-center gap-5 relative z-10 pointer-events-none">
                   <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center shrink-0 shadow-inner">
                     <Download className="h-6 w-6 text-white" strokeWidth={2.5} />
                   </div>

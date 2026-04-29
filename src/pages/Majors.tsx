@@ -2,7 +2,7 @@
  * Majors.tsx — Stage 2: Premium Bento Grid
  * Clicking a card navigates to /major/:id
  */
-import { motion, type Variants } from "framer-motion";
+import { m, type Variants } from "framer-motion";
 import * as LucideIcons from "lucide-react";
 import { GraduationCap, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ import PageHeader from "@/components/PageHeader";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { cn } from "@/lib/utils";
 import { majorsData } from "@/data/majorsData";
+import { PAGE_IMPORTS, prefetchPage } from "@/lib/prefetch";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -36,7 +37,7 @@ export default function Majors() {
   const isAr = lang === "ar";
 
   return (
-    <motion.div
+    <m.div
       dir={dir}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
@@ -53,7 +54,7 @@ export default function Majors() {
           icon={<GraduationCap className="h-6 w-6 text-cyan-400" />}
         />
 
-        <motion.div
+        <m.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -65,10 +66,11 @@ export default function Majors() {
               GraduationCap;
 
             return (
-              <motion.button
+              <m.button
                 key={major.id}
                 variants={cardVariants}
                 onClick={() => navigate(`/major/${major.id}`)}
+                onMouseEnter={() => prefetchPage(PAGE_IMPORTS.MajorPage)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className={cn(
@@ -133,11 +135,11 @@ export default function Majors() {
                 {/* Corner lines */}
                 <div className="absolute top-0 left-0 w-10 h-10 border-t-2 border-l-2 border-slate-200 dark:border-white/10 rounded-tl-[2.5rem] group-hover:border-white/25 transition-colors duration-500" />
                 <div className="absolute bottom-0 right-0 w-10 h-10 border-b-2 border-r-2 border-slate-200 dark:border-white/10 rounded-br-[2.5rem] group-hover:border-white/25 transition-colors duration-500" />
-              </motion.button>
+              </m.button>
             );
           })}
-        </motion.div>
+        </m.div>
       </div>
-    </motion.div>
+    </m.div>
   );
 }

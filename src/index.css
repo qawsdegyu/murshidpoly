@@ -3,22 +3,25 @@
 @tailwind utilities;
 
 /* Murshid — BAU Engineering Super App Design System.
-   All colors HSL. Tokens are the single source of truth.
+   Optimized for Ultra-Performance (60fps).
 */
 
 @layer base {
   :root {
-    /* --- Light Theme (#F8FAFC, #FFFFFF, #0F172A) --- */
-    --bg-color: 210 40% 98%;      /* #F8FAFC */
-    --surface-color: 0 0% 100%;    /* #FFFFFF */
-    --text-primary: 225 65% 18%;   /* Vibrant Navy Blue - Lighter & More Saturated */
-    --text-secondary: 215 16% 40%; /* #475569 */
-    --border-color: 214 32% 91%;   /* #E2E8F0 */
-    --accent-color: 161 84% 39%;   /* #10B981 */
+    /* --- Fast Transition Tokens --- */
+    --transition-fast: 200ms cubic-bezier(0.23, 1, 0.32, 1);
+    --transition-standard: 300ms cubic-bezier(0.23, 1, 0.32, 1);
+    
+    /* --- Light Theme --- */
+    --bg-color: 210 40% 98%;
+    --surface-color: 0 0% 100%;
+    --text-primary: 225 65% 18%;
+    --text-secondary: 215 16% 40%;
+    --border-color: 214 32% 91%;
+    --accent-color: 161 84% 39%;
     --navy-blue: 225 65% 18%;
     --sidebar-background: 225 65% 18%;
 
-    /* Map to Shadcn/Tailwind standard vars */
     --background: var(--bg-color);
     --foreground: var(--text-primary);
     --card: var(--surface-color);
@@ -49,13 +52,12 @@
   }
 
   .dark {
-    /* --- Dark Theme (#020617, #0F172A, #F8FAFC) --- */
-    --bg-color: 225 65% 6%;        /* Deeper Navy BG */
-    --surface-color: 225 65% 15%;  /* Lighter, Saturated Navy Surface */
-    --text-primary: 210 40% 98%;   /* #F8FAFC */
-    --text-secondary: 215 25% 63%; /* #94A3B8 */
-    --border-color: 225 50% 25%;   /* Lighter Navy Border */
-    --accent-color: 158 64% 52%;   /* #34D399 */
+    --bg-color: 225 65% 6%;
+    --surface-color: 225 65% 15%;
+    --text-primary: 210 40% 98%;
+    --text-secondary: 215 25% 63%;
+    --border-color: 225 50% 25%;
+    --accent-color: 158 64% 52%;
     --sidebar-background: 225 65% 12%;
 
     --background: var(--bg-color);
@@ -85,195 +87,73 @@
     --shadow-elegant: 0 20px 50px -15px rgba(0, 0, 0, 0.8);
     --shadow-gold: 0 10px 30px -10px rgba(52, 211, 153, 0.3);
   }
-
-  [data-theme='pink'], .pink {
-    /* --- Pink Theme (#FFF0F5, #FFFFFF, #4A0E2E) --- */
-    --bg-color: 340 100% 97%;      /* #FFF0F5 */
-    --surface-color: 0 0% 100%;    /* #FFFFFF */
-    --text-primary: 327 68% 17%;   /* #4A0E2E */
-    --text-secondary: 329 34% 46%; /* #9D4E76 */
-    --border-color: 330 73% 86%;   /* #FBCFE8 */
-    --accent-color: 330 70% 51%;   /* #DB2777 */
-
-    --background: var(--bg-color);
-    --foreground: var(--text-primary);
-    --card: var(--surface-color);
-    --card-foreground: var(--text-primary);
-    --popover: var(--surface-color);
-    --popover-foreground: var(--text-primary);
-    --primary: var(--accent-color);
-    --primary-foreground: 0 0% 100%;
-    --accent: var(--accent-color);
-    --accent-foreground: 0 0% 100%;
-    --secondary: 330 100% 98%;
-    --secondary-foreground: var(--text-primary);
-    --muted: 330 100% 98%;
-    --muted-foreground: var(--text-secondary);
-    --border: var(--border-color);
-    --input: var(--border-color);
-    --ring: var(--accent-color);
-
-    --glass-bg: 0 0% 100%;
-    --glass-border: var(--border-color);
-
-    --gradient-primary: linear-gradient(135deg, #DB2777, #BE185D);
-    --gradient-gold: linear-gradient(135deg, #DB2777, #F472B6);
-    --gradient-hero: linear-gradient(135deg, #FFF0F5 0%, #FFFFFF 100%);
-    --shadow-elegant: 0 10px 30px -12px rgba(219, 39, 119, 0.15);
-    --shadow-gold: 0 10px 30px -10px rgba(219, 39, 119, 0.25);
-  }
 }
 
 @layer base {
   * {
     @apply border-border;
+    /* Optimized transition performance */
+    transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
   }
+  
   html {
-    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 100%; /* Reset to standard scaling for compact UI */
-    line-height: 1.5; /* Tightened line height */
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 100%;
+    line-height: 1.5;
+    /* Faster page-level transitions */
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "cv11", "ss01";
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  .dark body, .pink body {
-    color: hsl(var(--foreground));
-  }
-  h1, h2, h3, h4 {
-    @apply tracking-tighter font-black;
-    line-height: 1.2;
+    /* GPU Accelerated transitions */
+    will-change: background-color, color;
   }
 
-  /* In dark/pink mode only: premium gradients for headings */
-  .dark h1, .dark h2, .dark h3 {
-    background-image: linear-gradient(to right, hsl(var(--accent)) 0%, hsl(0 0% 96%) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  .pink h1, .pink h2, .pink h3 {
-    background-image: linear-gradient(to right, hsl(var(--primary)) 0%, hsl(330 40% 15%) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  /* In light mode: ensure headings are dark (override gradient) */
-  :root:not(.dark):not(.pink) h1,
-  :root:not(.dark):not(.pink) h2,
-  :root:not(.dark):not(.pink) h3 {
-    background-image: none;
-    -webkit-background-clip: unset;
-    background-clip: unset;
-    color: hsl(var(--foreground));
-  }
-  /* RTL fonts */
   [dir="rtl"] body {
     font-family: 'Cairo', 'Tajawal', 'Inter', system-ui, sans-serif;
   }
 }
 
 @layer components {
-  /* Spatial obsidian canvas with corner radial glows */
-  .canvas-obsidian {
-    background-color: hsl(0 0% 4%); /* bg-neutral-950 */
-    background-image:
-      radial-gradient(50% 50% at 100% 0%, hsl(150 100% 15% / 0.15) 0%, transparent 80%),
-      radial-gradient(50% 50% at 0% 100%, hsl(46 65% 52% / 0.08) 0%, transparent 80%);
-  }
-
   .glass {
     background-color: hsl(var(--glass-bg) / 0.4);
     border: 1px solid hsl(0 0% 100% / 0.08);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-  @media (min-width: 768px) {
-    .glass {
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-    }
-  }
-  .glass-strong {
-    background-color: hsl(var(--glass-bg) / 0.65);
-    border: 1px solid hsl(0 0% 100% / 0.10);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-  @media (min-width: 768px) {
-    .glass-strong {
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
-    }
-  }
-  .glass-card {
-    @apply rounded-2xl border bg-white/5 backdrop-blur-xl transition-all duration-500;
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.1);
-  }
-  .glass-card-hover {
-    @apply hover:-translate-y-1;
-  }
-  .glass-card-hover:hover {
-    border-color: hsl(var(--accent) / 0.3);
-    box-shadow: 0 18px 50px -10px hsl(var(--accent) / 0.25), 0 0 0 1px hsl(var(--accent) / 0.15), 0 8px 30px rgba(0, 0, 0, 0.12);
-  }
-  .gradient-primary { background: var(--gradient-primary); }
-  .gradient-gold { background: var(--gradient-gold); }
-  .gradient-hero { background: var(--gradient-hero); }
-  .text-gold { color: hsl(var(--accent)); }
-  .shadow-elegant { box-shadow: var(--shadow-elegant); }
-  .shadow-gold { box-shadow: var(--shadow-gold); }
-  .glow-gold {
-    box-shadow: 0 0 24px hsl(var(--accent) / 0.45), 0 0 48px hsl(var(--accent) / 0.2);
-  }
-  /* Shimmering text — used in footer */
-  .text-shimmer {
-    background-image: linear-gradient(to right, hsl(0 0% 90%) 20%, hsl(var(--accent)) 50%, hsl(0 0% 90%) 80%);
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: shimmer-move 4s linear infinite;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all var(--transition-standard);
   }
 
-  @keyframes shimmer-move {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+  .glass-card {
+    @apply rounded-2xl border bg-white/5 backdrop-blur-xl transition-all;
+    transition-duration: var(--transition-standard);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.1);
+    /* GPU acceleration */
+    will-change: transform, box-shadow;
   }
-  /* Dashed gold connectors for study plan trees */
-  .tree-connector {
-    border-left: 1px dashed hsl(var(--accent) / 0.45);
-  }
-  [dir="rtl"] .tree-connector {
-    border-left: 0;
-    border-right: 1px dashed hsl(var(--accent) / 0.45);
+
+  .active-press {
+    @apply active:scale-95;
+    transition: transform var(--transition-fast);
   }
 }
 
 @layer utilities {
-  .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
-  .scrollbar-thin::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 999px; }
-  .active-press { @apply active:scale-95 transition-transform; }
-
-  /* Navy visibility and contrast utilities */
-  .navy-pop {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  /* Fast Animation Utilities */
+  .transition-snappy {
+    transition: all var(--transition-fast);
   }
   
-  .glass-navy {
-    @apply backdrop-blur-md bg-white/10 border border-white/20;
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000;
   }
 
-  .border-navy-contrast {
-    border: 1px solid hsl(210 100% 90% / 0.4);
-  }
-  
-  .dark .border-navy-contrast {
-    border: 1px solid hsl(210 100% 90% / 0.15);
-  }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 }

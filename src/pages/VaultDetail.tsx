@@ -84,11 +84,11 @@ function InstructorCards({ department, courseName }: { department: string; cours
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.03 }}
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="group relative overflow-hidden bg-surface/40 dark:bg-surface/5 border border-border/60 dark:border-white/10 backdrop-blur-2xl rounded-2xl p-5 hover:border-accent/30 hover:bg-surface/60 transition-all duration-300"
+              className="group relative overflow-hidden bg-surface/40 dark:bg-surface/5 border border-border/60 dark:border-white/10 backdrop-blur-2xl rounded-2xl p-5 hover:border-accent/30 hover:bg-surface/60 transition-all duration-300 isolation-isolate"
             >
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start justify-between gap-4 pointer-events-none">
                 <div className="flex gap-4">
                   <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 border border-accent/20 flex items-center justify-center text-accent font-black text-lg shrink-0 shadow-lg">
                     {f.name.split(" ").filter(n => n.length > 2)[0]?.[0] || "د"}
@@ -104,7 +104,7 @@ function InstructorCards({ department, courseName }: { department: string; cours
                 </div>
 
                 {f.email && (
-                  <div className="flex gap-1.5 shrink-0">
+                  <div className="flex gap-1.5 shrink-0 pointer-events-auto">
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
@@ -231,14 +231,14 @@ export default function VaultDetail() {
       </div>
 
       {/* Animated panel area */}
-      <div className="relative min-h-[300px]">
+      <div className="relative min-h-[60vh]">
         <AnimatePresence mode="wait">
           {!tab ? (
             <motion.div
               key="placeholder"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.05 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               className="flex flex-col items-center justify-center py-20 bg-surface/30 dark:bg-surface/5 border border-dashed border-border dark:border-white/10 rounded-[3rem]"
             >
               <div className="w-20 h-20 rounded-[2.5rem] bg-primary/10 flex items-center justify-center mb-6 animate-bounce-slow">
@@ -254,9 +254,9 @@ export default function VaultDetail() {
           ) : (
             <motion.div
               key={tab}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             >
               <MaterialList 

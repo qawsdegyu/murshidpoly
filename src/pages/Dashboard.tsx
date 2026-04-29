@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { motion, type Variants } from "framer-motion";
+import { m, type Variants } from "framer-motion";
 import { Calculator, Users, BookOpen, GraduationCap, ShoppingBag, ArrowRight, MapPin, ExternalLink, FileText, BookOpenText, BrainCircuit } from "lucide-react";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import AnnouncementCard from "@/components/AnnouncementCard";
@@ -7,6 +7,7 @@ import QuickLinkCard from "@/components/QuickLinkCard";
 import BauQuickLinks from "@/components/BauQuickLinks";
 import { buildings } from "@/data/mockData";
 import { cn } from "@/lib/utils";
+import { PAGE_IMPORTS, prefetchPage } from "@/lib/prefetch";
 
 const container: Variants = {
   hidden: {},
@@ -23,10 +24,10 @@ export default function Dashboard() {
   const { t, lang } = usePreferences();
 
   const stats = [
-    { label: lang === "ar" ? "ملفات الدراسة" : "Study Files", value: "240+", icon: FileText, to: "/vault" },
-    { label: lang === "ar" ? "التخصصات" : "Majors", value: "10", icon: GraduationCap, to: "/majors" },
-    { label: lang === "ar" ? "حاسبة المعدل" : "GPA Calc", value: lang === "ar" ? "ذكية" : "Smart", icon: Calculator, to: "/gpa" },
-    { label: lang === "ar" ? "خريطة الحرم" : "Campus Map", value: lang === "ar" ? "تفاعلية" : "Interactive", icon: MapPin, to: "/campus-map" },
+    { label: lang === "ar" ? "ملفات الدراسة" : "Study Files", value: "240+", icon: FileText, to: "/vault", prefetch: PAGE_IMPORTS.Vault },
+    { label: lang === "ar" ? "التخصصات" : "Majors", value: "10", icon: GraduationCap, to: "/majors", prefetch: PAGE_IMPORTS.Majors },
+    { label: lang === "ar" ? "حاسبة المعدل" : "GPA Calc", value: lang === "ar" ? "ذكية" : "Smart", icon: Calculator, to: "/gpa", prefetch: PAGE_IMPORTS.GPACalculator },
+    { label: lang === "ar" ? "خريطة الحرم" : "Campus Map", value: lang === "ar" ? "تفاعلية" : "Interactive", icon: MapPin, to: "/campus-map", prefetch: PAGE_IMPORTS.BuildingsPage },
   ];
 
   const quickActions = [
@@ -34,32 +35,36 @@ export default function Dashboard() {
       to: "/vault", 
       icon: BookOpenText, 
       label: lang === "ar" ? "خزانة المواد" : "Subject Vault", 
-      desc: lang === "ar" ? "ملخصات، كتب، سنوات سابقة" : "Summaries, books, exams, quizzes"
+      desc: lang === "ar" ? "ملخصات، كتب، سنوات سابقة" : "Summaries, books, exams, quizzes",
+      prefetch: PAGE_IMPORTS.Vault
     },
     { 
       to: "/gpa", 
       icon: Calculator, 
       label: lang === "ar" ? "حاسبة المعدل" : "GPA Calculator", 
-      desc: lang === "ar" ? "احسب معدلك الفصلي والتراكمي بدقة" : "Calculate semester & cumulative GPA"
+      desc: lang === "ar" ? "احسب معدلك الفصلي والتراكمي بدقة" : "Calculate semester & cumulative GPA",
+      prefetch: PAGE_IMPORTS.GPACalculator
     },
     { 
       to: "/marketplace", 
       icon: ShoppingBag, 
       label: lang === "ar" ? "السوق" : "Marketplace", 
-      desc: lang === "ar" ? "بيع وشراء الأدوات الهندسية" : "Buy & sell engineering tools"
+      desc: lang === "ar" ? "بيع وشراء الأدوات الهندسية" : "Buy & sell engineering tools",
+      prefetch: PAGE_IMPORTS.Marketplace
     },
     { 
       to: "/roadmap", 
       icon: BrainCircuit, 
       label: lang === "ar" ? "الخطة الدراسية" : "Study Plan", 
-      desc: lang === "ar" ? "تتبع مسارك الأكاديمي" : "Track your academic journey"
+      desc: lang === "ar" ? "تتبع مسارك الأكاديمي" : "Track your academic journey",
+      prefetch: PAGE_IMPORTS.MajorPage
     },
   ];
 
   return (
-    <motion.div className="space-y-4 md:space-y-6" variants={container} initial="hidden" animate="show">
+    <m.div className="space-y-4 md:space-y-6" variants={container} initial="hidden" animate="show">
       {/* Hero */}
-      <motion.section
+      <m.section
         variants={item}
         className="relative overflow-hidden rounded-[2rem] md:rounded-[2.5rem] border border-slate-200 dark:border-white/10 shadow-xl min-h-[260px] md:min-h-[340px] flex items-center transition-colors duration-300"
       >
@@ -112,12 +117,12 @@ export default function Dashboard() {
 
         {/* Decorative Element */}
         <div className="absolute -right-20 -bottom-20 h-80 w-80 rounded-full bg-accent/20 blur-[100px] pointer-events-none hidden md:block" />
-      </motion.section>
+      </m.section>
 
       {/* Public Resource Stats */}
-      <motion.section variants={item} className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+      <m.section variants={item} className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         {stats?.map((s) => (
-          <motion.div
+          <m.div
             key={s.label}
             variants={item}
             whileHover={{ scale: 1.05, y: -4 }}
@@ -125,6 +130,7 @@ export default function Dashboard() {
           >
             <Link
               to={s.to}
+              onMouseEnter={() => prefetchPage(s.prefetch)}
               className="group bg-surface/80 border border-border shadow-sm backdrop-blur-xl p-2.5 md:p-4 rounded-xl md:rounded-[1.5rem] flex flex-col h-full transition-all duration-300"
             >
               <div className="flex items-center justify-between mb-1.5 md:mb-2">
@@ -136,16 +142,16 @@ export default function Dashboard() {
               <div className="text-xl md:text-3xl font-black text-content tracking-tighter mb-0.5">{s.value}</div>
               <div className="text-[9px] font-black uppercase tracking-widest text-content/50">{s.label}</div>
             </Link>
-          </motion.div>
+          </m.div>
         ))}
-      </motion.section>
+      </m.section>
 
       {/* Announcement / Ad banner */}
-      <motion.div variants={item}>
+      <m.div variants={item}>
         <AnnouncementCard />
-      </motion.div>
+      </m.div>
 
-      <motion.section variants={item} className="relative z-10">
+      <m.section variants={item} className="relative z-10">
         <div className="flex items-center gap-4 mb-4 md:mb-6">
           <h2 className="text-xl md:text-2xl lg:text-3xl font-black tracking-tight text-foreground">{t.dashboard.quickActions}</h2>
           <div className="h-[2px] flex-1 bg-gradient-to-r from-accent/50 via-accent/5 to-transparent rounded-full" />
@@ -158,20 +164,21 @@ export default function Dashboard() {
                 to={a.to}
                 icon={a.icon}
                 label={a.label}
+                prefetch={a.prefetch}
               />
             ))}
         </div>
-      </motion.section>
+      </m.section>
 
       {/* Campus Guide */}
-      <motion.section variants={item}>
+      <m.section variants={item}>
         <div className="flex items-end justify-between mb-4">
           <h2 className="text-xl md:text-2xl lg:text-3xl font-black text-foreground">{t.dashboard.campusGuide || "Campus Guide"}</h2>
           <div className="h-px flex-1 mx-4 md:mx-6 bg-gradient-to-r from-accent/40 to-transparent" />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
           {buildings?.map((b) => (
-            <motion.a
+            <m.a
               key={b.id}
               href={b.mapUrl}
               target="_blank"
@@ -213,15 +220,15 @@ export default function Dashboard() {
                   ))}
                 </div>
               </div>
-            </motion.a>
+            </m.a>
           ))}
         </div>
-      </motion.section>
+      </m.section>
 
       {/* BAU Official Quick Links */}
-      <motion.div variants={item}>
+      <m.div variants={item}>
         <BauQuickLinks />
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   );
 }

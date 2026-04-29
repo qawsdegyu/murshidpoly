@@ -828,20 +828,21 @@ function BuildingDetailModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-4">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-4 touch-none">
       <motion.div 
         initial={{ opacity: 0 }} 
         animate={{ opacity: 1 }} 
         exit={{ opacity: 0 }} 
         onClick={onClose} 
-        className="absolute inset-0 bg-black/80 backdrop-blur-md" 
+        className="absolute inset-0 bg-black/80 backdrop-blur-md cursor-pointer" 
+        style={{ touchAction: 'none' }}
       />
       
       <motion.div
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        className="relative w-full max-w-4xl h-full sm:h-[85vh] bg-white dark:bg-neutral-950 sm:rounded-[3rem] shadow-2xl overflow-hidden flex flex-col"
+        className="relative w-full max-w-4xl h-full sm:h-[85vh] bg-white dark:bg-neutral-950 sm:rounded-[3rem] shadow-2xl overflow-hidden flex flex-col touch-auto"
       >
         {/* Sticky Modal Header/Image */}
         <div className="relative h-48 sm:h-60 shrink-0 sticky top-0 z-20">

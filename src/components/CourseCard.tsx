@@ -1,19 +1,21 @@
 import { memo, forwardRef } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { BookOpen, FileText, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { type Course, resourcesByCourse } from "@/data/mockData";
+import { PAGE_IMPORTS, prefetchPage } from "@/lib/prefetch";
 
 interface CourseCardProps {
   course: Course;
   onClick: () => void;
   accentColor?: string;
   index?: number;
+  icon?: React.ReactNode;
 }
 
 const CourseCard = memo(forwardRef<HTMLButtonElement, CourseCardProps>(
-  ({ course, onClick, accentColor = "#3b82f6", index = 0 }, ref) => {
+  ({ course, onClick, accentColor = "#3b82f6", index = 0, icon }, ref) => {
     const { lang, dir } = usePreferences();
     const isAr = lang === "ar";
     const hasResources = !!(course?.id && resourcesByCourse[course.id]?.length);
@@ -22,26 +24,26 @@ const CourseCard = memo(forwardRef<HTMLButtonElement, CourseCardProps>(
     if (!course) return null;
 
     return (
-      <motion.button
+      <m.button
         ref={ref}
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.04, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+        whileHover={{ y: -2, transition: { duration: 0.2 } }}
         whileTap={{ scale: 0.98 }}
         style={{ willChange: "transform, opacity" }}
         onClick={onClick}
-        className="group relative text-start p-4 md:p-6 rounded-xl bg-card/40 border border-border shadow-sm hover:shadow-2xl hover:border-accent/30 hover:bg-card/60 transition-all duration-500 overflow-hidden flex flex-col h-full"
-
+        onMouseEnter={() => prefetchPage(PAGE_IMPORTS.CoursePage)}
+        className="group relative text-start p-4 md:p-6 rounded-xl bg-card/40 border border-border shadow-sm hover:shadow-2xl hover:border-accent/30 hover:bg-card/60 transition-all duration-300 ease-in-out overflow-hidden flex flex-col h-full isolation-isolate"
       >
 
         {/* Accent Glow */}
         <div 
-          className="absolute top-0 right-0 w-20 h-20 rounded-full blur-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500"
+          className="absolute top-0 right-0 w-20 h-20 rounded-full blur-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none"
           style={{ background: accentColor }} 
         />
         
-        <div className="flex items-start justify-between gap-2.5 relative z-10 mb-3">
+        <div className="flex items-start justify-between gap-2.5 relative z-10 mb-3 pointer-events-none">
           <div className="flex-1 min-w-0">
             <div className="text-[10px] font-black tracking-widest uppercase text-muted-foreground mb-1 font-mono">
               {course?.code || "COURSE-ID"}
@@ -54,11 +56,11 @@ const CourseCard = memo(forwardRef<HTMLButtonElement, CourseCardProps>(
             className="h-8 w-8 rounded-lg flex items-center justify-center shrink-0 border border-border/50"
             style={{ background: `${accentColor}15`, color: accentColor }}
           >
-            <BookOpen className="h-4 w-4" />
+            {icon || <BookOpen className="h-4 w-4" />}
           </div>
         </div>
 
-        <div className="mt-auto pt-3 border-t border-border/50 flex items-center justify-between relative z-10">
+        <div className="mt-auto pt-3 border-t border-border/50 flex items-center justify-between relative z-10 pointer-events-none">
           <div className="flex items-center gap-1.5">
             {hasResources ? (
               <span
@@ -73,7 +75,7 @@ const CourseCard = memo(forwardRef<HTMLButtonElement, CourseCardProps>(
                 {isAr ? "قريباً" : "Coming soon"}
               </span>
             )}
-            <span className="text-[11px] text-muted-foreground font-bold uppercase tracking-wider">
+            <span className="text-[11px] text-muted-foreground font-black uppercase tracking-wider">
               {course?.hours || 0} {isAr ? "ساعات" : "hrs"}
             </span>
           </div>
@@ -86,7 +88,7 @@ const CourseCard = memo(forwardRef<HTMLButtonElement, CourseCardProps>(
             )}
           />
         </div>
-      </motion.button>
+      </m.button>
     );
   }
 ));

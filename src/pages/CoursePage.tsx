@@ -70,11 +70,8 @@ export default function CoursePage() {
   return (
     <div 
       dir={dir} 
-      className="min-h-screen pb-24 bg-background transition-colors duration-300 animate-in fade-in duration-500"
+      className="min-h-screen pb-24 transition-colors duration-300 animate-in fade-in duration-500"
     >
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(59,130,246,0.05)_0%,transparent_70%)]" />
-      </div>
 
       <div className="relative z-10 px-4 md:px-8 pt-8 max-w-7xl mx-auto">
         <div className="mb-10">
@@ -129,12 +126,15 @@ export default function CoursePage() {
           </div>
         </div>
 
-        <div className="min-h-[300px] relative mb-20">
+        <div className="min-h-[60vh] relative mb-20">
           <AnimatePresence mode="wait">
           {!activeTab ? (
-            <div
+            <motion.div
               key="placeholder"
-              className="flex flex-col items-center justify-center py-20 bg-white/40 dark:bg-white/[0.02] border border-dashed border-slate-200 dark:border-white/10 rounded-[3rem] animate-in fade-in zoom-in-95 duration-500"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex flex-col items-center justify-center py-20 bg-white/40 dark:bg-white/[0.02] border border-dashed border-slate-200 dark:border-white/10 rounded-[3rem]"
             >
               <div className="w-20 h-20 rounded-[2.5rem] bg-blue-500/10 flex items-center justify-center mb-6">
                 <Library className="w-10 h-10 text-blue-500" />
@@ -145,17 +145,20 @@ export default function CoursePage() {
               <p className="text-sm text-slate-500 font-bold max-w-xs text-center px-4">
                 {isAr ? "انقر على أحد الأزرار في الأعلى لاستعراض الملفات والمصادر" : "Click on one of the buttons above to explore files and resources"}
               </p>
-            </div>
+            </motion.div>
           ) : (
-            <div
+            <motion.div
               key={activeTab}
-              className="w-full animate-in fade-in slide-in-from-bottom-4 duration-500"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="w-full"
             >
               <MaterialList 
                 items={getFilteredResources()} 
                 emptyMessage={isAr ? "سيتم إضافة المحتوى قريباً ✨" : "Content coming soon ✨"} 
               />
-            </div>
+            </motion.div>
           )}
           </AnimatePresence>
         </div>

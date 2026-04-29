@@ -198,54 +198,74 @@ export interface Course {
   nameAr: string;
   hours: number;
   department: string;
+  category?: string;
   instructors?: string[];
 }
 
 export const courses: Course[] = [
-  { id: "c2", code: "MATH 102", name: "Calculus II", nameAr: "تفاضل وتكامل 2", hours: 3, department: "General", instructors: ["د. كامل فليفل", "م. أنس أبو زهرة"] },
-  { id: "c3", code: "EE 241", name: "Circuit Analysis I", nameAr: "تحليل الدوائر 1", hours: 3, department: "Electrical Engineering" },
-  { id: "c4", code: "CE 211", name: "Statics", nameAr: "الاستاتيكا", hours: 3, department: "Civil Engineering" },
-  { id: "c5", code: "ME 221", name: "Thermodynamics", nameAr: "الديناميكا الحرارية", hours: 3, department: "Mechanical Engineering" },
-  { id: "c6", code: "MATH 101", name: "Calculus I", nameAr: "تفاضل وتكامل 1", hours: 3, department: "General", instructors: ["د. كامل فليفل", "د. أحمد جروان"] },
-  { id: "c7", code: "CHE 201", name: "Mass & Energy Balances", nameAr: "موازين المادة والطاقة", hours: 3, department: "Chemical Engineering" },
-  { id: "c8", code: "IE 301", name: "Operations Research", nameAr: "بحوث العمليات", hours: 3, department: "Industrial Engineering" },
-  { id: "p101", code: "PHYS 101", name: "Physics I", nameAr: "فيزياء 1", hours: 3, department: "General", instructors: ["د. أنور الشيشاني", "د. أحمد عوض الله"] },
-  { id: "p102", code: "PHYS 102", name: "Physics II", nameAr: "فيزياء 2", hours: 3, department: "General" },
-  { id: "stat101", code: "STAT 101", name: "Probability & Statistics", nameAr: "الاحتمالات والإحصاء", hours: 3, department: "General", instructors: ["د. محمد فؤاد", "م. محمود زيدان"] },
-  { id: "isl101", code: "ISL 101", name: "Islam and Life", nameAr: "إسلام وحياة", hours: 3, department: "General" },
-  { id: "eng99", code: "ENG 99", name: "English 99", nameAr: "إنجليزي 99", hours: 3, department: "General" },
-  { id: "chem101", code: "CHEM 101", name: "General Chemistry", nameAr: "كيمياء عامة", hours: 3, department: "General" },
-  { id: "plab101", code: "PHYS 111", name: "Physics Lab I", nameAr: "مختبر فيزياء 1", hours: 1, department: "General", instructors: ["د. أنور الشيشاني"] },
-  { id: "cs101", code: "CS 101", name: "Computer Skills", nameAr: "مهارات الحاسوب", hours: 3, department: "General" },
-  { id: "ee201", code: "EE 201", name: "Engineering Economy", nameAr: "الاقتصاد الهندسي", hours: 3, department: "Industrial Engineering" },
-  { id: "national_studies", code: "NS 101", name: "National Studies", nameAr: "التربية الوطنية", hours: 3, department: "General" },
-  { id: "islamic_culture", code: "IS 101", name: "Islamic Culture", nameAr: "الثقافة الإسلامية", hours: 3, department: "General" },
-  { id: "technical_writing", code: "ENG 201", name: "Technical Writing & Prof. Ethics", nameAr: "الكتابة التقنية والأخلاقيات المهنية", hours: 3, department: "General" },
-  { id: "entrepreneurship", code: "ENT 101", name: "Innovation & Entrepreneurship", nameAr: "الابتكار والريادة", hours: 3, department: "General" },
-  { id: "military_science", code: "MIL 101", name: "Military Science", nameAr: "العلوم العسكرية", hours: 3, department: "General" },
-  { id: "english101", code: "ENG 101", name: "English Communication Skills I", nameAr: "اللغة الإنجليزية 1", hours: 3, department: "General" },
-  { id: "english102", code: "ENG 102", name: "English Communication Skills II", nameAr: "اللغة الإنجليزية 2", hours: 3, department: "General" },
-  { id: "applied_arabic", code: "AR 101", name: "Applied Arabic", nameAr: "اللغة العربية التطبيقية", hours: 3, department: "General" },
-  { id: "engineering_workshop", code: "ME 101", name: "Engineering Workshops", nameAr: "المشاغل الهندسية", hours: 1, department: "Mechanical Engineering" },
-  { id: "programming_cpp", code: "CPE 150", name: "Computer Programming for Engineers (C++)", nameAr: "البرمجة للمهندسين (C++)", hours: 3, department: "Computer Engineering", instructors: ["م. فتحي علان"] },
-  { id: "ce_surveying", code: "CE 221", name: "Surveying", nameAr: "المساحة", hours: 3, department: "Civil Engineering" },
-  { id: "ce_dynamics", code: "CE 212", name: "Dynamics", nameAr: "ديناميكا", hours: 3, department: "Civil Engineering" },
-  { id: "ce_fluids", code: "CE 341", name: "Fluid Mechanics", nameAr: "ميكانيكا الموائع", hours: 3, department: "Civil Engineering" },
-  { id: "ar99", code: "AR 99", name: "Remedial Arabic", nameAr: "عربي استدراكي", hours: 3, department: "General" },
-  { id: "caliphs", code: "IS 102", name: "Rightly Guided Caliphs", nameAr: "خلفاء راشدين", hours: 3, department: "General" },
-  { id: "ce_strength", code: "CE 213", name: "Strength of Materials", nameAr: "مقاومة المواد", hours: 3, department: "Civil Engineering" },
-  { id: "ce_structural1", code: "CE 311", name: "Structural Analysis I", nameAr: "تحليل إنشائي 1", hours: 3, department: "Civil Engineering" },
-  { id: "ce_roads", code: "CE 321", name: "Road Engineering", nameAr: "هندسة الطرق", hours: 3, department: "Civil Engineering" },
-  { id: "ce_traffic", code: "CE 322", name: "Traffic Engineering", nameAr: "هندسة المرور", hours: 3, department: "Civil Engineering" },
-  { id: "ce_geology", code: "CE 201", name: "Engineering Geology", nameAr: "جيولوجيا الهندسة", hours: 3, department: "Civil Engineering" },
-  { id: "cs99", code: "CS 99", name: "Remedial Computer", nameAr: "حاسوب استدراكي", hours: 0, department: "General" },
-  { id: "sports_health", code: "SH 101", name: "Sports and Health", nameAr: "رياضة وصحة", hours: 3, department: "General" },
-  { id: "engineering_drawing", code: "ME 102", name: "Engineering Drawing", nameAr: "رسم هندسي", hours: 2, department: "Mechanical Engineering" },
-  { id: "linear_algebra", code: "MATH 201", name: "Linear Algebra", nameAr: "جبر خطي", hours: 3, department: "General" },
-  { id: "numerical", code: "MATH 301", name: "Numerical Techniques", nameAr: "تقنيات عددية", hours: 3, department: "General" },
-  { id: "diff_eq", code: "MATH 203", name: "Differential Equations I", nameAr: "معادلات تفاضلية 1", hours: 3, department: "General" },
-  { id: "chemlab101", code: "CHEM 111", name: "Chemistry Lab 1", nameAr: "مختبر الكيمياء العامة 1", hours: 1, department: "General" },
-  { id: "plab102", code: "PHYS 112", name: "Physics Lab 2", nameAr: "مختبر الفيزياء العامة 2", hours: 1, department: "General" },
+  // --- الرياضيات الهندسية المشتركة (math) ---
+  { id: "c6", code: "MATH 101", name: "Calculus I", nameAr: "تفاضل وتكامل 1", hours: 3, department: "General", category: "math", instructors: ["د. كامل فليفل", "د. أحمد جروان"] },
+  { id: "c2", code: "MATH 102", name: "Calculus II", nameAr: "تفاضل وتكامل 2", hours: 3, department: "General", category: "math", instructors: ["د. كامل فليفل", "م. أنس أبو زهرة"] },
+  { id: "stat101", code: "STAT 101", name: "Probability & Statistics", nameAr: "الاحتمالات والإحصاء", hours: 3, department: "General", category: "math", instructors: ["د. محمد فؤاد", "م. محمود زيدان"] },
+  { id: "numerical", code: "MATH 301", name: "Numerical Techniques", nameAr: "تقنيات عددية", hours: 3, department: "General", category: "math" },
+  { id: "linear_algebra", code: "MATH 201", name: "Linear Algebra", nameAr: "جبر خطي", hours: 3, department: "General", category: "math" },
+  { id: "diff_eq", code: "MATH 203", name: "Differential Equations I", nameAr: "معادلات تفاضلية 1", hours: 3, department: "General", category: "math" },
+
+  // --- فيزياء وهندسة أساسية (physics) ---
+  { id: "p101", code: "PHYS 101", name: "Physics I", nameAr: "فيزياء 1", hours: 3, department: "General", category: "physics", instructors: ["د. أنور الشيشاني", "د. أحمد عوض الله"] },
+  { id: "plab101", code: "PHYS 111", name: "Physics Lab I", nameAr: "مختبر فيزياء 1", hours: 1, department: "General", category: "physics", instructors: ["د. أنور الشيشاني"] },
+  { id: "c4", code: "CE 211", name: "Statics", nameAr: "الاستاتيكا", hours: 3, department: "Civil Engineering", category: "physics" },
+  { id: "p102", code: "PHYS 102", name: "Physics II", nameAr: "فيزياء 2", hours: 3, department: "General", category: "physics" },
+  { id: "plab102", code: "PHYS 112", name: "Physics Lab 2", nameAr: "مختبر الفيزياء العامة 2", hours: 1, department: "General", category: "physics" },
+
+  // --- مواد الكيمياء (chemistry) ---
+  { id: "chem101", code: "CHEM 101", name: "General Chemistry", nameAr: "كيمياء عامة", hours: 3, department: "General", category: "chemistry" },
+  { id: "chemlab101", code: "CHEM 111", name: "Chemistry Lab 1", nameAr: "مختبر الكيمياء العامة 1", hours: 1, department: "General", category: "chemistry" },
+
+  // --- حاسوب وهندسة عملية (computing) ---
+  { id: "cs99", code: "CS 99", name: "Remedial Computer", nameAr: "حاسوب استدراكي", hours: 0, department: "General", category: "computing" },
+  { id: "cs101", code: "CS 101", name: "Computer Skills", nameAr: "مهارات الحاسوب", hours: 3, department: "General", category: "computing" },
+  { id: "engineering_drawing", code: "ME 102", name: "Engineering Drawing", nameAr: "رسم هندسي", hours: 2, department: "Mechanical Engineering", category: "computing" },
+  { id: "programming_cpp", code: "CPE 150", name: "Computer Programming for Engineers (C++)", nameAr: "البرمجة للمهندسين (C++)", hours: 3, department: "Computer Engineering", category: "computing", instructors: ["م. فتحي علان"] },
+
+  // --- مواد مساندة هندسية (support) ---
+  { id: "ee201", code: "EE 201", name: "Engineering Economy", nameAr: "الاقتصاد الهندسي", hours: 3, department: "Industrial Engineering", category: "support" },
+
+  // --- ثقافة عامة (culture) ---
+  { id: "national_studies", code: "NS 101", name: "National Studies", nameAr: "التربية الوطنية", hours: 3, department: "General", category: "culture" },
+  { id: "islamic_culture", code: "IS 101", name: "Islamic Culture", nameAr: "الثقافة الإسلامية", hours: 3, department: "General", category: "culture" },
+  { id: "caliphs", code: "IS 102", name: "Rightly Guided Caliphs", nameAr: "خلفاء راشدين", hours: 3, department: "General", category: "culture" },
+  { id: "isl101", code: "ISL 101", name: "Islam and Life", nameAr: "إسلام وحياة", hours: 3, department: "General", category: "culture" },
+
+  // --- اللغة العربية (arabic) ---
+  { id: "ar99", code: "AR 99", name: "Remedial Arabic", nameAr: "عربي استدراكي", hours: 3, department: "General", category: "arabic" },
+  { id: "applied_arabic", code: "AR 101", name: "Applied Arabic", nameAr: "اللغة العربية التطبيقية", hours: 3, department: "General", category: "arabic" },
+
+  // --- المهارات والتطوير (skills) ---
+  { id: "entrepreneurship", code: "ENT 101", name: "Innovation & Entrepreneurship", nameAr: "الابتكار والريادة", hours: 3, department: "General", category: "skills" },
+  { id: "military_science", code: "MIL 101", name: "Military Science", nameAr: "العلوم العسكرية", hours: 3, department: "General", category: "skills" },
+
+  // --- اللغة الإنجليزية (english) ---
+  { id: "eng99", code: "ENG 99", name: "English 99", nameAr: "إنجليزي 99", hours: 3, department: "General", category: "english" },
+  { id: "english101", code: "ENG 101", name: "English Communication Skills I", nameAr: "اللغة الإنجليزية 1", hours: 3, department: "General", category: "english" },
+  { id: "english102", code: "ENG 102", name: "English Communication Skills II", nameAr: "اللغة الإنجليزية 2", hours: 3, department: "General", category: "english" },
+
+  // --- Other Subjects ---
+  { id: "c3", code: "EE 241", name: "Circuit Analysis I", nameAr: "تحليل الدوائر 1", hours: 3, department: "Electrical Engineering", category: "physics" },
+  { id: "c5", code: "ME 221", name: "Thermodynamics", nameAr: "الديناميكا الحرارية", hours: 3, department: "Mechanical Engineering", category: "physics" },
+  { id: "c7", code: "CHE 201", name: "Mass & Energy Balances", nameAr: "موازين المادة والطاقة", hours: 3, department: "Chemical Engineering", category: "physics" },
+  { id: "c8", code: "IE 301", name: "Operations Research", nameAr: "بحوث العمليات", hours: 3, department: "Industrial Engineering", category: "math" },
+  { id: "technical_writing", code: "ENG 201", name: "Technical Writing & Prof. Ethics", nameAr: "الكتابة التقنية والأخلاقيات المهنية", hours: 3, department: "General", category: "english" },
+  { id: "engineering_workshop", code: "ME 101", name: "Engineering Workshops", nameAr: "المشاغل الهندسية", hours: 1, department: "Mechanical Engineering", category: "computing" },
+  { id: "ce_surveying", code: "CE 221", name: "Surveying", nameAr: "المساحة", hours: 3, department: "Civil Engineering", category: "physics" },
+  { id: "ce_dynamics", code: "CE 212", name: "Dynamics", nameAr: "ديناميكا", hours: 3, department: "Civil Engineering", category: "physics" },
+  { id: "ce_fluids", code: "CE 341", name: "Fluid Mechanics", nameAr: "ميكانيكا الموائع", hours: 3, department: "Civil Engineering", category: "physics" },
+  { id: "ce_strength", code: "CE 213", name: "Strength of Materials", nameAr: "مقاومة المواد", hours: 3, department: "Civil Engineering", category: "physics" },
+  { id: "ce_structural1", code: "CE 311", name: "Structural Analysis I", nameAr: "تحليل إنشائي 1", hours: 3, department: "Civil Engineering", category: "physics" },
+  { id: "ce_roads", code: "CE 321", name: "Road Engineering", nameAr: "هندسة الطرق", hours: 3, department: "Civil Engineering", category: "physics" },
+  { id: "ce_traffic", code: "CE 322", name: "Traffic Engineering", nameAr: "هندسة المرور", hours: 3, department: "Civil Engineering", category: "physics" },
+  { id: "ce_geology", code: "CE 201", name: "Engineering Geology", nameAr: "جيولوجيا الهندسة", hours: 3, department: "Civil Engineering", category: "physics" },
+  { id: "sports_health", code: "SH 101", name: "Sports and Health", nameAr: "رياضة وصحة", hours: 3, department: "General", category: "culture" },
 ];
 
 export const allMaterials = courses;

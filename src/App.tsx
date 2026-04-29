@@ -11,25 +11,29 @@ import GlobalErrorBoundary from "@/components/GlobalErrorBoundary";
 import BrandedLoader from "@/components/BrandedLoader";
 import { motion } from "framer-motion";
 import PageTransition from "@/components/PageTransition";
+import { Analytics } from "@vercel/analytics/react";
 
-import Dashboard from "./pages/Dashboard";
-import Majors from "./pages/Majors";
-import MajorPage from "./pages/MajorPage";
-import Vault from "./pages/Vault";
-import VaultDetail from "./pages/VaultDetail";
+import { PAGE_IMPORTS, prefetchPage } from "@/lib/prefetch";
 
-// Lazy-loaded secondary pages
-const GPACalculator = lazy(() => import("./pages/GPACalculator"));
-const Faculty = lazy(() => import("./pages/Faculty"));
-const Marketplace = lazy(() => import("./pages/Marketplace"));
-const Settings = lazy(() => import("./pages/Settings"));
-const Recreation = lazy(() => import("./pages/Recreation"));
-const RecreationCategory = lazy(() => import("./pages/RecreationCategory"));
-const RecreationDetail = lazy(() => import("./pages/RecreationDetail"));
-const AnnouncementDetail = lazy(() => import("./pages/AnnouncementDetail"));
-const BuildingsPage = lazy(() => import("./pages/BuildingsPageNew"));
-import CoursePage from "./pages/CoursePage";
-const NotFound = lazy(() => import("./pages/NotFound"));
+// Lazy-loaded pages
+const Dashboard = lazy(PAGE_IMPORTS.Dashboard);
+const Majors = lazy(PAGE_IMPORTS.Majors);
+const MajorPage = lazy(PAGE_IMPORTS.MajorPage);
+const Vault = lazy(PAGE_IMPORTS.Vault);
+const VaultDetail = lazy(PAGE_IMPORTS.VaultDetail);
+const CoursePage = lazy(PAGE_IMPORTS.CoursePage);
+const GPACalculator = lazy(PAGE_IMPORTS.GPACalculator);
+const Faculty = lazy(PAGE_IMPORTS.Faculty);
+const Marketplace = lazy(PAGE_IMPORTS.Marketplace);
+const Settings = lazy(PAGE_IMPORTS.Settings);
+const Recreation = lazy(PAGE_IMPORTS.Recreation);
+const RecreationCategory = lazy(PAGE_IMPORTS.RecreationCategory);
+const RecreationDetail = lazy(PAGE_IMPORTS.RecreationDetail);
+const AnnouncementDetail = lazy(PAGE_IMPORTS.AnnouncementDetail);
+const BuildingsPage = lazy(PAGE_IMPORTS.BuildingsPage);
+const NotFound = lazy(PAGE_IMPORTS.NotFound);
+
+import { LazyMotion, domAnimation } from "framer-motion";
 
 const queryClient = new QueryClient();
 
@@ -66,14 +70,17 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <PreferencesProvider>
         <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <ScrollRestoration />
-            <GlobalErrorBoundary>
-              <AppRoutes />
-            </GlobalErrorBoundary>
-          </BrowserRouter>
+          <LazyMotion features={domAnimation}>
+            <Toaster />
+            <Sonner />
+            <Analytics />
+            <BrowserRouter>
+              <ScrollRestoration />
+              <GlobalErrorBoundary>
+                <AppRoutes />
+              </GlobalErrorBoundary>
+            </BrowserRouter>
+          </LazyMotion>
         </TooltipProvider>
       </PreferencesProvider>
     </QueryClientProvider>

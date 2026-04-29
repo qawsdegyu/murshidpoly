@@ -5,7 +5,7 @@ import {
   BookOpen, Search, Code2, Shield,
   Banknote, Languages, LayoutGrid,
   Wrench, Flag, Lightbulb, Type, GraduationCap, FileText,
-  Share2, Upload
+  Share2, Upload, FlaskConical, Calculator
 } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import CourseCard from "@/components/CourseCard";
@@ -15,52 +15,16 @@ import { usePreferences } from "@/contexts/PreferencesContext";
 
 const categories = [
   { id: "all", nameEn: "All", nameAr: "الكل", icon: LayoutGrid },
-  { id: "engineering", nameEn: "Engineering & Programming", nameAr: "العلوم الهندسية والبرمجية", icon: Code2 },
-  { id: "humanities", nameEn: "Humanities & Economics", nameAr: "المتطلبات الإنسانية والاقتصادية", icon: Banknote },
-  { id: "languages", nameEn: "Languages & Communication", nameAr: "اللغات والتواصل", icon: Languages },
-  { id: "military_islamic", nameEn: "Military & Islamic Sciences", nameAr: "العلوم العسكرية والإسلامية", icon: Shield },
+  { id: "math", nameEn: "Engineering Math", nameAr: "الرياضيات الهندسية المشتركة", icon: Calculator },
+  { id: "physics", nameEn: "Physics & Engineering", nameAr: "فيزياء وهندسة أساسية", icon: Shield },
+  { id: "chemistry", nameEn: "Chemistry", nameAr: "مواد الكيمياء", icon: FlaskConical },
+  { id: "computing", nameEn: "Computing & Practical", nameAr: "حاسوب وهندسة عملية", icon: Code2 },
+  { id: "support", nameEn: "Engineering Support", nameAr: "مواد مساندة هندسية", icon: Banknote },
+  { id: "culture", nameEn: "General Culture", nameAr: "ثقافة عامة", icon: Flag },
+  { id: "arabic", nameEn: "Arabic Language", nameAr: "اللغة العربية", icon: Type },
+  { id: "skills", nameEn: "Skills & Development", nameAr: "المهارات والتطوير", icon: Lightbulb },
+  { id: "english", nameEn: "English Language", nameAr: "اللغة الإنجليزية", icon: Languages },
 ];
-
-const courseCategoryMap: Record<string, string> = {
-  programming_cpp: "engineering",
-  engineering_workshop: "engineering",
-  national_studies: "humanities",
-  entrepreneurship: "humanities",
-  ee201: "humanities",
-  english101: "languages",
-  english102: "languages",
-  applied_arabic: "languages",
-  military_science: "military_islamic",
-  islamic_culture: "military_islamic",
-  // Adding others from mockData just in case, but user only specified these
-  c6: "engineering", // Calculus 1
-  c2: "engineering", // Calculus 2
-  p101: "engineering", // Physics 1
-  p102: "engineering", // Physics 2
-  chem101: "engineering", // Chemistry
-  stat101: "humanities", // Stats
-  isl101: "military_islamic", // Islam & Life
-};
-
-const courseIcons: Record<string, any> = {
-  programming_cpp: Code2,
-  engineering_workshop: Wrench,
-  national_studies: Flag,
-  entrepreneurship: Lightbulb,
-  ee201: Banknote,
-  english101: Languages,
-  english102: Languages,
-  applied_arabic: Type,
-  military_science: Shield,
-  islamic_culture: GraduationCap,
-  c6: BookOpen,
-  c2: BookOpen,
-  p101: Shield,
-  p102: Shield,
-  chem101: BookOpen,
-  stat101: FileText,
-  isl101: GraduationCap,
-};
 
 export default function Vault() {
   const { t, lang, dir } = usePreferences();
@@ -78,12 +42,9 @@ export default function Vault() {
     setSearchParams(searchParams);
   };
 
-  const filtered = useMemo(() => {
-    return courses.filter(c => {
-      const category = courseCategoryMap[c.id] || "other";
+  const groupedData = useMemo(() => {
+    const baseFiltered = courses.filter(c => {
       const hasFiles = resourcesByCourse[c.id] && resourcesByCourse[c.id].length > 0;
-      
-      // Rule: Strict data cleanup - remove subjects without files
       if (!hasFiles) return false;
 
       const matchesSearch = !q || 
@@ -91,34 +52,55 @@ export default function Vault() {
         c.nameAr.includes(q) || 
         c.code.toLowerCase().includes(q.toLowerCase());
       
-      const matchesCategory = activeTab === "all" || category === activeTab;
+      const matchesCategory = activeTab === "all" || c.category === activeTab;
 
       return matchesSearch && matchesCategory;
     });
-  }, [q, activeTab]);
+
+    if (activeTab !== "all") {
+      return [{ categoryId: activeTab, courses: baseFiltered }];
+    }
+
+    // Group by category if 'All' is selected
+    const groups: Record<string, typeof courses> = {};
+    baseFiltered.forEach(c => {
+      const catId = c.category || "other";
+      if (!groups[catId]) groups[catId] = [];
+      groups[catId].push(c);
+    });
+
+    return categories
+      .filter(cat => cat.id !== "all" && groups[cat.id])
+      .map(cat => ({
+        categoryId: cat.id,
+        categoryName: lang === "ar" ? cat.nameAr : cat.nameEn,
+        courses: groups[cat.id]
+      }));
+  }, [q, activeTab, lang]);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-      style={{ willChange: "transform, opacity" }}
-      className="pb-20"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="relative min-h-[100vh] overflow-y-scroll scrollbar-hide pointer-events-none pb-20"
     >
-      <PageHeader 
-        title={t.vault.title} 
-        subtitle={t.vault.subtitle} 
-        icon={<BookOpen className="h-6 w-6" />} 
-      />
+      {/* ── Background Stability Layer ── */}
+      <div className="fixed inset-0 pointer-events-none -z-10 bg-background" />
+
+      <div className="pointer-events-auto">
+        <PageHeader 
+          title={t.vault.title} 
+          subtitle={t.vault.subtitle} 
+          icon={<BookOpen className="h-6 w-6" />} 
+        />
+      </div>
 
       {/* ── Contribute Card ── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        whileHover={{ scale: 1.01 }}
-        style={{ willChange: "transform, opacity" }}
-        className="mb-6 p-4 md:p-6 rounded-2xl md:rounded-[2rem] bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent border border-emerald-500/20 backdrop-blur-xl relative overflow-hidden group"
+        className="mb-6 p-4 md:p-6 rounded-2xl md:rounded-[2rem] bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent border border-emerald-500/20 backdrop-blur-xl relative overflow-hidden group pointer-events-auto"
       >
         <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 blur-[80px] -mr-32 -mt-32 rounded-full hidden md:block" />
         
@@ -165,7 +147,7 @@ export default function Vault() {
       </motion.div>
 
       {/* Search Bar */}
-      <div className="relative mb-6">
+      <div className="relative mb-6 pointer-events-auto">
         <Search className="absolute top-1/2 -translate-y-1/2 ltr:left-4 rtl:right-4 h-4.5 w-4.5 text-muted-foreground" />
         <Input 
           value={q} 
@@ -176,7 +158,7 @@ export default function Vault() {
       </div>
 
       {/* Category Tabs */}
-      <div className="flex flex-wrap gap-1.5 mb-8 overflow-x-auto pb-2 scrollbar-hide">
+      <div className="flex flex-wrap gap-1.5 mb-8 overflow-x-auto pb-2 scrollbar-hide pointer-events-auto">
         {categories?.map((cat) => {
           const Icon = cat.icon;
           const isActive = activeTab === cat.id;
@@ -206,26 +188,45 @@ export default function Vault() {
       </div>
 
       {/* Course Grid */}
-      <div 
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
-      >
+      <div className="space-y-12 min-h-[400px] pointer-events-auto">
         <AnimatePresence mode="popLayout" initial={false}>
-          {filtered?.map((c, i) => (
-            <CourseCard
-              key={c.id}
-              course={c}
-              index={i}
-              onClick={() => navigate(`/materials/${c.id}`)}
-            />
+          {groupedData.map((group) => (
+            <div key={group.categoryId} className="space-y-6">
+              {activeTab === "all" && (
+                <div className="flex items-center gap-3">
+                  <div className="h-8 w-1.5 rounded-full bg-primary shadow-elegant" />
+                  <h2 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white">
+                    {group.categoryName}
+                  </h2>
+                </div>
+              )}
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+                {group.courses.map((c, i) => {
+                  const categoryObj = categories.find(cat => cat.id === (c.category || "math"));
+                  const Icon = categoryObj?.icon || BookOpen;
+                  
+                  return (
+                    <CourseCard
+                      key={c.id}
+                      course={c}
+                      index={i}
+                      icon={<Icon className="h-4 w-4" />}
+                      onClick={() => navigate(`/materials/${c.id}`)}
+                    />
+                  );
+                })}
+              </div>
+            </div>
           ))}
         </AnimatePresence>
       </div>
 
-      {filtered.length === 0 && (
+      {groupedData.length === 0 && (
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-center py-20"
+          className="text-center py-20 pointer-events-auto"
         >
           <div className="h-20 w-20 bg-muted/20 rounded-full grid place-items-center mx-auto mb-4">
             <Search className="h-8 w-8 text-muted-foreground" />

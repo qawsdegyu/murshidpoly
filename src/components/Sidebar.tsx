@@ -5,6 +5,8 @@ import {
 } from "lucide-react";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { cn } from "@/lib/utils";
+import { PAGE_IMPORTS, prefetchPage } from "@/lib/prefetch";
+
 
 const Sidebar = memo(() => {
   const { t, dir } = usePreferences();
@@ -24,13 +26,13 @@ const Sidebar = memo(() => {
 
 
   const items = [
-    { to: "/", icon: LayoutDashboard, label: t.nav.dashboard, end: true },
-    { to: "/majors", icon: GraduationCap, label: t.nav.majors },
-    { to: "/vault", icon: BookOpen, label: t.nav.vault },
-    { to: "/gpa", icon: Calculator, label: t.nav.gpa },
-    { to: "/campus-map", icon: MapPin, label: t.nav.campusMap },
-    { to: "/marketplace", icon: ShoppingBag, label: t.nav.marketplace },
-    { to: "/recreation", icon: Sparkles, label: t.nav.recreation },
+    { to: "/", icon: LayoutDashboard, label: t.nav.dashboard, end: true, prefetch: PAGE_IMPORTS.Dashboard },
+    { to: "/majors", icon: GraduationCap, label: t.nav.majors, prefetch: PAGE_IMPORTS.Majors },
+    { to: "/vault", icon: BookOpen, label: t.nav.vault, prefetch: PAGE_IMPORTS.Vault },
+    { to: "/gpa", icon: Calculator, label: t.nav.gpa, prefetch: PAGE_IMPORTS.GPACalculator },
+    { to: "/campus-map", icon: MapPin, label: t.nav.campusMap, prefetch: PAGE_IMPORTS.BuildingsPage },
+    { to: "/marketplace", icon: ShoppingBag, label: t.nav.marketplace, prefetch: PAGE_IMPORTS.Marketplace },
+    { to: "/recreation", icon: Sparkles, label: t.nav.recreation, prefetch: PAGE_IMPORTS.Recreation },
   ];
 
   const isActive = (to: string, end?: boolean) =>
@@ -92,6 +94,7 @@ const Sidebar = memo(() => {
                   to={it.to}
                   ref={active ? activeRef : null}
                   onClick={() => setIsOpen(false)}
+                  onMouseEnter={() => prefetchPage(it.prefetch)}
                   className={cn(
                     "group relative flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg transition-all active-press w-full",
                     active
