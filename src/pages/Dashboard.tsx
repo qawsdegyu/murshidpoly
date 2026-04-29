@@ -54,20 +54,14 @@ export default function Dashboard() {
       label: lang === "ar" ? "الخطة الدراسية" : "Study Plan", 
       desc: lang === "ar" ? "تتبع مسارك الأكاديمي" : "Track your academic journey"
     },
-    { 
-      to: "/faculty", 
-      icon: Users, 
-      label: t.nav.faculty, 
-      desc: lang === "ar" ? "ابحث عن المدرسين ومعلومات التواصل" : "Find professors & contact info"
-    },
   ];
 
   return (
-    <motion.div className="space-y-6 md:space-y-10" variants={container} initial="hidden" animate="show">
+    <motion.div className="space-y-4 md:space-y-6" variants={container} initial="hidden" animate="show">
       {/* Hero */}
       <motion.section
         variants={item}
-        className="relative overflow-hidden rounded-3xl md:rounded-[2.5rem] border border-slate-200 dark:border-white/10 shadow-xl min-h-[320px] md:min-h-[420px] flex items-center transition-colors duration-300"
+        className="relative overflow-hidden rounded-[2rem] md:rounded-[2.5rem] border border-slate-200 dark:border-white/10 shadow-xl min-h-[260px] md:min-h-[340px] flex items-center transition-colors duration-300"
       >
         {/* Background Image with Overlays */}
         <div className="absolute inset-0">
@@ -83,41 +77,41 @@ export default function Dashboard() {
           <div className="absolute inset-0 bg-primary/30 mix-blend-overlay" />
         </div>
 
-        <div className="relative z-10 p-5 md:p-14 w-full">
-          <div className="flex items-center gap-4 mb-8">
+        <div className="relative z-10 p-4 md:p-10 w-full">
+          <div className="flex items-center gap-3 mb-6">
             <img 
               src="/rs.png" 
               alt="Murshid Logo" 
-              className="h-16 w-16 rounded-full object-contain shadow-md border border-white/20 hover:scale-110 transition-transform duration-500"
+              className="h-12 w-12 rounded-full object-contain shadow-md border border-white/20 hover:scale-110 transition-transform duration-500"
               loading="lazy"
               decoding="async"
             />
-            <div className="h-10 w-[1px] bg-white/20 mx-1" />
+            <div className="h-8 w-[1px] bg-white/20 mx-0.5" />
             <div className="flex flex-col">
-              <div className="text-white font-black text-xl md:text-2xl tracking-tighter leading-none">{t.appName}</div>
-              <div className="text-accent text-[10px] font-bold tracking-[0.2em] uppercase mt-1">Engineering Hub</div>
+              <div className="text-white font-black text-lg md:text-xl tracking-tighter leading-none">{t.appName}</div>
+              <div className="text-accent text-[9px] font-bold tracking-[0.2em] uppercase mt-0.5">Engineering Hub</div>
             </div>
           </div>
 
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/20 backdrop-blur-md border border-accent/30 text-accent text-[11px] font-black tracking-wider uppercase mb-6 shadow-lg">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-accent/20 backdrop-blur-md border border-accent/30 text-accent text-[10px] font-black tracking-wider uppercase mb-4 shadow-lg">
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
               Faculty of Engineering Technology
             </div>
-            <h1 className="text-2xl md:text-5xl lg:text-7xl font-black text-white mb-4 md:mb-6 leading-[1.05] drop-shadow-2xl">
+            <h1 className="text-2xl md:text-4xl lg:text-6xl font-black text-white mb-3 md:mb-4 leading-[1.05] drop-shadow-2xl">
               {t.dashboard.welcome}, <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-yellow-400">
                 Engineer
               </span>
             </h1>
-            <p className="text-neutral-300 text-xs md:text-lg lg:text-xl max-w-xl leading-relaxed font-medium drop-shadow-lg">
+            <p className="text-neutral-300 text-[11px] md:text-base lg:text-lg max-w-xl leading-relaxed font-bold drop-shadow-lg">
               {t.dashboard.subtitle}
             </p>
           </div>
         </div>
 
         {/* Decorative Element */}
-        <div className="absolute -right-24 -bottom-24 h-96 w-96 rounded-full bg-accent/20 blur-[120px] pointer-events-none hidden md:block" />
+        <div className="absolute -right-20 -bottom-20 h-80 w-80 rounded-full bg-accent/20 blur-[100px] pointer-events-none hidden md:block" />
       </motion.section>
 
       {/* Public Resource Stats */}
@@ -126,21 +120,21 @@ export default function Dashboard() {
           <motion.div
             key={s.label}
             variants={item}
-            whileHover={{ scale: 1.05, y: -5 }}
+            whileHover={{ scale: 1.05, y: -4 }}
             whileTap={{ scale: 0.95 }}
           >
             <Link
               to={s.to}
-              className="group bg-surface/80 border border-border shadow-sm backdrop-blur-xl p-4 md:p-6 rounded-[1.5rem] md:rounded-[2rem] flex flex-col h-full transition-all duration-300"
+              className="group bg-surface/80 border border-border shadow-sm backdrop-blur-xl p-2.5 md:p-4 rounded-xl md:rounded-[1.5rem] flex flex-col h-full transition-all duration-300"
             >
-              <div className="flex items-center justify-between mb-3 md:mb-4">
-                <div className="h-9 w-9 md:h-10 md:w-10 rounded-xl bg-accent/10 border border-accent/20 grid place-items-center group-hover:bg-accent/20 transition-colors">
-                  <s.icon className="h-4 w-4 md:h-5 md:w-5 text-accent" />
+              <div className="flex items-center justify-between mb-1.5 md:mb-2">
+                <div className="h-7 w-7 md:h-8 md:w-8 rounded-lg bg-accent/10 border border-accent/20 grid place-items-center group-hover:bg-accent/20 transition-colors">
+                  <s.icon className="h-3.5 w-3.5 md:h-4 md:w-4 text-accent" />
                 </div>
-                <ArrowRight className="h-4 w-4 text-accent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <ArrowRight className="h-3.5 w-3.5 text-accent opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-              <div className="text-xl md:text-3xl font-black text-content tracking-tighter mb-1">{s.value}</div>
-              <div className="text-[10px] font-black uppercase tracking-widest text-content/50">{s.label}</div>
+              <div className="text-xl md:text-3xl font-black text-content tracking-tighter mb-0.5">{s.value}</div>
+              <div className="text-[9px] font-black uppercase tracking-widest text-content/50">{s.label}</div>
             </Link>
           </motion.div>
         ))}
@@ -152,13 +146,12 @@ export default function Dashboard() {
       </motion.div>
 
       <motion.section variants={item} className="relative z-10">
-        <div className="flex items-center gap-4 mb-6 md:mb-8">
+        <div className="flex items-center gap-4 mb-4 md:mb-6">
           <h2 className="text-xl md:text-2xl lg:text-3xl font-black tracking-tight text-foreground">{t.dashboard.quickActions}</h2>
           <div className="h-[2px] flex-1 bg-gradient-to-r from-accent/50 via-accent/5 to-transparent rounded-full" />
         </div>
         
-        
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:flex lg:justify-center lg:gap-12">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 lg:flex lg:justify-center lg:gap-10">
             {quickActions?.map((a) => (
               <QuickLinkCard
                 key={a.to}
@@ -172,11 +165,11 @@ export default function Dashboard() {
 
       {/* Campus Guide */}
       <motion.section variants={item}>
-        <div className="flex items-end justify-between mb-5">
-          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">{t.dashboard.campusGuide || "Campus Guide"}</h2>
+        <div className="flex items-end justify-between mb-4">
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-black text-foreground">{t.dashboard.campusGuide || "Campus Guide"}</h2>
           <div className="h-px flex-1 mx-4 md:mx-6 bg-gradient-to-r from-accent/40 to-transparent" />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
           {buildings?.map((b) => (
             <motion.a
               key={b.id}
@@ -185,9 +178,9 @@ export default function Dashboard() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="group bg-card/80 border border-border shadow-sm backdrop-blur-xl overflow-hidden rounded-2xl md:rounded-[2rem] flex flex-col transition-all duration-300"
+              className="group bg-card/80 border border-border shadow-sm backdrop-blur-xl overflow-hidden rounded-2xl md:rounded-[2.5rem] flex flex-col transition-all duration-300"
             >
-              <div className="h-44 md:h-52 w-full relative overflow-hidden">
+              <div className="h-24 md:h-28 w-full relative overflow-hidden">
                 <img 
                   src={b.imageUrl} 
                   alt={b.name} 
@@ -196,25 +189,25 @@ export default function Dashboard() {
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                <div className="absolute top-4 ltr:right-4 rtl:left-4 h-9 w-9 rounded-full bg-black/40 backdrop-blur-md grid place-items-center text-white border border-white/20 shadow-lg">
-                  <ExternalLink className="h-4 w-4" />
+                <div className="absolute top-2 ltr:right-2 rtl:left-2 h-7 w-7 rounded-full bg-black/40 backdrop-blur-md grid place-items-center text-white border border-white/20 shadow-lg">
+                  <ExternalLink className="h-3 w-3" />
                 </div>
               </div>
-              <div className="p-5 md:p-7 flex-1 flex flex-col bg-card/50 dark:bg-card/20 backdrop-blur-xl">
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="h-9 w-9 rounded-xl bg-accent/20 border border-accent/30 grid place-items-center text-accent shrink-0">
-                    <MapPin className="h-5 w-5" />
+              <div className="p-3 md:p-4 flex-1 flex flex-col bg-card/50 dark:bg-card/20 backdrop-blur-xl">
+                <div className="flex items-start gap-2 mb-1.5">
+                  <div className="h-7 w-7 rounded-lg bg-accent/20 border border-accent/30 grid place-items-center text-accent shrink-0">
+                    <MapPin className="h-3.5 w-3.5" />
                   </div>
-                  <h3 className="font-black text-xl md:text-2xl leading-tight text-foreground break-words">
+                  <h3 className="font-black text-base md:text-lg leading-tight text-foreground break-words">
                     {lang === "ar" ? b.nameAr : b.name}
                   </h3>
                 </div>
-                <p className="text-sm md:text-base text-muted-foreground leading-relaxed flex-1 mb-4">
+                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed flex-1 mb-3 font-bold">
                   {lang === "ar" ? b.descriptionAr : b.description}
                 </p>
-                <div className="flex flex-wrap gap-2 mt-auto">
+                <div className="flex flex-wrap gap-1.5 mt-auto">
                   {(lang === "ar" ? b?.departmentsAr : b?.departments)?.map((dept) => (
-                    <span key={dept} className="px-3 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-accent/10 text-accent border border-accent/20">
+                    <span key={dept} className="px-2.5 py-1 text-[9px] font-black uppercase tracking-wider rounded-lg bg-accent/10 text-accent border border-accent/20">
                       {dept}
                     </span>
                   ))}

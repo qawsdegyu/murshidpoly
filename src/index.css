@@ -127,8 +127,8 @@
   }
   html {
     font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 130%; /* Professional upgrade: 115% -> 130% for high-end readability */
-    line-height: 1.6; /* Improved vertical rhythm */
+    font-size: 100%; /* Reset to standard scaling for compact UI */
+    line-height: 1.5; /* Tightened line height */
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 

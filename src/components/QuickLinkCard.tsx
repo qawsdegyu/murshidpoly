@@ -17,11 +17,11 @@ export default function QuickLinkCard({ to, icon: Icon, label }: QuickLinkProps)
     >
       <Link to={to} className="group flex flex-col items-center">
         {/* Circle container */}
-        <div className="w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 rounded-full bg-slate-100/60 dark:bg-slate-800/60 flex items-center justify-center transition-all duration-300 group-hover:bg-slate-200/80 dark:group-hover:bg-slate-700/80 shadow-sm border border-slate-200 dark:border-white/5">
-          <Icon className="w-8 h-8 lg:w-16 lg:h-16 text-content transition-transform duration-300 group-hover:scale-110" strokeWidth={1.5} />
+        <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-20 lg:h-20 rounded-full bg-slate-100/60 dark:bg-slate-800/60 flex items-center justify-center transition-all duration-300 group-hover:bg-slate-200/80 dark:group-hover:bg-slate-700/80 shadow-sm border border-slate-200 dark:border-white/5">
+          <Icon className="w-5 h-5 lg:w-10 lg:h-10 text-content transition-transform duration-300 group-hover:scale-110" strokeWidth={1.5} />
         </div>
         {/* Label */}
-        <span className="text-[10px] font-medium mt-1.5 text-content lg:text-sm lg:font-semibold lg:mt-3 text-center leading-tight max-w-[90px] sm:max-w-[100px] lg:max-w-[130px] line-clamp-2 break-words">
+        <span className="text-[10px] font-bold mt-1 text-content lg:text-sm lg:font-black lg:mt-2.5 text-center leading-tight max-w-[70px] sm:max-w-[80px] lg:max-w-[110px] line-clamp-2 break-words">
           {label}
         </span>
       </Link>

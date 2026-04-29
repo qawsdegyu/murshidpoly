@@ -43,7 +43,6 @@ const AppRoutes = () => {
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<PageTransition><Dashboard /></PageTransition>} />
             <Route path="/gpa" element={<PageTransition><GPACalculator /></PageTransition>} />
-            <Route path="/faculty" element={<PageTransition><Faculty /></PageTransition>} />
             <Route path="/majors" element={<PageTransition><Majors /></PageTransition>} />
             <Route path="/major/:id" element={<PageTransition><MajorPage /></PageTransition>} />
             <Route path="/materials/:id" element={<PageTransition><CoursePage /></PageTransition>} />

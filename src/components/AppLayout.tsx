@@ -41,7 +41,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
         <div className="absolute inset-0 opacity-[0.05] dark:opacity-[0.1] mix-blend-overlay pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat" />
       </div>
       <Sidebar />
-      <main className="flex-1 w-full max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10 relative z-10">
+      <main className="flex-1 w-full max-w-[1440px] mx-auto px-2 sm:px-3 lg:px-4 py-3 md:py-4 relative z-10">
         {children}
       </main>
       <Footer />

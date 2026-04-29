@@ -31,7 +31,7 @@ const CourseCard = memo(forwardRef<HTMLButtonElement, CourseCardProps>(
         whileTap={{ scale: 0.98 }}
         style={{ willChange: "transform, opacity" }}
         onClick={onClick}
-        className="group relative text-start p-5 md:p-8 rounded-2xl bg-card/40 border border-border shadow-sm hover:shadow-2xl hover:border-accent/30 hover:bg-card/60 transition-all duration-500 overflow-hidden flex flex-col h-full"
+        className="group relative text-start p-4 md:p-6 rounded-xl bg-card/40 border border-border shadow-sm hover:shadow-2xl hover:border-accent/30 hover:bg-card/60 transition-all duration-500 overflow-hidden flex flex-col h-full"
 
       >
 
@@ -41,39 +41,39 @@ const CourseCard = memo(forwardRef<HTMLButtonElement, CourseCardProps>(
           style={{ background: accentColor }} 
         />
         
-        <div className="flex items-start justify-between gap-3 relative z-10 mb-4">
+        <div className="flex items-start justify-between gap-2.5 relative z-10 mb-3">
           <div className="flex-1 min-w-0">
-            <div className="text-[11px] font-black tracking-widest uppercase text-muted-foreground mb-1.5 font-mono">
+            <div className="text-[10px] font-black tracking-widest uppercase text-muted-foreground mb-1 font-mono">
               {course?.code || "COURSE-ID"}
             </div>
-            <h3 className="text-base md:text-lg font-black text-foreground leading-[1.2] group-hover:text-accent transition-colors break-words">
+            <h3 className="text-[15px] md:text-base font-black text-foreground leading-[1.2] group-hover:text-accent transition-colors break-words">
               {isAr ? (course?.nameAr || "مادة غير معرفة") : (course?.name || "Unknown Course")}
             </h3>
           </div>
           <div 
-            className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0 border border-border/50"
+            className="h-8 w-8 rounded-lg flex items-center justify-center shrink-0 border border-border/50"
             style={{ background: `${accentColor}15`, color: accentColor }}
           >
-            <BookOpen className="h-5 w-5" />
+            <BookOpen className="h-4 w-4" />
           </div>
         </div>
 
-        <div className="mt-auto pt-4 border-t border-border/50 flex items-center justify-between relative z-10">
-          <div className="flex items-center gap-2">
+        <div className="mt-auto pt-3 border-t border-border/50 flex items-center justify-between relative z-10">
+          <div className="flex items-center gap-1.5">
             {hasResources ? (
               <span
-                className="inline-flex items-center gap-1 text-[12px] font-black px-2 py-1 rounded-lg"
+                className="inline-flex items-center gap-1 text-[11px] font-black px-2 py-0.5 rounded-md"
                 style={{ background: `${accentColor}22`, color: accentColor }}
               >
-                <FileText className="h-3 w-3" />
+                <FileText className="h-2.5 w-2.5" />
                 {isAr ? "ملفات متاحة" : "Resources"}
               </span>
             ) : (
-              <span className="text-[12px] text-muted-foreground font-black">
+              <span className="text-[11px] text-muted-foreground font-black">
                 {isAr ? "قريباً" : "Coming soon"}
               </span>
             )}
-            <span className="text-[12px] text-muted-foreground font-bold uppercase tracking-wider">
+            <span className="text-[11px] text-muted-foreground font-bold uppercase tracking-wider">
               {course?.hours || 0} {isAr ? "ساعات" : "hrs"}
             </span>
           </div>

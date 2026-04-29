@@ -57,7 +57,7 @@ export default function Majors() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 md:grid-cols-12 auto-rows-fr md:auto-rows-[260px] gap-2 md:gap-6 mt-6 md:mt-10 px-4 md:px-0"
+          className="grid grid-cols-1 md:grid-cols-12 auto-rows-fr md:auto-rows-[220px] gap-2 md:gap-5 mt-4 md:mt-8 px-4 md:px-0"
         >
           {majorsData.map((major, i) => {
             const Icon =
@@ -73,10 +73,10 @@ export default function Majors() {
                 whileTap={{ scale: 0.98 }}
                 className={cn(
                   getBentoClass(i),
-                  "group relative p-0 rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-slate-100 dark:border-slate-800 shadow-sm",
+                  "group relative p-0 rounded-xl md:rounded-[2rem] overflow-hidden border border-slate-100 dark:border-slate-800 shadow-sm",
                   "bg-white dark:bg-slate-900 transition-all duration-500 text-start",
                   "hover:border-slate-300 dark:hover:border-white/15 hover:shadow-lg",
-                  "flex flex-row md:flex-col h-24 md:h-auto"
+                  "flex flex-row md:flex-col h-20 md:h-auto"
                 )}
               >
                 {/* Background */}
@@ -97,29 +97,29 @@ export default function Majors() {
                   style={{ background: `radial-gradient(circle at 50% 90%, ${major.accentColor}22 0%, transparent 70%)` }} />
 
                 {/* Content */}
-                <div className="relative z-10 flex-1 h-full p-4 md:p-6 flex flex-col items-start justify-center md:justify-end">
-                  <div className="hidden md:inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl mb-5 transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
-                    <Icon className="w-7 h-7 text-white" strokeWidth={1.5} />
+                <div className="relative z-10 flex-1 h-full p-3 md:p-5 flex flex-col items-start justify-center md:justify-end">
+                  <div className="hidden md:inline-flex items-center justify-center w-11 h-11 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl mb-3 transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
+                    <Icon className="w-5.5 h-5.5 text-white" strokeWidth={1.5} />
                   </div>
 
-                  <h3 className="text-lg md:text-3xl font-black text-slate-900 dark:text-white [data-theme=pink]:text-rose-950 dark:[data-theme=pink]:text-rose-100 mb-0.5 md:mb-2 tracking-tight leading-tight group-hover:text-accent transition-colors">
+                  <h3 className="text-[17px] md:text-2xl font-black text-slate-900 dark:text-white [data-theme=pink]:text-rose-950 dark:[data-theme=pink]:text-rose-100 mb-0.5 md:mb-1.5 tracking-tight leading-tight group-hover:text-accent transition-colors">
                     {isAr ? major.nameAr : major.name}
                   </h3>
                   
-                  <p className="text-slate-500 dark:text-slate-400 text-xs md:text-sm leading-relaxed line-clamp-1 md:line-clamp-2 mb-0 md:mb-5 font-medium">
+                  <p className="text-slate-500 dark:text-slate-400 text-[11px] md:text-xs leading-relaxed line-clamp-1 md:line-clamp-2 mb-0 md:mb-4 font-medium">
                     {isAr ? major.descriptionAr : major.description}
                   </p>
 
-                  <div className="hidden md:flex items-center justify-between border-t border-slate-200 dark:border-white/8 pt-4 w-full">
+                  <div className="hidden md:flex items-center justify-between border-t border-slate-200 dark:border-white/8 pt-3 w-full">
                     <span
-                      className="inline-flex items-center gap-2 text-xs font-black tracking-widest uppercase transition-all duration-300 group-hover:gap-3"
+                      className="inline-flex items-center gap-1.5 text-[11px] font-black tracking-widest uppercase transition-all duration-300 group-hover:gap-2.5"
                       style={{ color: major.accentColor }}
                     >
                       {isAr ? "عرض التفاصيل" : "View Details"}
-                      <ChevronRight className={cn("w-4 h-4", dir === "rtl" ? "rotate-180" : "")} />
+                      <ChevronRight className={cn("w-3.5 h-3.5", dir === "rtl" ? "rotate-180" : "")} />
                     </span>
                     {major.studyPlanUrl && (
-                      <span className="text-[10px] font-black text-slate-400 dark:text-white/30 uppercase tracking-widest">
+                      <span className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-widest">
                         {isAr ? "PDF متاح" : "PDF available"}
                       </span>
                     )}

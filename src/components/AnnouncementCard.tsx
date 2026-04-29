@@ -38,28 +38,28 @@ const AnnouncementCard = memo(({ id }: AnnouncementCardProps) => {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/5 to-accent/15 pointer-events-none" />
         <div className="absolute -top-24 ltr:-right-24 rtl:-left-24 h-64 w-64 rounded-full bg-accent/15 blur-3xl pointer-events-none hidden md:block" />
         
-        <div className="relative grid md:grid-cols-[1fr_auto] gap-8 p-8 md:p-12 items-center">
+        <div className="relative grid md:grid-cols-[1fr_auto] gap-5 p-4 md:p-6 items-center">
           {/* Content */}
           <div className="min-w-0">
-            <div className="inline-flex items-center gap-1.5 text-[12px] font-black uppercase tracking-[0.2em] px-4 py-1.5 rounded-full bg-accent/15 text-accent border border-accent/30 backdrop-blur-sm mb-6">
-              <Megaphone className="h-4 w-4" />
+            <div className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-[0.2em] px-2.5 py-0.5 rounded-full bg-accent/15 text-accent border border-accent/30 backdrop-blur-sm mb-3">
+              <Megaphone className="h-3 w-3" />
               {badge}
             </div>
-            <h3 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-slate-100 mb-4 flex items-start gap-3 leading-[1.1]">
-              <Sparkles className="h-8 w-8 text-accent shrink-0 mt-1" />
+            <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-slate-100 mb-2 flex items-start gap-1.5 leading-[1.1]">
+              <Sparkles className="h-5 w-5 text-accent shrink-0 mt-0.5" />
               <span className="break-words">{title}</span>
             </h3>
-            <p className="text-base md:text-xl text-muted-foreground leading-relaxed max-w-3xl mb-8 break-words">
+            <p className="text-[11px] md:text-sm text-muted-foreground leading-snug max-w-2xl mb-4 break-words font-bold">
               {desc}
             </p>
-            <div className="inline-flex items-center gap-2 text-sm md:text-base font-black text-accent group-hover:gap-4 transition-all">
+            <div className="inline-flex items-center gap-1.5 text-xs font-black text-accent group-hover:gap-3 transition-all">
               {ctaLabel}
-              <ArrowRight className={`h-5 w-5 ${dir === "rtl" ? "rotate-180" : ""}`} />
+              <ArrowRight className={`h-4 w-4 ${dir === "rtl" ? "rotate-180" : ""}`} />
             </div>
           </div>
 
           {/* Optimized image */}
-          <div className="hidden md:block w-48 lg:w-56 aspect-[4/3] rounded-xl overflow-hidden border border-accent/30 bg-background/30 backdrop-blur-md shrink-0">
+          <div className="hidden md:block w-28 lg:w-36 aspect-[4/3] rounded-lg overflow-hidden border border-accent/30 bg-background/30 backdrop-blur-md shrink-0">
             {ann.imageUrl ? (
               <img 
                 src={ann.imageUrl} 
@@ -70,7 +70,7 @@ const AnnouncementCard = memo(({ id }: AnnouncementCardProps) => {
               />
             ) : (
               <div className="w-full h-full bg-accent/5 grid place-items-center">
-                <Megaphone className="h-12 w-12 text-accent/20" />
+                <Megaphone className="h-8 w-8 text-accent/20" />
               </div>
             )}
           </div>
