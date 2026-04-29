@@ -9,7 +9,7 @@ import AppLayout from "@/components/AppLayout";
 import ScrollRestoration from "@/components/ScrollRestoration";
 import GlobalErrorBoundary from "@/components/GlobalErrorBoundary";
 import BrandedLoader from "@/components/BrandedLoader";
-import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import PageTransition from "@/components/PageTransition";
 
 import Dashboard from "./pages/Dashboard";
@@ -39,24 +39,22 @@ const AppRoutes = () => {
   return (
     <AppLayout>
       <Suspense fallback={null}>
-        <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<PageTransition><Dashboard /></PageTransition>} />
-            <Route path="/gpa" element={<PageTransition><GPACalculator /></PageTransition>} />
-            <Route path="/majors" element={<PageTransition><Majors /></PageTransition>} />
-            <Route path="/major/:id" element={<PageTransition><MajorPage /></PageTransition>} />
-            <Route path="/materials/:id" element={<PageTransition><CoursePage /></PageTransition>} />
-            <Route path="/vault" element={<PageTransition><Vault /></PageTransition>} />
-            <Route path="/marketplace" element={<PageTransition><Marketplace /></PageTransition>} />
-            <Route path="/recreation" element={<PageTransition><Recreation /></PageTransition>} />
-            <Route path="/recreation/:category" element={<PageTransition><RecreationCategory /></PageTransition>} />
-            <Route path="/recreation/:category/:placeId" element={<PageTransition><RecreationDetail /></PageTransition>} />
-            <Route path="/campus-map" element={<PageTransition><CampusMap /></PageTransition>} />
-            <Route path="/settings" element={<PageTransition><Settings /></PageTransition>} />
-            <Route path="/announcement/:id" element={<PageTransition><AnnouncementDetail /></PageTransition>} />
-            <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
-          </Routes>
-        </AnimatePresence>
+        <Routes>
+          <Route path="/" element={<PageTransition><Dashboard /></PageTransition>} />
+          <Route path="/gpa" element={<PageTransition><GPACalculator /></PageTransition>} />
+          <Route path="/majors" element={<PageTransition><Majors /></PageTransition>} />
+          <Route path="/major/:id" element={<PageTransition><MajorPage /></PageTransition>} />
+          <Route path="/materials/:id" element={<PageTransition><CoursePage /></PageTransition>} />
+          <Route path="/vault" element={<PageTransition><Vault /></PageTransition>} />
+          <Route path="/marketplace" element={<PageTransition><Marketplace /></PageTransition>} />
+          <Route path="/recreation" element={<PageTransition><Recreation /></PageTransition>} />
+          <Route path="/recreation/:category" element={<PageTransition><RecreationCategory /></PageTransition>} />
+          <Route path="/recreation/:category/:placeId" element={<PageTransition><RecreationDetail /></PageTransition>} />
+          <Route path="/campus-map" element={<PageTransition><CampusMap /></PageTransition>} />
+          <Route path="/settings" element={<PageTransition><Settings /></PageTransition>} />
+          <Route path="/announcement/:id" element={<PageTransition><AnnouncementDetail /></PageTransition>} />
+          <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+        </Routes>
       </Suspense>
     </AppLayout>
 

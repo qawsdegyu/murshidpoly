@@ -1,6 +1,5 @@
 import { useState, memo, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard, GraduationCap, BookOpen, Users, Calculator, ShoppingBag, Sparkles, Settings, Menu, X, MapPin,
 } from "lucide-react";
@@ -59,17 +58,13 @@ const Sidebar = memo(() => {
       </button>
 
       {/* Backdrop */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-background/80 backdrop-blur-md z-30" 
-            onClick={() => setIsOpen(false)} 
-          />
+      <div 
+        className={cn(
+          "fixed inset-0 bg-background/80 backdrop-blur-md z-30 transition-opacity duration-300",
+          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
-      </AnimatePresence>
+        onClick={() => setIsOpen(false)} 
+      />
 
       <aside className={sideClasses}>
         {/* Logo area - Highly compact */}
@@ -92,11 +87,7 @@ const Sidebar = memo(() => {
           {items.map((it) => {
             const active = isActive(it.to, it.end);
             return (
-              <motion.div
-                key={it.to}
-                whileHover={{ scale: 1.01, x: dir === "rtl" ? -2 : 2 }}
-                whileTap={{ scale: 0.99 }}
-              >
+              <div key={it.to} className="w-full transition-transform active:scale-95 duration-200">
                 <Link
                   to={it.to}
                   ref={active ? activeRef : null}
@@ -111,7 +102,7 @@ const Sidebar = memo(() => {
                   <it.icon className={cn("h-[18px] w-[18px] shrink-0 transition-colors", active ? "text-primary-foreground" : "group-hover:text-accent")} />
                   <span className="font-bold text-sm whitespace-nowrap overflow-hidden text-ellipsis">{it.label}</span>
                 </Link>
-              </motion.div>
+              </div>
             );
           })}
         </nav>

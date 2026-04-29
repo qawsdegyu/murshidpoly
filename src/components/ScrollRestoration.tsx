@@ -24,22 +24,18 @@ export default function ScrollRestoration() {
 
   useEffect(() => {
     if (navigationType === "PUSH") {
-      // New navigation: jump to top
       window.scrollTo(0, 0);
     } else if (navigationType === "POP") {
-      // Back/Forward: restore saved position
       const savedY = scrollPositions.current[key];
       if (savedY !== undefined) {
-        // Master layout - scroll to top is now handled by the ScrollRestoration component
-        // to allow for intelligent back-button restoration.
+        // Use a minimal timeout to ensure the DOM has updated
         const timer = setTimeout(() => {
           window.scrollTo({ top: savedY, behavior: "instant" });
-        }, 150); // Increased delay to ensure AnimatePresence/Page content is ready
+        }, 0); 
         return () => clearTimeout(timer);
-
       }
     }
-  }, [key, navigationType, pathname]);
+  }, [key, navigationType]);
 
   return null;
 }

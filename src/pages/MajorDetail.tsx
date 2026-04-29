@@ -72,10 +72,8 @@ export default function MajorDetail() {
   const ar      = lang === "ar";
 
   const major = majors.find((m) => m.id === id);
-  console.log("MajorDetail rendering for id:", id, "Major found:", !!major);
 
   if (!major || !id) {
-    console.log("MajorDetail: Data not found, showing fallback UI");
     return (
       <div className='bg-slate-50 dark:bg-slate-950 h-screen flex flex-col items-center justify-center text-slate-900 dark:text-slate-100 transition-colors duration-300'>
         <GraduationCap className="h-20 w-20 text-slate-300 dark:text-slate-800 mb-6 animate-pulse" />
@@ -158,12 +156,7 @@ export default function MajorDetail() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,rgba(0,0,0,0.30)_100%)]" />
 
         {/* ── Back button top-right (RTL-safe) ── */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.35 }}
-          className="absolute top-5 ltr:left-5 rtl:right-5 z-20"
-        >
+        <div className="absolute top-5 ltr:left-5 rtl:right-5 z-20 animate-in fade-in duration-500">
           <button
             onClick={() => nav(-1)}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 border border-slate-200 shadow-sm backdrop-blur-xl dark:bg-white/[0.03] dark:border-white/[0.08] dark:backdrop-blur-2xl text-slate-900 dark:text-slate-100 font-bold text-sm hover:bg-white dark:hover:bg-white/10 transition-all"
@@ -171,11 +164,11 @@ export default function MajorDetail() {
             <ArrowLeft className={`w-4 h-4 shrink-0 ${dir === "rtl" ? "rotate-180" : ""}`} />
             <span>{t.common.back}</span>
           </button>
-        </motion.div>
+        </div>
 
         {/* ── Hero text (bottom strip, no overlap with back btn) ── */}
-        <div className="absolute bottom-0 inset-x-0 px-5 sm:px-8 pb-6 z-10">
-          <motion.div {...fadeUp(0.1)}>
+        <div className="absolute bottom-0 inset-x-0 px-5 sm:px-8 pb-6 z-10 animate-in slide-in-from-bottom-4 duration-500">
+          <div>
             {/* university badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/75 dark:bg-white/10 backdrop-blur-md border border-white/50 dark:border-white/10 text-[11px] font-black uppercase tracking-[0.16em] text-neutral-700 dark:text-white mb-3 shadow">
               <Sparkles className="w-3 h-3 text-primary dark:text-accent shrink-0" />
@@ -193,7 +186,7 @@ export default function MajorDetail() {
                 {name}
               </h1>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
 
@@ -201,7 +194,7 @@ export default function MajorDetail() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 space-y-14">
 
         {/* ── About ── */}
-        <motion.section {...fadeUp(0.15)}>
+        <section className="animate-in fade-in duration-700">
           <SectionHeader icon={<BookOpen className="w-4 h-4 md:w-5 md:h-5" />} label={ar ? "نظرة تفصيلية على التخصص" : "About the Major"} color={major.color} />
           <div className="mt-4 md:mt-6 grid lg:grid-cols-3 gap-3 md:gap-5">
             <div className="lg:col-span-2 rounded-[1.5rem] md:rounded-[2rem] bg-white/80 border border-slate-200 shadow-sm backdrop-blur-xl dark:bg-white/[0.03] dark:border-white/[0.08] dark:backdrop-blur-2xl p-4 md:p-8">
@@ -218,22 +211,19 @@ export default function MajorDetail() {
               <QuickStat icon={<TrendingUp className="w-5 h-5" />} label={ar ? "الطلب في السوق" : "Market Demand"} value={ar ? "مرتفع جداً" : "Very High"} color={major.color} />
             </div>
           </div>
-        </motion.section>
+        </section>
 
         {/* ── Degrees Offered — BADGES ── */}
-        <motion.section {...fadeUp(0.2)}>
+        <section className="animate-in fade-in duration-700">
           <SectionHeader icon={<Award className="w-5 h-5" />} label={ar ? "الدرجات العلمية المتاحة" : "Degrees Offered"} color={major.color} />
           <div className={`mt-6 rounded-[2rem] bg-white/80 border border-slate-200 shadow-sm backdrop-blur-xl dark:bg-white/[0.03] dark:border-white/[0.08] dark:backdrop-blur-2xl overflow-hidden`}>
             <div className={`h-1.5 bg-gradient-to-r ${major.color}`} />
             <div className="p-7">
               <div className="flex flex-wrap gap-3">
                 {degreeBadges.map((deg, i) => (
-                  <motion.span
+                  <span
                     key={i}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.08 + i * 0.06 }}
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white dark:bg-white/[0.06] border border-neutral-200 dark:border-white/10 shadow-sm"
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white dark:bg-white/[0.06] border border-neutral-200 dark:border-white/10 shadow-sm animate-in zoom-in-95 duration-300"
                   >
                     <GraduationCap className="w-4 h-4 text-primary dark:text-accent shrink-0" />
                     <span
@@ -242,15 +232,15 @@ export default function MajorDetail() {
                     >
                       {deg}
                     </span>
-                  </motion.span>
+                  </span>
                 ))}
               </div>
             </div>
           </div>
-        </motion.section>
+        </section>
 
         {/* ── Career Paths — BADGES ── */}
-        <motion.section {...fadeUp(0.25)}>
+        <section className="animate-in fade-in duration-700">
           <SectionHeader icon={<Briefcase className="w-5 h-5" />} label={ar ? "المسارات المهنية" : "Career Paths"} color={major.color} />
           <div className="mt-6 rounded-[2rem] bg-slate-900 border border-white/5 p-8 relative overflow-hidden">
             {/* blobs */}
@@ -258,12 +248,9 @@ export default function MajorDetail() {
             <div className={`absolute -bottom-16 -left-16 w-52 h-52 rounded-full bg-gradient-to-br ${major.color} opacity-10 blur-[70px] hidden md:block`} />
             <div className="relative z-10 flex flex-wrap gap-3">
               {fieldBadges.map((field, i) => (
-                <motion.span
+                <span
                   key={i}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + i * 0.07 }}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 border border-white/15 hover:bg-white/15 hover:border-white/25 transition-all cursor-default"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 border border-white/15 hover:bg-white/15 hover:border-white/25 transition-all cursor-default animate-in slide-in-from-bottom-2 duration-300"
                 >
                   <ChevronRight className={`w-3.5 h-3.5 text-white/50 shrink-0 ${dir === "rtl" ? "rotate-180" : ""}`} />
                   <span
@@ -272,23 +259,20 @@ export default function MajorDetail() {
                   >
                     {field}
                   </span>
-                </motion.span>
+                </span>
               ))}
             </div>
           </div>
-        </motion.section>
+        </section>
 
         {/* ── Global Salary Outlook — 3 CLEAN CARDS ── */}
-        <motion.section {...fadeUp(0.3)}>
+        <section className="animate-in fade-in duration-700">
           <SectionHeader icon={<Banknote className="w-5 h-5" />} label={ar ? "التوقعات الراتبية العالمية" : "Global Salary Outlook"} color={major.color} />
           <div className="mt-6 grid sm:grid-cols-3 gap-5">
             {salaryCards.map((card, i) => (
-              <motion.div
+              <div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + i * 0.1 }}
-                className="rounded-[2rem] overflow-hidden bg-white/80 border border-slate-200 shadow-sm backdrop-blur-xl dark:bg-white/[0.03] dark:border-white/[0.08] dark:backdrop-blur-2xl"
+                className="rounded-[2rem] overflow-hidden bg-white/80 border border-slate-200 shadow-sm backdrop-blur-xl dark:bg-white/[0.03] dark:border-white/[0.08] dark:backdrop-blur-2xl animate-in slide-in-from-bottom-6 duration-500"
               >
                 {/* coloured header */}
                 <div className={`bg-gradient-to-br ${card.color} p-5 flex items-center gap-3`}>
@@ -316,24 +300,22 @@ export default function MajorDetail() {
                   </p>
                   {/* progress bar */}
                   <div className="mt-4 h-1.5 rounded-full bg-neutral-100 dark:bg-white/5 overflow-hidden">
-                    <motion.div
-                      className={`h-full rounded-full bg-gradient-to-r ${card.color}`}
-                      initial={{ width: 0 }}
-                      animate={{ width: `${55 + i * 15}%` }}
-                      transition={{ delay: 0.5 + i * 0.15, duration: 0.9, ease: "easeOut" }}
+                    <div
+                      className={`h-full rounded-full bg-gradient-to-r ${card.color} transition-all duration-1000 ease-out`}
+                      style={{ width: `${55 + i * 15}%` }}
                     />
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
           <p className="mt-3 text-[11px] text-slate-500 dark:text-slate-400 text-center">
             {ar ? "* أرقام تقديرية مبنية على بيانات سوق العمل لعام 2024-2025" : "* Estimated figures based on 2024-2025 labour market data"}
           </p>
-        </motion.section>
+        </section>
 
         {/* ── First Year Courses ── */}
-        <motion.section {...fadeUp(0.35)}>
+        <section className="animate-in fade-in duration-700">
           <SectionHeader icon={<BookMarked className="w-5 h-5" />} label={ar ? "مواد السنة الأولى" : "First Year Courses"} color={major.color} />
           <div className="mt-6 rounded-[2rem] overflow-hidden bg-white/80 border border-slate-200 shadow-sm backdrop-blur-xl dark:bg-white/[0.03] dark:border-white/[0.08] dark:backdrop-blur-2xl">
             {/* dark intro bar */}
@@ -361,13 +343,11 @@ export default function MajorDetail() {
                 const catName = ar ? categoryNames[categoryId]?.ar : categoryNames[categoryId]?.en;
 
                 return (
-                  <motion.div
+                  <div
                     key={course.id}
-                    initial={{ opacity: 0, scale: 0.93 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.04 + i * 0.04 }}
+                    className="animate-in zoom-in-95 duration-300"
                   >
-                    <div className="group relative">
+                    <div className="group relative h-full">
                       <Link
                         to={`/materials/${course.id}`}
                         id={`course-link-${course.id}`}
@@ -408,7 +388,7 @@ export default function MajorDetail() {
                         <div className={`absolute inset-0 rounded-3xl border-2 border-transparent group-hover:border-primary/10 dark:group-hover:border-accent/5 pointer-events-none transition-colors`} />
                       </Link>
                     </div>
-                  </motion.div>
+                  </div>
                 );
               })}
             </div>
@@ -427,7 +407,7 @@ export default function MajorDetail() {
               </span>
             </div>
           </div>
-        </motion.section>
+        </section>
 
       </div>
     </div>

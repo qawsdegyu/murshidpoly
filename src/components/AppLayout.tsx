@@ -1,6 +1,4 @@
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { memo } from "react";
 import Sidebar from "@/components/Sidebar";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -11,13 +9,8 @@ interface AppLayoutProps {
   children: React.ReactNode;
 }
 
-export default function AppLayout({ children }: AppLayoutProps) {
+const AppLayout = memo(({ children }: AppLayoutProps) => {
   const { dir } = usePreferences();
-  const { pathname } = useLocation();
-
-  // Master layout - scroll behavior is now handled by the ScrollRestoration component
-  // to allow for intelligent back-button restoration and smooth transitions.
-
 
   return (
     <div className="min-h-screen bg-background transition-colors duration-500 selection:bg-accent/30 flex flex-col" dir={dir}>
@@ -49,4 +42,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
       <MurshidAssistant />
     </div>
   );
-}
+});
+
+AppLayout.displayName = "AppLayout";
+
+export default AppLayout;
