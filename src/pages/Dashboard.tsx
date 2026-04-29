@@ -32,11 +32,25 @@ export default function Dashboard() {
 
   const quickActions = [
     { 
+      to: "/instructors", 
+      icon: Users, 
+      label: lang === "ar" ? "دليل المدرسين" : "Instructors", 
+      desc: lang === "ar" ? "تواصل مع مدرسي الكلية" : "Contact faculty members",
+      prefetch: PAGE_IMPORTS.Faculty
+    },
+    { 
       to: "/vault", 
       icon: BookOpenText, 
       label: lang === "ar" ? "خزانة المواد" : "Subject Vault", 
       desc: lang === "ar" ? "ملخصات، كتب، سنوات سابقة" : "Summaries, books, exams, quizzes",
       prefetch: PAGE_IMPORTS.Vault
+    },
+    { 
+      to: "/campus-map", 
+      icon: MapPin, 
+      label: lang === "ar" ? "مواقع المباني" : "Campus Map", 
+      desc: lang === "ar" ? "خريطة تفاعلية للمباني والقاعات" : "Interactive map of buildings",
+      prefetch: PAGE_IMPORTS.BuildingsPage
     },
     { 
       to: "/gpa", 
@@ -157,7 +171,7 @@ export default function Dashboard() {
           <div className="h-[2px] flex-1 bg-gradient-to-r from-accent/50 via-accent/5 to-transparent rounded-full" />
         </div>
         
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 lg:flex lg:justify-center lg:gap-10">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:flex lg:justify-center lg:gap-10">
             {quickActions?.map((a) => (
               <QuickLinkCard
                 key={a.to}

@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUp } from "lucide-react";
+import { usePreferences } from "@/contexts/PreferencesContext";
+import { cn } from "@/lib/utils";
 
 export default function ScrollToTop() {
+  const { dir } = usePreferences();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -36,7 +39,10 @@ export default function ScrollToTop() {
           transition={{ duration: 0.2, ease: "easeOut" }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
-          className="fixed bottom-8 left-8 z-50 h-12 w-12 rounded-full bg-accent shadow-lg shadow-accent/30 flex items-center justify-center border-2 border-background hover:shadow-xl hover:shadow-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className={cn(
+            "fixed bottom-24 z-50 h-10 w-10 rounded-full bg-accent/80 backdrop-blur-md shadow-lg shadow-accent/30 flex items-center justify-center border border-white/20 hover:shadow-xl hover:shadow-accent/40 focus-visible:outline-none transition-all duration-300",
+            dir === "rtl" ? "left-8" : "right-8"
+          )}
           aria-label="Scroll to top"
         >
           <ArrowUp className="h-5 w-5 text-accent-foreground stroke-[2.5]" />

@@ -1,8 +1,9 @@
 import { useState, memo, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
-  LayoutDashboard, GraduationCap, BookOpen, Users, Calculator, ShoppingBag, Sparkles, Settings, Menu, X, MapPin,
+  LayoutDashboard, GraduationCap, BookOpen, Users, Calculator, ShoppingBag, Sparkles, Settings, Menu, X, MapPin, ArrowLeft, ArrowRight,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { cn } from "@/lib/utils";
 import { PAGE_IMPORTS, prefetchPage } from "@/lib/prefetch";
@@ -11,8 +12,10 @@ import { PAGE_IMPORTS, prefetchPage } from "@/lib/prefetch";
 const Sidebar = memo(() => {
   const { t, dir } = usePreferences();
   const location = useLocation();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const activeRef = useRef<HTMLAnchorElement>(null);
+  const isRoot = location.pathname === "/";
 
   // Auto-scroll to active link when menu opens
   useEffect(() => {
@@ -40,7 +43,7 @@ const Sidebar = memo(() => {
     end ? location.pathname === to : location.pathname.startsWith(to);
 
   const sideClasses = cn(
-    "fixed top-0 z-40 h-screen bg-sidebar/95 backdrop-blur-[20px] border-sidebar-border transition-all duration-500 flex flex-col shadow-2xl",
+    "fixed top-0 z-40 h-screen bg-sidebar/95 backdrop-blur-[20px] border-sidebar-border transition-all duration-300 flex flex-col shadow-2xl",
     dir === "rtl" ? "right-0 border-l" : "left-0 border-r",
     "w-[55%] md:w-60", // Strict width: 55% Mobile, 240px Desktop
     isOpen ? "translate-x-0" : (dir === "rtl" ? "translate-x-full" : "-translate-x-full"),
@@ -49,15 +52,30 @@ const Sidebar = memo(() => {
   return (
     <>
       {/* Universal toggle button (Top Right) */}
+      {/* Floating Smart Action Button (Bottom) */}
       <button
-        onClick={() => setIsOpen(o => !o)}
+        onClick={() => {
+          if (isOpen) setIsOpen(false);
+          else if (!isRoot) navigate(-1);
+          else setIsOpen(true);
+        }}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setIsOpen(true);
+        }}
         className={cn(
-          "fixed top-2 z-50 p-1.5 rounded-lg bg-sidebar/80 border border-sidebar-border backdrop-blur-xl shadow-2xl transition-all duration-300 active:scale-90",
-          dir === "rtl" ? "right-2" : "left-2"
+          "fixed bottom-6 z-50 h-14 w-14 rounded-full gradient-primary text-primary-foreground shadow-elegant border border-white/20 backdrop-blur-xl transition-all duration-300 active:scale-90 flex items-center justify-center hover:scale-105",
+          dir === "rtl" ? "right-6" : "left-6"
         )}
-        aria-label="Toggle menu"
+        aria-label="Toggle menu or go back"
       >
-        {isOpen ? <X className="h-4.5 w-4.5 text-foreground" /> : <Menu className="h-4.5 w-4.5 text-foreground" />}
+        {isOpen ? (
+          <X className="h-7 w-7" />
+        ) : !isRoot ? (
+          dir === "rtl" ? <ArrowRight className="h-7 w-7" /> : <ArrowLeft className="h-7 w-7" />
+        ) : (
+          <Menu className="h-7 w-7" />
+        )}
       </button>
 
       {/* Backdrop */}
