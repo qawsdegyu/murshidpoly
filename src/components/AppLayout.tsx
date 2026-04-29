@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import MurshidAssistant from "@/components/MurshidAssistant";
 import StaticBackground from "@/components/StaticBackground";
+import FloatingActionMenu from "@/components/FloatingActionMenu";
 import { usePreferences } from "@/contexts/PreferencesContext";
 
 interface AppLayoutProps {
@@ -23,6 +24,7 @@ const AppLayout = memo(({ children }: AppLayoutProps) => {
       <Footer />
       <ScrollToTop />
       <MurshidAssistant />
+      <FloatingActionMenu />
     </div>
   );
 });
