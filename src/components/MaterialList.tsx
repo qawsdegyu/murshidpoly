@@ -58,16 +58,16 @@ export default function MaterialList({ items, emptyMessage }: MaterialListProps)
               if (url) window.open(url, "_blank", "noopener,noreferrer");
             }}
             className={cn(
-              "w-full group flex items-center justify-between px-3 py-2 md:py-2.5 rounded-xl border transition-all duration-300 shadow-sm",
+              "w-full group flex items-center justify-between px-3 py-2 md:py-2.5 rounded-xl border transition-all duration-300 shadow-sm border-navy-contrast",
               isVideo 
                 ? "bg-red-500/5 border-red-500/20 text-red-600 dark:text-red-400 hover:bg-red-500 hover:text-white"
-                : "bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 hover:border-primary/30 hover:bg-slate-50 dark:hover:bg-white/10"
+                : "bg-white dark:bg-surface/5 hover:border-primary/30 hover:bg-slate-50 dark:hover:bg-white/10"
             )}
           >
             {/* Title and Metadata on the Start side */}
             <div className="flex flex-col items-start text-start min-w-0 flex-1 pr-3 rtl:pr-0 rtl:pl-3">
               <span className={cn(
-                "text-xs md:text-[13px] font-black leading-tight break-words",
+                "text-xs md:text-[13px] font-black leading-tight break-words navy-pop",
                 isVideo ? "text-red-600 dark:text-red-400 group-hover:text-white" : "text-slate-900 dark:text-slate-100"
               )}>
                 {item.title}

@@ -417,9 +417,43 @@ export const resourcesByCourse: Record<string, Resource[]> = {
 
   ],
   "numerical": [
-    // --- الشروحات المرئية (Videos & Visuals) ---
+    // --- الشروحات والكتب (Study Materials) ---
     { id: "num-v1", title: "شرح الدكتور كامل فليفل", type: "video", uploader: "د. كامل فليفل", size: "Playlist", url: "https://youtu.be/tnn5iY8WZKQ" },
     { id: "num-v2", title: "شرح طلاب (مراجعة شاملة)", type: "video", uploader: "مراجعة طلاب", size: "Playlist", url: "https://youtu.be/pfY0t8XADnA" },
+    { id: "num-s1", title: "تقنيات عددية كامل (1)", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1mr-6x7aE1X19G5xlXhKRo-e3aMUXbJev" },
+    { id: "num-s2", title: "دفتر د. أمجد", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1pugW31jec3pBJ82B0WFS4_liioW4wjZY" },
+    { id: "num-b1", title: "كتاب تقنيات عددية", type: "book", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=19r_gBz3tZFAqpWvOX8f5u2_KTgDoFBjK" },
+    { id: "num-s3", title: "ملخص الفيديوهات", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=12KKc9f3PlHnA8Eko773Cfgq8nIo3pbDs" },
+    { id: "num-v3", title: "روابط فيديوهات المادة بالترتيب", type: "video", uploader: "Admin", size: "Playlist", url: "https://drive.google.com/open?id=13bidRRGk6IgQm_oOPL2b0Qqwr4g2dABb" },
+
+    // --- امتحانات ومواد الميد (Midterm) ---
+    { id: "num-e1", title: "شيت ميد تقنيات - أبو بكر", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=10u49f3GKwm-84l7Cued7c937oIwD9CFC" },
+    { id: "num-e2", title: "ملخص وسنوات ميد - فاعل خير", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1Kyn6WVSpQC8Ck7wQ5kwDCPBiB4LYOagd" },
+    { id: "num-e3", title: "ميد تقنيات 2024 ف1 محلول", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1vz8iYHT9Sr8ZrvkC9DYzrlUTl7CzskQp" },
+    { id: "num-e4", title: "ميد تقنيات - صيفي 2025 محلول", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1OCbYl0go8gD41bWdm81-C2_LnWjpuUJV" },
+    { id: "num-e5", title: "ميد تقنيات 2022", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1-wwx4Jc8wdznEgEXE345mxIW4rY0tAoZ" },
+    { id: "num-e6", title: "ميد تقنيات 2023 الصيفي", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1bSrYHNS-QX_dMka0ZPjYxtiQ3iFahpO_" },
+    { id: "num-e7", title: "ميد تقنيات الفصل الثاني 2023", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1FJGzzAqaOKjDcmD5fItDEjMxFTOzg47m" },
+    { id: "num-e8", title: "تقنيات ميد ورقي", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1QLpEbhBu3Ok0gHSJw4pUtSdOAYEiAjGg" },
+    { id: "num-e9", title: "تقنيات ميد ورقي 2", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1AaifX5od5UdJyNxCwoARkMCwFajWda1j" },
+    { id: "num-e10", title: "numerical-mid2026", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=17lv71r6ZQ9qbHsNGsI1dHMayYrXUvsZ2" },
+    { id: "num-e11", title: "Mid T1 2023", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=14wfllGk5CnBzNUUhNee1ofb9zZApL98_" },
+    { id: "num-e12", title: "Mid T2 2023", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=19HKbVKzj5MGkNtlc1q92R0GF5WOR0LjE" },
+
+    // --- امتحانات الفاينال (Final Exams) ---
+    { id: "num-f1", title: "شاشات فاينال تقنيات", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=18zPdXkCH9XNtB10wqRml8rlEvAgeuUnM" },
+    { id: "num-f2", title: "فاينال تقنيات 2025 (1)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1a7dNTRUyh7hgEBlOzjip-jBie2tyVbER" },
+    { id: "num-f3", title: "فاينال تقنيات 2025 (2)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1vODuXYcUYijLKVvuY5JFP2wqi9QuLDFf" },
+    { id: "num-f4", title: "فاينال تقنيات 2024 ف2", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1SkFrmmIjhAJbbonpkOdN4h4ac0VarwJ3" },
+    { id: "num-f5", title: "فاينال تقنيات 2024 صيفي", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1PeAYEW3IV-Q9PDoy2DpyGhyaCvEyaQvp" },
+    { id: "num-f6", title: "فاينال تقنيات 2023", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1_oP1_ADSAckAPsqfEDHTSjC3UPRMfsnc" },
+    { id: "num-f7", title: "فاينال تقنيات ورقي", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=19xqtqLJWywCWE4pEYWTd75i0vsxqNqIz" },
+    { id: "num-f8", title: "final exam p2 2024-06-04", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=11sLJyOeievxcHGUttZKvAC3fPTYzZ_es" },
+
+    // --- ملفات إضافية وحلول امتحانات ---
+    { id: "num-a1", title: "تقنيات 2024 محلول", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1wJP1y_Z0rfLj_FsPrXn_LujJ3_PXErWh" },
+    { id: "num-a2", title: "تقنيات 2025 ف1", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1lbRxzyBRzfTQRDIoTEY4YUQlh3eS2R4E" },
+    { id: "num-a3", title: "حل امتحان التقنيات ف1 (2024)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/open?id=1DiFBkkzrqNtvUNPjpSQfDDU7ZWVsOCDh" },
   ],
   "isl101": [
     // --- مراجعات الوحدات والكتاب (Summaries & Books) ---

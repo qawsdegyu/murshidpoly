@@ -13,6 +13,8 @@ import {
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { cn } from "@/lib/utils";
 import MaterialList from "@/components/MaterialList";
+import { motion, AnimatePresence } from "framer-motion";
+
 
 
 type TabType = 'videos' | 'summaries' | 'pastPapers' | 'textbook';
@@ -97,7 +99,7 @@ export default function CoursePage() {
               {course.department} • {course.hours} {isAr ? "ساعات" : "hrs"}
             </span>
           </div>
-          <h1 className="text-4xl md:text-7xl font-black text-slate-900 dark:text-slate-100 tracking-tighter leading-[1.1] mb-2 break-words">
+          <h1 className="text-4xl md:text-7xl font-black text-foreground dark:text-slate-100 tracking-tighter leading-[1.1] mb-2 break-words">
             {isAr ? course.nameAr : course.name}
           </h1>
         </div>

@@ -11,10 +11,12 @@
     /* --- Light Theme (#F8FAFC, #FFFFFF, #0F172A) --- */
     --bg-color: 210 40% 98%;      /* #F8FAFC */
     --surface-color: 0 0% 100%;    /* #FFFFFF */
-    --text-primary: 222 47% 11%;   /* #0F172A */
-    --text-secondary: 215 16% 34%; /* #475569 */
+    --text-primary: 225 65% 18%;   /* Vibrant Navy Blue - Lighter & More Saturated */
+    --text-secondary: 215 16% 40%; /* #475569 */
     --border-color: 214 32% 91%;   /* #E2E8F0 */
     --accent-color: 161 84% 39%;   /* #10B981 */
+    --navy-blue: 225 65% 18%;
+    --sidebar-background: 225 65% 18%;
 
     /* Map to Shadcn/Tailwind standard vars */
     --background: var(--bg-color);
@@ -48,12 +50,13 @@
 
   .dark {
     /* --- Dark Theme (#020617, #0F172A, #F8FAFC) --- */
-    --bg-color: 229 100% 5%;       /* #020617 */
-    --surface-color: 222 47% 11%;  /* #0F172A */
+    --bg-color: 225 65% 6%;        /* Deeper Navy BG */
+    --surface-color: 225 65% 15%;  /* Lighter, Saturated Navy Surface */
     --text-primary: 210 40% 98%;   /* #F8FAFC */
     --text-secondary: 215 25% 63%; /* #94A3B8 */
-    --border-color: 217 33% 17%;   /* #1E293B */
+    --border-color: 225 50% 25%;   /* Lighter Navy Border */
     --accent-color: 158 64% 52%;   /* #34D399 */
+    --sidebar-background: 225 65% 12%;
 
     --background: var(--bg-color);
     --foreground: var(--text-primary);
@@ -255,4 +258,22 @@
   .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
   .scrollbar-thin::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 999px; }
   .active-press { @apply active:scale-95 transition-transform; }
+
+  /* Navy visibility and contrast utilities */
+  .navy-pop {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  }
+  
+  .glass-navy {
+    @apply backdrop-blur-md bg-white/10 border border-white/20;
+  }
+
+  .border-navy-contrast {
+    border: 1px solid hsl(210 100% 90% / 0.4);
+  }
+  
+  .dark .border-navy-contrast {
+    border: 1px solid hsl(210 100% 90% / 0.15);
+  }
 }

@@ -27,7 +27,7 @@ const Recreation = lazy(() => import("./pages/Recreation"));
 const RecreationCategory = lazy(() => import("./pages/RecreationCategory"));
 const RecreationDetail = lazy(() => import("./pages/RecreationDetail"));
 const AnnouncementDetail = lazy(() => import("./pages/AnnouncementDetail"));
-const CampusMap = lazy(() => import("./pages/CampusMap"));
+const BuildingsPage = lazy(() => import("./pages/BuildingsPageNew"));
 import CoursePage from "./pages/CoursePage";
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -50,7 +50,7 @@ const AppRoutes = () => {
           <Route path="/recreation" element={<PageTransition><Recreation /></PageTransition>} />
           <Route path="/recreation/:category" element={<PageTransition><RecreationCategory /></PageTransition>} />
           <Route path="/recreation/:category/:placeId" element={<PageTransition><RecreationDetail /></PageTransition>} />
-          <Route path="/campus-map" element={<PageTransition><CampusMap /></PageTransition>} />
+          <Route path="/campus-map" element={<PageTransition><BuildingsPage /></PageTransition>} />
           <Route path="/settings" element={<PageTransition><Settings /></PageTransition>} />
           <Route path="/announcement/:id" element={<PageTransition><AnnouncementDetail /></PageTransition>} />
           <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
