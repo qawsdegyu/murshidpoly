@@ -33,7 +33,7 @@ export default function Settings() {
       >
         <div className="relative h-14 w-14 rounded-2xl grid place-items-center bg-gradient-to-br from-primary to-primary/60 ring-1 ring-accent/40 shadow-[0_0_30px_hsl(var(--accent)/0.35)]">
           <div className="absolute inset-0 rounded-2xl bg-accent/10 blur-md" />
-          <SettingsIcon className="relative h-7 w-7 text-accent drop-shadow-[0_0_8px_hsl(var(--accent)/0.6)]" />
+          <SettingsIcon className="relative h-7 w-7 text-primary-foreground drop-shadow-[0_0_8px_hsl(var(--accent)/0.6)]" />
         </div>
         <div>
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight leading-none text-content">{t.settings.title}</h1>

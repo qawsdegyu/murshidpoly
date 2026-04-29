@@ -102,11 +102,11 @@ export default function Majors() {
                     <Icon className="w-7 h-7 text-white" strokeWidth={1.5} />
                   </div>
 
-                  <h3 className="text-base md:text-3xl font-black text-slate-900 dark:text-white [data-theme=pink]:text-rose-950 dark:[data-theme=pink]:text-rose-100 mb-0.5 md:mb-2 tracking-tight leading-tight group-hover:text-accent transition-colors">
+                  <h3 className="text-lg md:text-3xl font-black text-slate-900 dark:text-white [data-theme=pink]:text-rose-950 dark:[data-theme=pink]:text-rose-100 mb-0.5 md:mb-2 tracking-tight leading-tight group-hover:text-accent transition-colors">
                     {isAr ? major.nameAr : major.name}
                   </h3>
                   
-                  <p className="text-slate-500 dark:text-slate-400 text-[10px] md:text-sm leading-relaxed line-clamp-1 md:line-clamp-2 mb-0 md:mb-5 font-medium">
+                  <p className="text-slate-500 dark:text-slate-400 text-xs md:text-sm leading-relaxed line-clamp-1 md:line-clamp-2 mb-0 md:mb-5 font-medium">
                     {isAr ? major.descriptionAr : major.description}
                   </p>
 

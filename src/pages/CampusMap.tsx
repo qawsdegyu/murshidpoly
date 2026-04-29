@@ -293,7 +293,7 @@ export default function CampusMap() {
               </div>
               {/* Name overlay at bottom of image */}
               <div className="absolute bottom-0 inset-x-0 px-4 pb-3">
-                <h2 className="text-white font-black text-lg leading-none drop-shadow-lg" style={{ backgroundImage: "none", WebkitBackgroundClip: "unset", backgroundClip: "unset", color: "white" }}>
+                <h2 className="text-white font-black text-xl md:text-2xl leading-none drop-shadow-lg" style={{ backgroundImage: "none", WebkitBackgroundClip: "unset", backgroundClip: "unset", color: "white" }}>
                   {ar ? b.nameAr : b.nameEn}
                 </h2>
               </div>
@@ -302,7 +302,7 @@ export default function CampusMap() {
             {/* Card body */}
             <div className="flex flex-col flex-1 p-5 gap-4">
               {/* Description */}
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 font-medium leading-relaxed flex-1">
+              <p className="text-base text-neutral-600 dark:text-neutral-400 font-medium leading-relaxed flex-1">
                 {ar ? b.descAr : b.descEn}
               </p>
 

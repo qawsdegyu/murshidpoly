@@ -36,8 +36,8 @@ const PageHeader = memo(({ title, subtitle, icon, actions, className }: PageHead
             />
             <span className="text-[9px] font-black tracking-[0.2em] uppercase text-accent">BAU Engineering Hub</span>
           </div>
-          <h1 className="text-lg md:text-2xl lg:text-3xl font-black tracking-tight text-foreground drop-shadow-sm">{title}</h1>
-          {subtitle && <p className="text-[11px] md:text-sm text-muted-foreground mt-0.5 md:mt-2 max-w-2xl font-medium leading-relaxed">{subtitle}</p>}
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tight text-foreground drop-shadow-sm">{title}</h1>
+          {subtitle && <p className="text-sm md:text-base text-muted-foreground mt-0.5 md:mt-2 max-w-2xl font-medium leading-relaxed">{subtitle}</p>}
         </div>
       </div>
       {actions && <div className="flex items-center gap-2 md:gap-3 pt-2 md:pt-0">{actions}</div>}

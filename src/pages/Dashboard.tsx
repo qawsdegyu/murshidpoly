@@ -187,7 +187,7 @@ export default function Dashboard() {
               whileTap={{ scale: 0.98 }}
               className="group bg-card/80 border border-border shadow-sm backdrop-blur-xl overflow-hidden rounded-2xl md:rounded-[2rem] flex flex-col transition-all duration-300"
             >
-              <div className="h-40 w-full relative overflow-hidden">
+              <div className="h-44 md:h-52 w-full relative overflow-hidden">
                 <img 
                   src={b.imageUrl} 
                   alt={b.name} 
@@ -195,22 +195,26 @@ export default function Dashboard() {
                   decoding="async"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 to-transparent" />
-                <div className="absolute top-3 ltr:right-3 rtl:left-3 h-8 w-8 rounded-full bg-black/30 backdrop-blur-md grid place-items-center text-white border border-white/10">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                <div className="absolute top-4 ltr:right-4 rtl:left-4 h-9 w-9 rounded-full bg-black/40 backdrop-blur-md grid place-items-center text-white border border-white/20 shadow-lg">
                   <ExternalLink className="h-4 w-4" />
                 </div>
               </div>
-              <div className="p-4 md:p-5 flex-1 flex flex-col relative z-10 -mt-6">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="h-8 w-8 rounded-lg bg-accent/20 border border-accent/30 grid place-items-center text-accent backdrop-blur-md shrink-0">
-                    <MapPin className="h-4 w-4" />
+              <div className="p-5 md:p-7 flex-1 flex flex-col bg-card/50 dark:bg-card/20 backdrop-blur-xl">
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="h-9 w-9 rounded-xl bg-accent/20 border border-accent/30 grid place-items-center text-accent shrink-0">
+                    <MapPin className="h-5 w-5" />
                   </div>
-                  <h3 className="font-bold text-lg leading-tight text-foreground">{lang === "ar" ? b.nameAr : b.name}</h3>
+                  <h3 className="font-black text-xl md:text-2xl leading-tight text-foreground break-words">
+                    {lang === "ar" ? b.nameAr : b.name}
+                  </h3>
                 </div>
-                <p className="text-sm text-muted-foreground flex-1">{lang === "ar" ? b.descriptionAr : b.description}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed flex-1 mb-4">
+                  {lang === "ar" ? b.descriptionAr : b.description}
+                </p>
+                <div className="flex flex-wrap gap-2 mt-auto">
                   {(lang === "ar" ? b?.departmentsAr : b?.departments)?.map((dept) => (
-                    <span key={dept} className="px-2.5 py-1 text-[10px] font-semibold tracking-wider rounded-md bg-accent/10 text-accent border border-accent/20">
+                    <span key={dept} className="px-3 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-lg bg-accent/10 text-accent border border-accent/20">
                       {dept}
                     </span>
                   ))}

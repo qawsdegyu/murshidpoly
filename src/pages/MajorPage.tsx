@@ -308,25 +308,25 @@ export default function MajorPage() {
               color={major.accentColor}
             />
 
-            {/* Tier 1: Year Tabs (Scrollable on mobile) */}
-            <div className="mt-4 relative flex gap-2 p-1 md:p-1.5 rounded-2xl bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] overflow-x-auto scrollbar-none">
+            {/* Tier 1: Year Tabs - Upgraded to Wrapping Chips */}
+            <div className="mt-4 flex flex-wrap justify-center md:justify-start gap-2 p-1.5 rounded-2xl bg-slate-100/50 dark:bg-white/[0.04] border border-slate-200/50 dark:border-white/[0.08]">
               {curriculum?.map((yr) => (
                 <button
                   key={yr.year}
                   onClick={() => handleYearChange(yr.year)}
                   className={cn(
-                    "relative flex-shrink-0 px-5 py-2.5 rounded-xl text-sm font-black transition-colors duration-200 z-10",
+                    "relative px-5 py-2.5 rounded-xl text-xs md:text-sm font-black transition-all duration-300 z-10",
                     activeYear === yr.year
-                      ? "text-white"
-                      : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+                      ? "text-white shadow-lg"
+                      : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-white/5 border border-transparent hover:border-slate-200"
                   )}
                 >
                   {activeYear === yr.year && (
                     <motion.span
                       layoutId={`year-pill-${major.id}`}
                       className="absolute inset-0 rounded-xl z-[-1]"
-                      style={{ background: major.accentColor + "33", border: `1px solid ${major.accentColor}55` }}
-                      transition={{ duration: 0.2, ease: "easeOut" }}
+                      style={{ background: major.accentColor }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
                     />
                   )}
                   {isAr ? yr.labelAr : yr.labelEn}
@@ -334,32 +334,33 @@ export default function MajorPage() {
               ))}
             </div>
 
-            {/* Tier 2: Semester Selection */}
-            <div className="mt-4 flex gap-3">
+            {/* Tier 2: Semester Selection - Upgraded to Wrapping Chips */}
+            <div className="mt-4 flex flex-wrap justify-center md:justify-start gap-3">
               {[1, 2]?.map((sem) => (
                 <button
                   key={sem}
                   onClick={() => setActiveSemester(sem as 1 | 2)}
                   className={cn(
-                    "relative px-6 py-2.5 rounded-2xl text-xs font-black transition-all duration-300 border overflow-hidden",
+                    "relative px-6 py-2.5 rounded-2xl text-[10px] md:text-xs font-black transition-all duration-500 border overflow-hidden",
                     activeSemester === sem
-                      ? "text-white border-white/20 bg-slate-900 dark:bg-white/[0.08]"
+                      ? "text-white border-white/20 bg-slate-900 dark:bg-white/[0.15]"
                       : "text-slate-500 dark:text-slate-400 border-slate-200 dark:border-white/[0.05] bg-white dark:bg-white/[0.02] hover:bg-slate-50 dark:hover:bg-white/[0.05]"
                   )}
                 >
                   {activeSemester === sem && (
                     <motion.div
                       layoutId={`sem-glow-${major.id}`}
-                      className="absolute inset-0 z-0 opacity-20 blur-xl"
+                      className="absolute inset-0 z-0 opacity-40 blur-xl"
                       style={{ background: major.accentColor }}
                     />
                   )}
-                  <span className="relative z-10">
+                  <span className="relative z-10 uppercase tracking-widest">
                     {sem === 1 ? (isAr ? "الفصل الأول" : "First Semester") : (isAr ? "الفصل الثاني" : "Second Semester")}
                   </span>
                 </button>
               ))}
             </div>
+
 
             {/* Course Grid */}
             <AnimatePresence mode="wait">

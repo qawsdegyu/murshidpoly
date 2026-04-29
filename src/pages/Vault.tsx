@@ -192,7 +192,7 @@ export default function Vault() {
                   : "glass hover:bg-white/10 border-white/5 text-muted-foreground"
               }`}
             >
-              <Icon className={`h-3 w-3 md:h-3.5 md:w-3.5 ${isActive ? "text-white" : "text-primary dark:text-accent"}`} />
+              <Icon className={`h-3 w-3 md:h-3.5 md:w-3.5 ${isActive ? "text-primary-foreground" : "text-primary dark:text-accent"}`} />
               <span className="font-bold text-xs md:text-sm">{lang === "ar" ? cat.nameAr : cat.nameEn}</span>
               {isActive && (
                 <motion.div 

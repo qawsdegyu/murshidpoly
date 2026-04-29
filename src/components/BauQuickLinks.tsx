@@ -99,7 +99,7 @@ export default function BauQuickLinks() {
                 <div className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-full bg-slate-100/50 dark:bg-slate-800/50 flex items-center justify-center transition-all duration-300 group-hover:bg-slate-200/80 dark:group-hover:bg-slate-700/80 shadow-sm border border-slate-200 dark:border-white/5">
                   <l.Icon className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-slate-700 dark:text-white transition-transform duration-300 group-hover:scale-110" strokeWidth={1.5} />
                 </div>
-                <span className="text-[10px] sm:text-xs font-medium text-slate-800 dark:text-slate-200 mt-1.5 text-center max-w-[100px] sm:max-w-[110px] lg:max-w-[120px] leading-tight line-clamp-2 break-words">
+                <span className="text-[10px] sm:text-xs font-black text-slate-800 dark:text-slate-200 mt-2 text-center max-w-[100px] sm:max-w-[110px] lg:max-w-[120px] leading-tight break-words">
                   {label}
                 </span>
               </a>

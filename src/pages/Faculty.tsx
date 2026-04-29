@@ -67,14 +67,14 @@ const Faculty = memo(function Faculty() {
           />
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap justify-center gap-2">
           <button
             onClick={() => setDept("all")}
             className={cn(
-              "px-4 py-2 rounded-xl text-sm font-bold transition-all",
+              "px-5 py-2.5 rounded-2xl text-xs md:text-sm font-black transition-all",
               dept === "all" 
-                ? "bg-accent text-neutral-950 shadow-[0_10px_20px_-5px_rgba(var(--accent-rgb),0.3)]" 
-                : "bg-surface/50 dark:bg-surface/10 border border-border dark:border-white/10 hover:bg-surface/80"
+                ? "bg-accent text-neutral-950 shadow-lg shadow-accent/20" 
+                : "bg-surface/50 dark:bg-surface/10 border border-slate-200 dark:border-white/10 hover:bg-surface/80"
             )}
           >
             {t.faculty.all}
@@ -84,9 +84,9 @@ const Faculty = memo(function Faculty() {
               key={d}
               onClick={() => setDept(d)}
               className={cn(
-                "px-4 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap",
+                "px-5 py-2.5 rounded-2xl text-xs md:text-sm font-black transition-all",
                 dept === d 
-                  ? "bg-accent text-neutral-950 shadow-[0_10px_20px_-5px_rgba(var(--accent-rgb),0.3)]" 
+                  ? "bg-accent text-neutral-950 shadow-lg shadow-accent/20" 
                   : "bg-white/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-white/80"
               )}
             >
@@ -94,6 +94,7 @@ const Faculty = memo(function Faculty() {
             </button>
           ))}
         </div>
+
       </div>
 
       {/* Grid */}

@@ -38,23 +38,23 @@ const AnnouncementCard = memo(({ id }: AnnouncementCardProps) => {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/5 to-accent/15 pointer-events-none" />
         <div className="absolute -top-24 ltr:-right-24 rtl:-left-24 h-64 w-64 rounded-full bg-accent/15 blur-3xl pointer-events-none hidden md:block" />
         
-        <div className="relative grid md:grid-cols-[1fr_auto] gap-6 p-6 md:p-8 items-center">
+        <div className="relative grid md:grid-cols-[1fr_auto] gap-8 p-8 md:p-12 items-center">
           {/* Content */}
           <div className="min-w-0">
-            <div className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-accent/15 text-accent border border-accent/30 backdrop-blur-sm mb-3">
-              <Megaphone className="h-3.5 w-3.5" />
+            <div className="inline-flex items-center gap-1.5 text-[12px] font-black uppercase tracking-[0.2em] px-4 py-1.5 rounded-full bg-accent/15 text-accent border border-accent/30 backdrop-blur-sm mb-6">
+              <Megaphone className="h-4 w-4" />
               {badge}
             </div>
-            <h3 className="text-xl md:text-2xl font-extrabold text-gold mb-2 flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-accent shrink-0" />
-              <span>{title}</span>
+            <h3 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-slate-100 mb-4 flex items-start gap-3 leading-[1.1]">
+              <Sparkles className="h-8 w-8 text-accent shrink-0 mt-1" />
+              <span className="break-words">{title}</span>
             </h3>
-            <p className="text-sm md:text-[15px] text-muted-foreground leading-relaxed max-w-2xl">
+            <p className="text-base md:text-xl text-muted-foreground leading-relaxed max-w-3xl mb-8 break-words">
               {desc}
             </p>
-            <div className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-accent group-hover:gap-3 transition-all">
+            <div className="inline-flex items-center gap-2 text-sm md:text-base font-black text-accent group-hover:gap-4 transition-all">
               {ctaLabel}
-              <ArrowRight className={`h-4 w-4 ${dir === "rtl" ? "rotate-180" : ""}`} />
+              <ArrowRight className={`h-5 w-5 ${dir === "rtl" ? "rotate-180" : ""}`} />
             </div>
           </div>
 

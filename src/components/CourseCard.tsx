@@ -31,8 +31,10 @@ const CourseCard = memo(forwardRef<HTMLButtonElement, CourseCardProps>(
         whileTap={{ scale: 0.98 }}
         style={{ willChange: "transform, opacity" }}
         onClick={onClick}
-        className="group relative text-start p-4 md:p-6 rounded-xl md:rounded-2xl bg-card/40 border border-border hover:border-accent/30 hover:bg-card/60 transition-all duration-300 overflow-hidden flex flex-col h-full"
+        className="group relative text-start p-5 md:p-8 rounded-2xl bg-card/40 border border-border shadow-sm hover:shadow-2xl hover:border-accent/30 hover:bg-card/60 transition-all duration-500 overflow-hidden flex flex-col h-full"
+
       >
+
         {/* Accent Glow */}
         <div 
           className="absolute top-0 right-0 w-20 h-20 rounded-full blur-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500"
@@ -41,10 +43,10 @@ const CourseCard = memo(forwardRef<HTMLButtonElement, CourseCardProps>(
         
         <div className="flex items-start justify-between gap-3 relative z-10 mb-4">
           <div className="flex-1 min-w-0">
-            <div className="text-[10px] font-black tracking-widest uppercase text-muted-foreground mb-1.5 font-mono">
+            <div className="text-[11px] font-black tracking-widest uppercase text-muted-foreground mb-1.5 font-mono">
               {course?.code || "COURSE-ID"}
             </div>
-            <h3 className="text-sm md:text-base font-bold text-foreground leading-snug group-hover:text-accent transition-colors line-clamp-2">
+            <h3 className="text-base md:text-lg font-black text-foreground leading-[1.2] group-hover:text-accent transition-colors break-words">
               {isAr ? (course?.nameAr || "مادة غير معرفة") : (course?.name || "Unknown Course")}
             </h3>
           </div>
@@ -60,18 +62,18 @@ const CourseCard = memo(forwardRef<HTMLButtonElement, CourseCardProps>(
           <div className="flex items-center gap-2">
             {hasResources ? (
               <span
-                className="inline-flex items-center gap-1 text-[10px] font-black px-2 py-1 rounded-lg"
+                className="inline-flex items-center gap-1 text-[12px] font-black px-2 py-1 rounded-lg"
                 style={{ background: `${accentColor}22`, color: accentColor }}
               >
-                <FileText className="h-2.5 w-2.5" />
+                <FileText className="h-3 w-3" />
                 {isAr ? "ملفات متاحة" : "Resources"}
               </span>
             ) : (
-              <span className="text-[10px] text-muted-foreground font-black">
+              <span className="text-[12px] text-muted-foreground font-black">
                 {isAr ? "قريباً" : "Coming soon"}
               </span>
             )}
-            <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
+            <span className="text-[12px] text-muted-foreground font-bold uppercase tracking-wider">
               {course?.hours || 0} {isAr ? "ساعات" : "hrs"}
             </span>
           </div>

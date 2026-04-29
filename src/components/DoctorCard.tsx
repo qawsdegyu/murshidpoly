@@ -27,26 +27,28 @@ const DoctorCard = memo(function DoctorCard({ faculty: f, index: i, lang, isExpa
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: i * 0.01, duration: 0.3 }}
+      whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
       className={cn(
-        "group relative overflow-hidden bg-surface/40 dark:bg-surface/5 border border-border/60 dark:border-white/10 backdrop-blur-2xl rounded-2xl transition-all duration-300 h-fit",
-        isExpanded ? "ring-2 ring-accent/30 shadow-xl" : "hover:border-accent/30 hover:bg-surface/60"
+        "group relative overflow-hidden bg-surface/40 dark:bg-surface/5 border border-border/60 dark:border-white/10 backdrop-blur-2xl rounded-2xl transition-all duration-500 h-fit shadow-md hover:shadow-2xl",
+        isExpanded ? "ring-2 ring-accent/30 shadow-2xl" : "hover:border-accent/30 hover:bg-surface/60"
       )}
+
     >
       <div 
         onClick={() => onToggle(f.id)}
         className="p-6 cursor-pointer"
       >
         <div className="flex items-center gap-5">
-          <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 border border-accent/20 flex items-center justify-center text-accent font-black text-2xl shrink-0 shadow-lg group-hover:scale-105 transition-transform">
+          <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 border border-accent/20 flex items-center justify-center text-accent font-black text-3xl shrink-0 shadow-lg group-hover:scale-105 transition-transform">
             {initials || "د"}
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100 group-hover:text-accent transition-colors leading-tight">
+            <h3 className="font-black text-xl text-slate-900 dark:text-slate-100 group-hover:text-accent transition-colors leading-tight">
               {f.name.startsWith("د.") ? f.name : `د. ${f.name}`}
             </h3>
             <div className="flex items-center gap-1.5 mt-1">
-              <GraduationCap className="h-3.5 w-3.5 text-accent/70" />
-              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
+              <GraduationCap className="h-4 w-4 text-accent/70" />
+              <p className="text-base text-slate-500 dark:text-slate-400 font-bold">
                 {f.department}
               </p>
             </div>
@@ -77,10 +79,10 @@ const DoctorCard = memo(function DoctorCard({ faculty: f, index: i, lang, isExpa
                     <BookOpen className="h-4 w-4 text-accent" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-bold text-slate-700 dark:text-slate-200">
+                    <p className="text-sm font-black text-slate-700 dark:text-slate-200">
                       {lang === "ar" ? "المواد" : "Subjects"}
                     </p>
-                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5 italic">
+                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5 italic">
                       {lang === "ar" ? "سيتم إضافتها قريباً..." : "Coming soon..."}
                     </p>
                   </div>
@@ -92,10 +94,10 @@ const DoctorCard = memo(function DoctorCard({ faculty: f, index: i, lang, isExpa
                     <Briefcase className="h-4 w-4 text-accent" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-bold text-slate-700 dark:text-slate-200">
+                    <p className="text-sm font-black text-slate-700 dark:text-slate-200">
                       {lang === "ar" ? "الساعات المكتبية" : "Office Hours"}
                     </p>
-                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5 italic">
+                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5 italic">
                       {lang === "ar" ? "سيتم إضافتها قريباً..." : "Coming soon..."}
                     </p>
                   </div>
@@ -113,7 +115,7 @@ const DoctorCard = memo(function DoctorCard({ faculty: f, index: i, lang, isExpa
                       className="flex-1 flex items-center gap-2 px-3 py-2 rounded-lg bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-accent/30 transition-all text-xs text-slate-600 dark:text-slate-300 group/btn overflow-hidden"
                     >
                       <Mail className="h-3.5 w-3.5 text-accent shrink-0" />
-                      <span className="truncate">{f.email}</span>
+                      <span className="break-all">{f.email}</span>
                       <Copy className="h-3 w-3 opacity-30 group-hover/btn:opacity-100 transition-opacity shrink-0 ltr:ml-auto rtl:mr-auto" />
                     </motion.button>
                     <motion.a

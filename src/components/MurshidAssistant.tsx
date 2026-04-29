@@ -150,7 +150,7 @@ export default function MurshidAssistant() {
                 <div className="h-8 w-8 rounded-full bg-accent/20 flex items-center justify-center ring-1 ring-accent/50">
                   <Bot className="h-4 w-4 text-accent" />
                 </div>
-                <h3 className="text-sm font-semibold text-accent drop-shadow-[0_0_6px_hsl(var(--accent)/0.6)]">
+                <h3 className="text-sm font-semibold text-primary-foreground drop-shadow-[0_0_6px_hsl(var(--accent)/0.6)]">
                   {s.title}
                 </h3>
               </div>
@@ -197,18 +197,18 @@ export default function MurshidAssistant() {
                       >
                         {m.role === "ai" && (
                           <div className="h-7 w-7 shrink-0 rounded-full bg-primary flex items-center justify-center ring-1 ring-accent/50">
-                            <Bot className="h-3.5 w-3.5 text-accent" />
+                            <Bot className="h-3.5 w-3.5 text-primary-foreground" />
                           </div>
                         )}
                         <div
                           className={
                             m.role === "ai"
-                              ? "max-w-[78%] rounded-2xl rounded-tr-sm px-3 py-2 text-xs leading-relaxed bg-primary/90 text-accent border border-accent/30 shadow-sm"
+                              ? "max-w-[78%] rounded-2xl rounded-tr-sm px-3 py-2 text-xs leading-relaxed bg-primary/90 text-primary-foreground border border-accent/30 shadow-sm"
                               : "max-w-[78%] rounded-2xl rounded-tl-sm px-3 py-2 text-xs leading-relaxed bg-transparent text-foreground/90 border border-border"
                           }
                         >
                           {m.role === "ai" && (
-                            <div className="text-[10px] font-semibold text-accent/80 mb-1">
+                            <div className="text-[10px] font-semibold text-primary-foreground/80 mb-1">
                               {s.aiName}
                             </div>
                           )}
@@ -224,7 +224,7 @@ export default function MurshidAssistant() {
                         className="flex gap-2 justify-start"
                       >
                         <div className="h-7 w-7 shrink-0 rounded-full bg-primary flex items-center justify-center ring-1 ring-accent/50">
-                          <Bot className="h-3.5 w-3.5 text-accent" />
+                          <Bot className="h-3.5 w-3.5 text-primary-foreground" />
                         </div>
                         <div className="rounded-2xl rounded-tr-sm px-3 py-2 bg-primary/90 border border-accent/30">
                           <div className="flex items-center gap-1">

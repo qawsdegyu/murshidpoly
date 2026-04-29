@@ -15,13 +15,12 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const { dir } = usePreferences();
   const { pathname } = useLocation();
 
-  // Master layout scroll-to-top for instantaneous feel
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-  }, [pathname]);
+  // Master layout - scroll behavior is now handled by the ScrollRestoration component
+  // to allow for intelligent back-button restoration and smooth transitions.
+
 
   return (
-    <div className="min-h-screen flex w-full bg-background transition-colors duration-300 relative" dir={dir}>
+    <div className="min-h-screen bg-background transition-colors duration-500 selection:bg-accent/30 flex flex-col" dir={dir}>
       {/* ── Ultra-Performance Static Background System ── */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden -z-0">
         {/* Subtle Static Glows - Enabled only for Desktop */}
@@ -42,12 +41,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
         <div className="absolute inset-0 opacity-[0.05] dark:opacity-[0.1] mix-blend-overlay pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat" />
       </div>
       <Sidebar />
-      <main className="flex-1 min-w-0 relative flex flex-col z-10">
-        <div className="relative px-4 md:px-10 py-6 md:py-14 max-w-7xl mx-auto w-full flex-1">
-          {children}
-        </div>
-        <Footer />
+      <main className="flex-1 w-full max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10 relative z-10">
+        {children}
       </main>
+      <Footer />
       <ScrollToTop />
       <MurshidAssistant />
     </div>

@@ -334,11 +334,12 @@ export const resourcesByCourse: Record<string, Resource[]> = {
     { id: "p1-s3", title: "ملخص قوانين لاب فيزياء 1", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1GiQ3ZfGQOIGi3eq_zRJv2ErYa5VRlpq2" },
 
     // --- مسائل محلولة (Quiz) ---
-    { id: "p1-q1", title: "أسئلة محلولة حول مادة الميد", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1KywumL9JnVfMfmCFM8VI6gMATiKgvnyD" },
-    { id: "p1-q2", title: "مسائل محلولة (Chapter 7)", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1Q_4pMOid_TRw2zJoNYwD2YY62ekGun5C" },
-    { id: "p1-q3", title: "مسائل محلولة (Chapter 5)", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1JkNI_FjkQq73uQ6GDrUSk2qDT8RrhON-" },
-    { id: "p1-q4", title: "مسائل محلولة (Chapter 8)", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1oDP7W6NABA294UiIR8fQAVPG31sdREiP" },
-    { id: "p1-q5", title: "حلول لاب فيزياء 1 ميد", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1Yoe0b6hu6R8igTcUGwKbvNQpEd7mVZCu" }
+    { id: "p1-q1", title: "أسئلة محلولة حول مادة الميد", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1KywumL9JnVfMfmCFM8VI6gMATiKgvnyD" },
+    { id: "p1-q2", title: "مسائل محلولة (Chapter 7)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1Q_4pMOid_TRw2zJoNYwD2YY62ekGun5C" },
+    { id: "p1-q3", title: "مسائل محلولة (Chapter 5)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1JkNI_FjkQq73uQ6GDrUSk2qDT8RrhON-" },
+    { id: "p1-q4", title: "مسائل محلولة (Chapter 8)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1oDP7W6NABA294UiIR8fQAVPG31sdREiP" },
+    { id: "p1-q5", title: "حلول لاب فيزياء 1 ميد", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1Yoe0b6hu6R8igTcUGwKbvNQpEd7mVZCu" }
+
   ],
   "p102": [
     // --- الشروحات المرئية (Videos & Visuals) ---
@@ -360,12 +361,13 @@ export const resourcesByCourse: Record<string, Resource[]> = {
     { id: "p2-e5", title: "سنوات ورقي فيزياء 2 ميد", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1BqukgO3-i3CuofOoEVnXUxDw2a1ffKjO" },
 
     // --- مسائل محلولة (Quiz/Solved Problems) ---
-    { id: "p2-q1", title: "مسائل محلولة Ch 23", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1sD5kFwsqJqLvufkf8gqvyBMDRKeCNz_h" },
-    { id: "p2-q2", title: "مسائل محلولة Ch 24", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1f2Ptcqbk2dAC8ESXK1mm1C9Mr0n8U2ru" },
-    { id: "p2-q3", title: "مسائل محلولة Ch 25", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1AFfcDzecV_3Pcqmhnv0y8HAcQJa3f0VZ" },
-    { id: "p2-q4", title: "مسائل محلولة Ch 26", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1kL3Wy8pMNKFqGptePAQmcKEtb-zMtxzA" },
-    { id: "p2-q5", title: "مسائل محلولة Ch 27", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1O8vC43W1qJ-5vm2TK4TMTGGj_lrYyaGf" },
-    { id: "p2-q6", title: "مسائل محلولة Ch 28", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1Z3usnAEceY4OxweUetWezWyvCqCoysH0" }
+    { id: "p2-q1", title: "مسائل محلولة Ch 23", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1sD5kFwsqJqLvufkf8gqvyBMDRKeCNz_h" },
+    { id: "p2-q2", title: "مسائل محلولة Ch 24", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1f2Ptcqbk2dAC8ESXK1mm1C9Mr0n8U2ru" },
+    { id: "p2-q3", title: "مسائل محلولة Ch 25", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1AFfcDzecV_3Pcqmhnv0y8HAcQJa3f0VZ" },
+    { id: "p2-q4", title: "مسائل محلولة Ch 26", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1kL3Wy8pMNKFqGptePAQmcKEtb-zMtxzA" },
+    { id: "p2-q5", title: "مسائل محلولة Ch 27", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1O8vC43W1qJ-5vm2TK4TMTGGj_lrYyaGf" },
+    { id: "p2-q6", title: "مسائل محلولة Ch 28", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1Z3usnAEceY4OxweUetWezWyvCqCoysH0" }
+
   ],
   "plab101": [
     // --- الشروحات المرئية (Videos & Visuals) ---
@@ -382,7 +384,7 @@ export const resourcesByCourse: Record<string, Resource[]> = {
     { id: "pl1-e2", title: "ميد لاب فيزياء 1 (شاشات - الجزء الثاني)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1uWc_rsiwhentHIEwVzfGaV27wrYws-qz" },
     { id: "pl1-e3", title: "ميد لاب فيزياء 1 (شاشات - الجزء الأول)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1HJ6_C8QZbCcEQJFPUu3OzLFLPw41Cit4" },
     { id: "pl1-e4", title: "ميد لاب فيزياء 1 (ورقي)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1kdQtpQwCHFGE4z4IpNrzR3DlVMQ2oERU" },
-    { id: "pl1-e5", title: "حلول لاب فيزياء 1 ميد (جديدة)", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1Yoe0b6hu6R8igTcUGwKbvNQpEd7mVZCu" },
+    { id: "pl1-e5", title: "حلول لاب فيزياء 1 ميد (جديدة)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1Yoe0b6hu6R8igTcUGwKbvNQpEd7mVZCu" },
     { id: "pl1-e6", title: "ميد لاب فيزياء 1 (نموذج C)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1z7tKc5rvKIb-ZY0En8U65rhbtcnO2tUB" },
   ],
   "stat101": [
@@ -408,10 +410,11 @@ export const resourcesByCourse: Record<string, Resource[]> = {
     { id: "st-e6", title: "شيت احتمالات", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1VP0gQqsv_WkqBzHQ4ABsVowNslneZa3G" },
 
     // --- ملفات تقوية وحلول (Quiz/Books) ---
-    { id: "st-q1", title: "تقوية احتمالات فيرست", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=10lcbhzT9VTdofoKw7bfPS7-mEdsgpWOW" },
-    { id: "st-q2", title: "تقوية احتمالات فاينل", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1objYu_lLkU5fSrsUfI_QQUybtq-LOs6V" },
-    { id: "st-q3", title: "تقوية سكند", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=18a6B9cRJOnWFTmBvsI6SMA2aS9sIL_v_" },
+    { id: "st-q1", title: "تقوية احتمالات فيرست", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=10lcbhzT9VTdofoKw7bfPS7-mEdsgpWOW" },
+    { id: "st-q2", title: "تقوية احتمالات فاينل", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1objYu_lLkU5fSrsUfI_QQUybtq-LOs6V" },
+    { id: "st-q3", title: "تقوية سكند", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=18a6B9cRJOnWFTmBvsI6SMA2aS9sIL_v_" },
     { id: "st-b1", title: "حلول كتاب الإحصاء", type: "book", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1_1bb3L46jWHbzHh7QivmPfEPokmaMpMa" }
+
   ],
   "numerical": [
     // --- الشروحات المرئية (Videos & Visuals) ---
@@ -433,10 +436,11 @@ export const resourcesByCourse: Record<string, Resource[]> = {
     // --- الكويزات والامتحانات (Exams & Quizzes) ---
     { id: "isl-e1", title: "مراجعة د. مختار (ميد 2024)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1FmQTF52vz-0G31lmScYsxGmxMa8wyF2q" },
     { id: "isl-e2", title: "مراجعة د. مختار (فاينل 2024)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1ym94Q0PESXXkTCfBC3VLdUu_9z0c2VKQ" },
-    { id: "isl-q1", title: "كويز إسلام وحياة (جديد 1 - 2024)", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1C_GWAQuhSTaGetyTNjYXY4fDEUYE6lmZ" },
-    { id: "isl-q2", title: "كويز إسلام وحياة (جديد 2 - 2024)", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=10b8oaTqVvyFjCkpkuk0HNLk-Q_PpFkjn" },
-    { id: "isl-q3", title: "كويز صيفي 2024 (محلول)", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1mk1uOCY0dmke13YxbdBF-YSXOTfRs_rR" },
-    { id: "isl-q4", title: "كويز جديد مع الحل 2024", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=15oGY8NjOsJjAMATOrExvkRtpr4HBPolF" }
+    { id: "isl-q1", title: "كويز إسلام وحياة (جديد 1 - 2024)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1C_GWAQuhSTaGetyTNjYXY4fDEUYE6lmZ" },
+    { id: "isl-q2", title: "كويز إسلام وحياة (جديد 2 - 2024)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=10b8oaTqVvyFjCkpkuk0HNLk-Q_PpFkjn" },
+    { id: "isl-q3", title: "كويز صيفي 2024 (محلول)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1mk1uOCY0dmke13YxbdBF-YSXOTfRs_rR" },
+    { id: "isl-q4", title: "كويز جديد مع الحل 2024", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=15oGY8NjOsJjAMATOrExvkRtpr4HBPolF" }
+
   ],
   "eng99": [
     // --- القواعد والشروحات (Summaries) ---
@@ -450,10 +454,10 @@ export const resourcesByCourse: Record<string, Resource[]> = {
     { id: "en99-e3", title: "نموذج امتحان فاينال (تجريبي)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1objYu_lLkU5fSrsUfI_QQUybtq-LOs6V" },
 
     // --- الكويزات والتقوية (Quiz) ---
-    { id: "en99-q1", title: "كويزات إنجليزي 99 محلولة", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1siFW9q4TmX3UG-x-1gw1zhnC7mZ8-B_0" },
-    { id: "en99-q2", title: "تقوية لمادة الميد", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=10lcbhzT9VTdofoKw7bfPS7-mEdsgpWOW" },
-
+    { id: "en99-q1", title: "كويزات إنجليزي 99 محلولة", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1siFW9q4TmX3UG-x-1gw1zhnC7mZ8-B_0" },
+    { id: "en99-q2", title: "تقوية لمادة الميد", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=10lcbhzT9VTdofoKw7bfPS7-mEdsgpWOW" },
     // --- الكلمات والقطع (Vocabulary & Reading) ---
+
     { id: "en99-v1", title: "كلمات المادة كاملة", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1483Z5YaVfQeMPJ1jNK2vXS97SJp8EkZC" },
     { id: "en99-r1", title: "تحليل قطع الريدينج", type: "summary", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1HAkeKjUX4_fhtjn8xMuYJRRf4AAglYp3" }
   ],
@@ -477,8 +481,9 @@ export const resourcesByCourse: Record<string, Resource[]> = {
     { id: "ch-e8", title: "ميد كيميا سنوات (معدل)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1PSn_bjvd4FE5Gq6rRhslcskUxEQAZTJm" },
 
     // --- حلول وشاشات (Quiz/Books) ---
-    { id: "ch-q1", title: "شاشات ميد كيمياء محلولة", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1pW7Y-psz_zx9XX7TgX5g9pdgGsdGlYWH" },
+    { id: "ch-q1", title: "شاشات ميد كيمياء محلولة", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1pW7Y-psz_zx9XX7TgX5g9pdgGsdGlYWH" },
     { id: "ch-b1", title: "حلول كتاب الكيمياء العامة", type: "book", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1pT1EcrDzmQvKOGkub1jPeoUxF-Bn3Mec" }
+
   ],
   "cs101": [
     // --- شروحات وسلايدات (Summaries) ---
@@ -505,10 +510,11 @@ export const resourcesByCourse: Record<string, Resource[]> = {
     { id: "cs-f7", title: "امتحان نهائي - مالك إبراهيم", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1o_QDLCvQGiEnIbvkW_n5GD5QNDbAPqg1" },
 
     // --- كويزات (Quiz) ---
-    { id: "cs-q1", title: "كويزات مهارات الحاسوب", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1Y_1SpR2E2mLf-BTVMqj1LbHSTz3izX3U" },
-    { id: "cs-q2", title: "كويز مهارات الحاسوب 2024", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1P1WrTEX0WlDijiet8hR4lmtDNN9iZxl5" },
-    { id: "cs-q3", title: "كويز 2 - 2023", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1Zv4RHY1IZI0pnw7PCLvscKGHOlwlgR6i" },
-    { id: "cs-q4", title: "كويز (نموذج إضافي)", type: "video", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1-EFRpzSSPJAlD302OtfVInGDwrLxWxEu" }
+    { id: "cs-q1", title: "كويزات مهارات الحاسوب", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1Y_1SpR2E2mLf-BTVMqj1LbHSTz3izX3U" },
+    { id: "cs-q2", title: "كويز مهارات الحاسوب 2024", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1P1WrTEX0WlDijiet8hR4lmtDNN9iZxl5" },
+    { id: "cs-q3", title: "كويز 2 - 2023", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1Zv4RHY1IZI0pnw7PCLvscKGHOlwlgR6i" },
+    { id: "cs-q4", title: "كويز (نموذج إضافي)", type: "exam", uploader: "Admin", size: "N/A", url: "https://drive.google.com/uc?export=download&id=1-EFRpzSSPJAlD302OtfVInGDwrLxWxEu" }
+
   ],
   "c6": [
     // --- الشروحات المرئية (Video Playlists) ---

@@ -1,6 +1,6 @@
-import { useState, memo } from "react";
+import { useState, memo, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard, GraduationCap, BookOpen, Users, Calculator, ShoppingBag, Sparkles, Settings, Menu, X, MapPin,
 } from "lucide-react";
@@ -10,12 +10,22 @@ import { cn } from "@/lib/utils";
 const Sidebar = memo(() => {
   const { t, dir } = usePreferences();
   const location = useLocation();
-  const [collapsed, setCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const activeRef = useRef<HTMLAnchorElement>(null);
+
+  // Auto-scroll to active link when menu opens
+  useEffect(() => {
+    if (isOpen && activeRef.current) {
+      const timer = setTimeout(() => {
+        activeRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
 
   const items = [
     { to: "/", icon: LayoutDashboard, label: t.nav.dashboard, end: true },
-
     { to: "/majors", icon: GraduationCap, label: t.nav.majors },
     { to: "/vault", icon: BookOpen, label: t.nav.vault },
     { to: "/faculty", icon: Users, label: t.nav.faculty },
@@ -29,122 +39,101 @@ const Sidebar = memo(() => {
     end ? location.pathname === to : location.pathname.startsWith(to);
 
   const sideClasses = cn(
-    "fixed top-0 z-40 h-screen bg-sidebar/80 backdrop-blur-xl border-sidebar-border transition-all duration-300 flex flex-col transition-colors duration-300",
+    "fixed top-0 z-40 h-[100dvh] bg-sidebar/95 backdrop-blur-[20px] border-sidebar-border transition-all duration-500 flex flex-col shadow-[0_0_50px_rgba(0,0,0,0.3)]",
     dir === "rtl" ? "right-0 border-l" : "left-0 border-r",
-    collapsed ? "w-20" : "w-64",
-    "md:translate-x-0",
-    mobileOpen ? "translate-x-0" : (dir === "rtl" ? "translate-x-full" : "-translate-x-full"),
-    "md:!translate-x-0"
+    "w-[60%] md:w-80", // Mobile: 60% width, Desktop: 80 (320px)
+    isOpen ? "translate-x-0" : (dir === "rtl" ? "translate-x-full" : "-translate-x-full"),
   );
 
   return (
     <>
-      {/* Mobile toggle */}
+      {/* Universal toggle button (Top Right) */}
       <button
-        onClick={() => setMobileOpen(o => !o)}
+        onClick={() => setIsOpen(o => !o)}
         className={cn(
-          "md:hidden fixed top-3 z-50 p-1.5 rounded-lg bg-sidebar/80 border border-sidebar-border backdrop-blur-xl shadow-lg transition-colors duration-300",
-          dir === "rtl" ? "right-3" : "left-3"
+          "fixed top-4 z-50 p-2.5 rounded-2xl bg-sidebar/80 border border-sidebar-border backdrop-blur-xl shadow-2xl transition-all duration-300 active:scale-90",
+          dir === "rtl" ? "right-4" : "left-4"
         )}
         aria-label="Toggle menu"
       >
-        {mobileOpen ? <X className="h-4 w-4 text-foreground" /> : <Menu className="h-4 w-4 text-foreground" />}
+        {isOpen ? <X className="h-6 w-6 text-foreground" /> : <Menu className="h-6 w-6 text-foreground" />}
       </button>
 
       {/* Backdrop */}
-      {mobileOpen && (
-        <div className="md:hidden fixed inset-0 bg-background/60 backdrop-blur-sm z-30" onClick={() => setMobileOpen(false)} />
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-background/80 backdrop-blur-md z-30" 
+            onClick={() => setIsOpen(false)} 
+          />
+        )}
+      </AnimatePresence>
 
       <aside className={sideClasses}>
         {/* Logo */}
-        <div className="p-4 md:p-5 flex items-center gap-2 md:gap-3 border-b border-sidebar-border">
+        <div className="p-6 md:p-8 flex items-center gap-4 border-b border-sidebar-border">
           <img 
             src="/rs.png" 
             alt="Murshid Logo" 
-            className="h-10 w-10 md:h-12 md:w-12 rounded-full object-contain shadow-md shrink-0 border border-border/40"
+            className="h-12 w-12 md:h-14 md:w-14 rounded-full object-contain shadow-2xl shrink-0 border-2 border-accent/20"
             loading="lazy"
             decoding="async"
           />
-          {!collapsed && (
-            <div className="overflow-hidden">
-              <div className="font-extrabold text-xl tracking-tighter leading-none text-foreground">{t.appName}</div>
-              <div className="text-[10px] font-bold text-accent mt-1 tracking-widest uppercase truncate">{t.tagline}</div>
-            </div>
-          )}
+          <div className="overflow-hidden">
+            <div className="font-black text-2xl md:text-3xl tracking-tighter leading-none text-foreground">{t.appName}</div>
+            <div className="text-[11px] font-bold text-accent mt-1.5 tracking-widest uppercase truncate">{t.tagline}</div>
+          </div>
         </div>
 
-        {/* Nav */}
-        <nav className="flex-1 p-3 space-y-1 overflow-y-auto scrollbar-thin">
+        {/* Navigation Content - Centered vertically */}
+        <nav className="flex-1 overflow-y-auto scrollbar-hide p-4 space-y-3 flex flex-col justify-center my-auto">
           {items.map((it) => {
             const active = isActive(it.to, it.end);
             return (
               <motion.div
                 key={it.to}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.02, x: dir === "rtl" ? -5 : 5 }}
                 whileTap={{ scale: 0.98 }}
-                style={{ willChange: "transform" }}
               >
                 <Link
                   to={it.to}
-                  onClick={() => setMobileOpen(o => false)}
+                  ref={active ? activeRef : null}
+                  onClick={() => setIsOpen(false)}
                   className={cn(
-                    "group relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all active-press w-full",
+                    "group relative flex items-center gap-4 px-4 py-4 rounded-2xl transition-all active-press w-full",
                     active
-                      ? "gradient-primary text-primary-foreground shadow-lg"
+                      ? "gradient-primary text-primary-foreground shadow-xl shadow-primary/20"
                       : "hover:bg-sidebar-accent text-sidebar-foreground/70 hover:text-sidebar-foreground"
                   )}
                 >
-                  {active && (
-                    <motion.span
-                      layoutId="active-accent-bar"
-                      className={cn(
-                        "absolute top-1.5 bottom-1.5 w-[3px] rounded-full bg-accent shadow-[0_0_10px_hsl(var(--accent)/0.7)]",
-                        dir === "rtl" ? "right-0" : "left-0"
-                      )}
-                    />
-                  )}
-                  <it.icon className={cn("h-5 w-5 shrink-0 transition-colors", active ? "text-accent" : "group-hover:text-accent")} />
-                  {!collapsed && <span className="font-medium text-sm truncate">{it.label}</span>}
+                  <it.icon className={cn("h-6 w-6 shrink-0 transition-colors", active ? "text-primary-foreground" : "group-hover:text-accent")} />
+                  <span className="font-black text-lg break-words leading-tight">{it.label}</span>
                 </Link>
               </motion.div>
             );
           })}
         </nav>
 
-        {/* Settings + collapse */}
-        <div className="p-3 border-t border-sidebar-border space-y-1">
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            style={{ willChange: "transform" }}
+        {/* Bottom actions */}
+        <div className="p-6 border-t border-sidebar-border space-y-2">
+          <Link
+            to="/settings"
+            onClick={() => setIsOpen(false)}
+            className={cn(
+              "flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all w-full",
+              isActive("/settings")
+                ? "gradient-primary text-primary-foreground shadow-lg"
+                : "hover:bg-sidebar-accent text-sidebar-foreground/70 hover:text-sidebar-foreground"
+            )}
           >
-            <Link
-              to="/settings"
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all w-full",
-                isActive("/settings")
-                  ? "gradient-primary text-primary-foreground shadow-lg"
-                  : "hover:bg-sidebar-accent text-sidebar-foreground/70 hover:text-sidebar-foreground"
-              )}
-            >
-              <Settings className="h-5 w-5 shrink-0" />
-              {!collapsed && <span className="font-medium text-sm">{t.nav.settings}</span>}
-            </Link>
-          </motion.div>
-          <button
-            onClick={() => setCollapsed(c => !c)}
-            className="hidden md:flex w-full items-center gap-3 px-3 py-2 rounded-lg hover:bg-sidebar-accent text-muted-foreground text-sm"
-          >
-            <Menu className="h-4 w-4" />
-            {!collapsed && <span>Collapse</span>}
-          </button>
+            <Settings className="h-6 w-6 shrink-0" />
+            <span className="font-black text-lg">{t.nav.settings}</span>
+          </Link>
         </div>
       </aside>
-
-      {/* Spacer for desktop */}
-      <div className={cn("hidden md:block transition-all", collapsed ? "w-20" : "w-64")} />
     </>
   );
 });
