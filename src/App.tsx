@@ -103,7 +103,7 @@ const App = () => {
             <Sonner />
             <Analytics />
             <SpeedInsights />
-            <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+            <BrowserRouter>
               <ScrollRestoration />
               <GlobalErrorBoundary>
                 <AppRoutes />
