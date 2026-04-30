@@ -23,7 +23,7 @@ const StaticBackground = memo(() => {
       <div className="absolute bottom-[20%] left-[15%] w-48 h-48 rounded-full bg-accent/[0.01] border border-accent/5 hidden lg:block" />
 
       {/* Optimized Grain Texture */}
-      <div className="absolute inset-0 opacity-[0.05] dark:opacity-[0.1] mix-blend-overlay pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat" />
+      <div className="absolute inset-0 opacity-[0.05] dark:opacity-[0.1] mix-blend-overlay pointer-events-none bg-[url('/noise.svg')] bg-repeat" />
     </div>
   );
 });
