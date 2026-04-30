@@ -186,6 +186,7 @@ export default function GPACalculator() {
           </div>
         </motion.aside>
       </div>
-    </motion.div>
+    </div>
+  </motion.div>
   );
 }
