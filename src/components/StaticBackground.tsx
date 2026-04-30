@@ -2,11 +2,11 @@ import { memo } from "react";
 
 const StaticBackground = memo(() => {
   return (
-    <div className="pointer-events-none fixed inset-0 overflow-hidden -z-10 bg-background">
+    <div className="pointer-events-none fixed inset-0 overflow-hidden -z-10 bg-background gpu-accelerated" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', perspective: 1000, WebkitPerspective: 1000 }}>
       {/* ── Ultra-Performance Static Background System ── */}
       
-      {/* Dynamic Gradient from CoursePage - Moved here to be stable */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(59,130,246,0.05)_0%,transparent_70%)]" />
+      {/* Dynamic Gradient - Theme Aware */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,hsl(var(--accent)/0.05)_0%,transparent_70%)]" />
 
       {/* Subtle Static Glows - Enabled only for Desktop */}
       <div
@@ -19,7 +19,7 @@ const StaticBackground = memo(() => {
       />
 
       {/* Glassmorphic Accents - Optimized */}
-      <div className="absolute top-[15%] right-[10%] w-32 h-32 rounded-3xl bg-white/[0.02] border border-white/5 hidden lg:block" />
+      <div className="absolute top-[15%] right-[10%] w-32 h-32 rounded-3xl bg-foreground/[0.02] border border-foreground/5 hidden lg:block" />
       <div className="absolute bottom-[20%] left-[15%] w-48 h-48 rounded-full bg-accent/[0.01] border border-accent/5 hidden lg:block" />
 
       {/* Optimized Grain Texture */}

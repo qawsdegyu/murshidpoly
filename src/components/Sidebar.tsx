@@ -67,18 +67,18 @@ const Sidebar = memo(({ isOpen, onOpenChange }: SidebarProps) => {
         onClick={() => onOpenChange(false)} 
       />
 
-      <aside className={cn(sideClasses, "border-navy-contrast")}>
+      <aside className={cn(sideClasses, "border-sidebar-border")}>
         {/* Logo area - Highly compact */}
         <div className="p-2 md:p-3 flex items-center gap-2 border-b border-sidebar-border/50">
           <img 
-            src="/rs.png" 
+        src="/rs.png" 
             alt="Murshid Logo" 
-            className="h-8 w-8 md:h-9 md:w-9 rounded-full object-contain shadow-lg shrink-0 border border-white/20"
+            className="h-8 w-8 md:h-9 md:w-9 rounded-full object-contain shadow-lg shrink-0 border border-sidebar-border/20"
             loading="lazy"
             decoding="async"
           />
           <div className="overflow-hidden">
-            <div className="font-black text-base md:text-lg tracking-tighter leading-none text-white navy-pop">{t.appName}</div>
+            <div className="font-black text-base md:text-lg tracking-tighter leading-none text-sidebar-foreground navy-pop">{t.appName}</div>
             <div className="text-[8px] font-bold text-accent mt-0.5 tracking-widest uppercase truncate navy-pop">{t.tagline}</div>
           </div>
         </div>
@@ -98,7 +98,7 @@ const Sidebar = memo(({ isOpen, onOpenChange }: SidebarProps) => {
                     "group relative flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg transition-all active-press w-full",
                     active
                       ? "gradient-primary text-primary-foreground shadow-md border border-white/20"
-                      : "hover:bg-white/5 text-white/70 hover:text-white"
+                      : "hover:bg-accent/5 text-sidebar-foreground hover:text-accent"
                   )}
                 >
                   <it.icon className={cn("h-[18px] w-[18px] shrink-0 transition-colors navy-pop", active ? "text-primary-foreground" : "group-hover:text-accent")} />
@@ -137,7 +137,7 @@ const Sidebar = memo(({ isOpen, onOpenChange }: SidebarProps) => {
                 "flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all w-full",
                 isActive("/auth")
                   ? "gradient-primary text-primary-foreground shadow-sm border border-white/20"
-                  : "hover:bg-white/5 text-white/70 hover:text-white"
+                  : "hover:bg-accent/5 text-sidebar-foreground hover:text-accent"
               )}
             >
               <LogIn className="h-[18px] w-[18px] shrink-0" />
@@ -152,7 +152,7 @@ const Sidebar = memo(({ isOpen, onOpenChange }: SidebarProps) => {
               "flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all w-full",
               isActive("/settings")
                 ? "gradient-primary text-primary-foreground shadow-sm border border-white/20"
-                : "hover:bg-white/5 text-white/70 hover:text-white"
+                : "hover:bg-accent/5 text-sidebar-foreground hover:text-accent"
             )}
           >
             <Settings className="h-[18px] w-[18px] shrink-0 navy-pop" />

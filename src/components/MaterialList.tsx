@@ -31,7 +31,7 @@ export default function MaterialList({ items, emptyMessage }: MaterialListProps)
 
   if (items.length === 0) {
     return (
-      <div className="text-center py-16 bg-surface/30 dark:bg-surface/5 rounded-3xl border border-dashed border-border dark:border-white/10">
+      <div className="text-center py-16 bg-surface/30 rounded-3xl border border-dashed border-border">
         <p className="text-muted-foreground text-sm font-bold">
           {emptyMessage || (isAr ? "لا توجد ملفات متاحة حالياً ✨" : "No files available yet ✨")}
         </p>
@@ -58,28 +58,28 @@ export default function MaterialList({ items, emptyMessage }: MaterialListProps)
               if (url) window.open(url, "_blank", "noopener,noreferrer");
             }}
             className={cn(
-              "w-full group flex items-center justify-between px-3 py-2 md:py-2.5 rounded-xl border transition-all duration-300 shadow-sm border-navy-contrast isolation-isolate",
+              "w-full group flex items-center justify-between px-4 py-3 md:py-5 lg:py-6 rounded-2xl border transition-all duration-300 shadow-sm border-border isolation-isolate",
               isVideo 
-                ? "bg-red-500/5 border-red-500/20 text-red-600 dark:text-red-400 hover:bg-red-500 hover:text-white"
-                : "bg-white dark:bg-surface/5 hover:border-primary/30 hover:bg-slate-50 dark:hover:bg-white/10"
+                ? "bg-red-500/5 border-red-500/20 text-red-600 hover:bg-red-500 hover:text-white"
+                : "bg-surface hover:border-accent/30 hover:bg-surface/80"
             )}
           >
             {/* Title and Metadata on the Start side */}
             <div className="flex flex-col items-start text-start min-w-0 flex-1 pr-3 rtl:pr-0 rtl:pl-3 pointer-events-none">
               <span className={cn(
-                "text-xs md:text-[13px] font-black leading-tight break-words navy-pop",
-                isVideo ? "text-red-600 dark:text-red-400 group-hover:text-white" : "text-slate-900 dark:text-slate-100"
+                "text-sm md:text-lg lg:text-xl font-black leading-tight break-words",
+                isVideo ? "text-red-600 group-hover:text-white" : "text-foreground"
               )}>
                 {item.title}
               </span>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight">
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-[10px] md:text-xs font-bold text-muted-foreground uppercase tracking-tight">
                   {item.uploader}
                 </span>
                 {item.size && (
                   <>
-                    <span className="w-0.5 h-0.5 rounded-full bg-slate-300 dark:bg-slate-600" />
-                    <span className="text-[10px] font-bold text-slate-400">{item.size}</span>
+                    <span className="w-1 h-1 rounded-full bg-muted-foreground/40" />
+                    <span className="text-[10px] md:text-xs font-bold text-muted-foreground">{item.size}</span>
                   </>
                 )}
               </div>
@@ -87,15 +87,15 @@ export default function MaterialList({ items, emptyMessage }: MaterialListProps)
 
             {/* Icon on the End side - Scaled down */}
             <div className={cn(
-              "shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-300 pointer-events-none",
+              "shrink-0 w-8 h-8 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl flex items-center justify-center transition-all duration-300 pointer-events-none",
               isVideo 
                 ? "bg-red-500/10 text-red-500 group-hover:bg-white/20 group-hover:text-white" 
-                : "bg-slate-100 dark:bg-white/10 text-slate-400 group-hover:text-primary dark:group-hover:text-accent"
+                : "bg-surface/80 text-muted-foreground group-hover:text-accent border border-border/50 shadow-inner"
             )}>
               {isVideo ? (
-                <PlayCircle className="w-3.5 h-3.5" />
+                <PlayCircle className="w-4 h-4 md:w-6 md:h-6 lg:w-7 lg:h-7" />
               ) : (
-                <Download className="w-3.5 h-3.5" />
+                <Download className="w-4 h-4 md:w-6 md:h-6 lg:w-7 lg:h-7" />
               )}
             </div>
           </motion.button>

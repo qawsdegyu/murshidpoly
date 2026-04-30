@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { PreferencesProvider } from "@/contexts/PreferencesContext";
+import { PreferencesProvider, usePreferences } from "@/contexts/PreferencesContext";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { lazy, Suspense } from "react";
 import AppLayout from "@/components/AppLayout";
@@ -38,6 +38,7 @@ const NotFound = lazy(PAGE_IMPORTS.NotFound);
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
+  const { lang } = usePreferences();
   const location = useLocation();
 
   if (loading) {
@@ -46,9 +47,11 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   if (!user) {
     return <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-      <h2 className="text-2xl font-bold text-[#003366]">Access Restricted</h2>
-      <p className="text-slate-500">Please sign in to access this feature.</p>
-      <a href="/auth" className="bg-[#003366] text-white px-6 py-2 rounded-lg hover:bg-[#002244] transition-colors">Sign In</a>
+      <h2 className="text-2xl font-black text-foreground">{lang === 'ar' ? 'وصول مقيد' : 'Access Restricted'}</h2>
+      <p className="text-muted-foreground font-bold">{lang === 'ar' ? 'يرجى تسجيل الدخول للوصول إلى هذه الميزة' : 'Please sign in to access this feature.'}</p>
+      <a href="/auth" className="bg-secondary text-white px-8 py-3 rounded-2xl hover:scale-105 transition-all font-black shadow-lg shadow-secondary/20">
+        {lang === 'ar' ? 'تسجيل الدخول' : 'Sign In'}
+      </a>
     </motion.div>;
   }
 

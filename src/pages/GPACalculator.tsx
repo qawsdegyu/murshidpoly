@@ -168,9 +168,9 @@ export default function GPACalculator() {
                   </div>
                 </motion.div>
 
-                <div className="border-t border-white/10 pt-5">
+                <div className="border-t border-border pt-5">
                   <div className="text-sm text-muted-foreground font-medium">{t.gpa.newCgpa}</div>
-                  <div className="text-3xl md:text-5xl font-black text-white mt-1 tabular-nums">
+                  <div className="text-3xl md:text-5xl font-black text-foreground mt-1 tabular-nums">
                     {result.newCgpa.toFixed(2)}
                   </div>
                   <div className="text-xs text-muted-foreground mt-1 font-bold">
@@ -178,7 +178,7 @@ export default function GPACalculator() {
                   </div>
                 </div>
 
-                <div className="text-[10px] leading-relaxed text-slate-400 bg-white/5 rounded-xl p-4 border border-white/5">
+                <div className="text-[10px] leading-relaxed text-muted-foreground/60 bg-muted/20 rounded-xl p-4 border border-border">
                   BAU 4.0 scale • Grades: A/A+ = 4.0, A- = 3.75, B+ = 3.5, B = 3.0, ...
                 </div>
               </div>

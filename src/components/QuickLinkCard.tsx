@@ -23,8 +23,8 @@ export default function QuickLinkCard({ to, icon: Icon, label, prefetch }: Quick
         className="group flex flex-col items-center"
       >
         {/* Circle container */}
-        <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-20 lg:h-20 rounded-full bg-slate-100/60 dark:bg-slate-800/60 flex items-center justify-center transition-all duration-300 group-hover:bg-slate-200/80 dark:group-hover:bg-slate-700/80 shadow-sm border border-slate-200 dark:border-white/5 isolation-isolate">
-          <Icon className="w-5 h-5 lg:w-10 lg:h-10 text-content transition-transform duration-300 group-hover:scale-110 pointer-events-none" strokeWidth={1.5} />
+        <div className="w-16 h-16 sm:w-18 sm:h-18 lg:w-24 lg:h-24 rounded-full bg-surface/80 flex items-center justify-center transition-all duration-300 group-hover:bg-accent group-hover:text-accent-foreground group-hover:shadow-[0_0_25px_hsl(var(--accent)/0.6)] border border-border shadow-sm isolation-isolate group-active:scale-90">
+          <Icon className="w-7 h-7 lg:w-11 lg:h-11 text-foreground transition-transform duration-300 group-hover:scale-110 pointer-events-none" strokeWidth={2} />
         </div>
         {/* Label */}
         <span className="text-[10px] font-bold mt-1 text-content lg:text-sm lg:font-black lg:mt-2.5 text-center leading-tight max-w-[70px] sm:max-w-[80px] lg:max-w-[110px] line-clamp-2 break-words pointer-events-none">

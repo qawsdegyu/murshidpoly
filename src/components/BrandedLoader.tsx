@@ -28,15 +28,15 @@ export default function BrandedLoader() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="relative h-24 w-24 rounded-[2rem] bg-gradient-to-br from-primary via-accent to-primary p-[2px] shadow-[0_0_50px_rgba(var(--accent-rgb),0.3)]"
+          className="relative h-24 w-24 rounded-[2rem] bg-gradient-to-br from-primary via-accent to-primary p-[2px] shadow-[0_0_50px_hsl(var(--accent)/0.3)]"
         >
-          <div className="flex h-full w-full items-center justify-center rounded-[calc(2rem-2px)] bg-slate-950">
+          <div className="flex h-full w-full items-center justify-center rounded-[calc(2rem-2px)] bg-sidebar">
             <motion.span 
               animate={{ 
                 textShadow: [
-                  "0 0 10px rgba(var(--accent-rgb),0.5)",
-                  "0 0 20px rgba(var(--accent-rgb),0.8)",
-                  "0 0 10px rgba(var(--accent-rgb),0.5)"
+                  "0 0 10px hsl(var(--accent)/0.5)",
+                  "0 0 20px hsl(var(--accent)/0.8)",
+                  "0 0 10px hsl(var(--accent)/0.5)"
                 ]
               }}
               transition={{ duration: 2, repeat: Infinity }}

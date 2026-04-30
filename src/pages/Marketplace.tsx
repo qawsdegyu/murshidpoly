@@ -53,7 +53,7 @@ export default function Marketplace() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="text-xs sm:text-sm md:text-xl text-slate-400 font-medium max-w-xl mx-auto leading-relaxed mb-8 md:mb-10"
+          className="text-xs sm:text-sm md:text-xl text-muted-foreground font-medium max-w-xl mx-auto leading-relaxed mb-8 md:mb-10"
         >
           {isAr 
             ? "سوق مرشد للمعدات والخدمات الهندسية.. قيد التجهيز لخدمتكم بأفضل صورة." 
@@ -73,9 +73,9 @@ export default function Marketplace() {
             className="relative group cursor-pointer"
           >
             <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200" />
-            <div className="relative px-8 py-4 bg-slate-950 border border-white/[0.08] rounded-2xl backdrop-blur-xl flex items-center gap-3">
+            <div className="relative px-8 py-4 bg-background border border-border rounded-2xl backdrop-blur-xl flex items-center gap-3">
               <Sparkles className="h-5 w-5 text-emerald-400" />
-              <span className="text-slate-200 font-black text-[10px] sm:text-sm uppercase tracking-widest">
+              <span className="text-foreground font-black text-[10px] sm:text-sm uppercase tracking-widest">
                 {isAr ? "انتظروا مفاجآت مرشد قريباً" : "Expect Murshid surprises soon"}
               </span>
             </div>
@@ -87,9 +87,9 @@ export default function Marketplace() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
-          whileHover={{ scale: 1.1, color: "#94a3b8" }}
+          whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          className="mt-12 flex items-center gap-2 mx-auto text-slate-500 hover:text-slate-300 transition-colors text-xs font-black uppercase tracking-[0.2em]"
+          className="mt-12 flex items-center gap-2 mx-auto text-muted-foreground hover:text-foreground transition-colors text-xs font-black uppercase tracking-[0.2em]"
         >
           <Bell className="h-3.5 w-3.5" />
           {isAr ? "أعلمني عند الإطلاق" : "Notify me on launch"}

@@ -180,9 +180,9 @@ export default function Dashboard() {
             loading="lazy"
             decoding="async"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent opacity-90" />
-          <div className="absolute inset-0 bg-primary/20 mix-blend-overlay" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent z-10" />
+          <div className="absolute inset-0 bg-foreground/10 mix-blend-overlay z-10" />
 
           {/* Interactive Hover Glow */}
           <div className="absolute inset-0 opacity-0 group-hover/hero:opacity-100 transition-opacity duration-700 bg-gradient-to-br from-cyan-500/10 via-transparent to-transparent pointer-events-none" />
@@ -200,22 +200,22 @@ export default function Dashboard() {
                     <ExternalLink className="w-3 h-3 opacity-0 group-hover/badge:opacity-100 transition-opacity" />
                   </Link>
 
-                  <h1 className="text-4xl md:text-6xl lg:text-8xl font-black text-white mb-6 leading-[1.1] drop-shadow-2xl font-['Cairo'] tracking-tight">
+                  <h1 className="text-4xl md:text-6xl lg:text-8xl font-black text-foreground mb-6 leading-[1.1] drop-shadow-2xl font-['Cairo'] tracking-tight">
                     {isProfileLoading ? (
-                      <Skeleton className="h-16 md:h-24 lg:h-32 w-[300px] md:w-[500px] bg-white/10 rounded-2xl" />
+                      <Skeleton className="h-16 md:h-24 lg:h-32 w-[300px] md:w-[500px] bg-foreground/10 rounded-2xl" />
                     ) : (
                       <>
                         {user ? (
                           <>
-                            <span className="block opacity-90 text-2xl md:text-3xl lg:text-4xl mb-2">مرحباً بك يا مهندس</span>
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-[#00ffff] to-yellow-400 drop-shadow-[0_0_30px_rgba(0,255,255,0.3)]">
+                            <span className="block opacity-90 text-2xl md:text-3xl lg:text-4xl mb-2">مرحباً يا مهندس</span>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent/80 to-secondary drop-shadow-[0_0_30px_hsl(var(--accent)/0.3)]">
                               {profile.name || "المستقبل"}
                             </span>
                           </>
                         ) : (
                           <>
-                            <span className="block opacity-90 text-2xl md:text-3xl lg:text-4xl mb-2">مرحباً بك يا</span>
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-[#00ffff] to-yellow-400">
+                            <span className="block opacity-90 text-2xl md:text-3xl lg:text-4xl mb-2">مرحباً يا</span>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent/80 to-secondary">
                               مهندس المستقبل
                             </span>
                           </>
@@ -224,7 +224,7 @@ export default function Dashboard() {
                     )}
                   </h1>
 
-                  <p className="text-neutral-300 text-sm md:text-xl lg:text-2xl max-w-2xl leading-relaxed font-bold drop-shadow-lg opacity-90">
+                  <p className="text-foreground/70 text-sm md:text-xl lg:text-2xl max-w-2xl leading-relaxed font-bold drop-shadow-lg opacity-90">
                     {lang === "ar"
                       ? (launchAnn?.shortDescriptionAr || "تم إنشاؤه بواسطة فريق من طلاب الهندسة في السنة الثانية")
                       : (launchAnn?.shortDescription || "Created by a team of 2nd-year Engineering Students")}
@@ -233,7 +233,7 @@ export default function Dashboard() {
               );
             })()}
 
-            <Link to="/announcement/official-launch-v1" className="pointer-events-auto mt-8 inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 text-white font-black transition-all group/cta">
+            <Link to="/announcement/official-launch-v1" className="pointer-events-auto mt-8 inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-primary/10 hover:bg-primary/20 backdrop-blur-xl border border-primary/20 text-foreground font-black transition-all group/cta">
               {lang === "ar" ? "اعرف أكثر عن الفريق" : "Learn More About the Team"}
               <ArrowRight className={`w-5 h-5 transition-transform group-hover/cta:translate-x-1 ${lang === 'ar' ? 'rotate-180 group-hover/cta:-translate-x-1' : ''}`} />
             </Link>
@@ -244,32 +244,31 @@ export default function Dashboard() {
         <div className="absolute -right-20 -bottom-20 h-96 w-96 rounded-full bg-accent/10 blur-[120px] pointer-events-none hidden md:block" />
       </m.section>
 
-      {/* Advertisement Space */}
-      <AdSpace isAdmin={profile.isAdmin} />
+
 
       {/* Announcements Section - Directly below Hero with Zero Gap */}
       {announcementsList.length > 0 && (
         <m.section
           variants={item}
-          className="relative w-full bg-slate-950 pt-0 pb-12 md:pb-20 px-4 md:px-6 lg:px-8 overflow-hidden border-t border-cyan-500/20"
+          className="relative w-full bg-background pt-0 pb-12 md:pb-20 px-4 md:px-6 lg:px-8 overflow-hidden border-t border-accent/20"
         >
           {/* Section Background Overlay */}
           <div className="absolute inset-0 z-0">
             <img
               src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000"
               alt="Network Background"
-              className="w-full h-full object-cover opacity-10"
+              className="w-full h-full object-cover opacity-5"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/40 to-slate-950" />
-            <div className="absolute inset-0 bg-slate-950/60 backdrop-blur-[2px]" />
+            <div className="absolute inset-0 bg-gradient-to-b from-background via-background/40 to-background" />
+            <div className="absolute inset-0 bg-background/60 backdrop-blur-[2px]" />
           </div>
 
           <div className="relative z-10 max-w-[1440px] mx-auto">
             <div className="flex items-center gap-4 mb-8 pt-10">
-              <h2 className="text-2xl md:text-4xl font-black text-white font-['Cairo'] tracking-tight">
+              <h2 className="text-2xl md:text-4xl font-black text-foreground font-['Cairo'] tracking-tight">
                 {lang === "ar" ? "الإعلانات والمستجدات" : "Announcements & Updates"}
               </h2>
-              <div className="h-[2px] flex-1 bg-gradient-to-r from-cyan-500/50 to-transparent rounded-full" />
+              <div className="h-[2px] flex-1 bg-gradient-to-r from-accent/50 to-transparent rounded-full" />
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:gap-6">

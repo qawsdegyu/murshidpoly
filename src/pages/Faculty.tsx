@@ -68,12 +68,12 @@ const Faculty = memo(function Faculty() {
       {/* Search + filters */}
       <div className="space-y-6 mb-10">
         <div className="relative group">
-          <Search className="absolute top-1/2 -translate-y-1/2 ltr:left-4 rtl:right-4 h-5 w-5 text-slate-400 group-focus-within:text-accent transition-colors" />
+          <Search className="absolute top-1/2 -translate-y-1/2 ltr:left-4 rtl:right-4 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
           <Input
             value={query}
             onChange={e => setQuery(e.target.value)}
             placeholder={lang === "ar" ? "ابحث عن دكتور أو قسم..." : "Search for a doctor or department..."}
-            className="ltr:pl-12 rtl:pr-12 h-14 bg-surface/50 dark:bg-surface/10 border-border dark:border-white/10 rounded-2xl text-lg backdrop-blur-xl focus:ring-accent transition-all"
+            className="ltr:pl-12 rtl:pr-12 h-14 bg-surface/50 border-border rounded-2xl text-lg backdrop-blur-xl focus:ring-accent transition-all"
           />
         </div>
 
@@ -83,8 +83,8 @@ const Faculty = memo(function Faculty() {
             className={cn(
               "px-5 py-2.5 rounded-2xl text-xs md:text-sm font-black transition-all",
               dept === "all" 
-                ? "bg-accent text-neutral-950 shadow-lg shadow-accent/20" 
-                : "bg-surface/50 dark:bg-surface/10 border border-slate-200 dark:border-white/10 hover:bg-surface/80"
+                ? "bg-accent text-accent-foreground shadow-lg shadow-accent/20" 
+                : "bg-surface/50 border border-border hover:bg-surface/80"
             )}
           >
             {t.faculty.all}
@@ -96,8 +96,8 @@ const Faculty = memo(function Faculty() {
               className={cn(
                 "px-5 py-2.5 rounded-2xl text-xs md:text-sm font-black transition-all",
                 dept === d 
-                  ? "bg-accent text-neutral-950 shadow-lg shadow-accent/20" 
-                  : "bg-white/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-white/80"
+                  ? "bg-accent text-accent-foreground shadow-lg shadow-accent/20" 
+                  : "bg-surface/50 border border-border hover:bg-surface/80"
               )}
             >
               {d}
@@ -128,9 +128,9 @@ const Faculty = memo(function Faculty() {
       </motion.div>
 
       {filtered.length === 0 && (
-        <div className="text-center py-24 bg-surface/30 dark:bg-surface/5 rounded-3xl border border-dashed border-border dark:border-white/10">
-          <GraduationCap className="h-16 w-16 text-slate-300 dark:text-slate-800 mx-auto mb-4" />
-          <p className="text-xl font-bold text-slate-500">
+        <div className="text-center py-24 bg-surface/30 rounded-3xl border border-dashed border-border">
+          <GraduationCap className="h-16 w-16 text-content/20 mx-auto mb-4" />
+          <p className="text-xl font-bold text-content/40">
             {lang === "ar" ? "لا يوجد بيانات تواصل حالياً لهذا الاسم" : "No contact information available for this name"}
           </p>
         </div>

@@ -22,7 +22,7 @@ const PageHeader = memo(({ title, subtitle, icon, actions, className }: PageHead
       <div className="flex flex-col md:flex-row md:items-end justify-between w-full gap-4">
         <div className="flex items-start gap-4 md:gap-6">
           {icon && (
-            <div className="h-10 w-10 md:h-14 md:w-14 rounded-2xl bg-gradient-to-br from-primary to-primary/80 grid place-items-center shadow-[0_8px_30px_rgb(0,0,0,0.12)] shrink-0 border border-white/10 ring-4 ring-primary/5">
+            <div className="h-10 w-10 md:h-14 md:w-14 rounded-2xl bg-surface border border-border/50 grid place-items-center shadow-elegant shrink-0 ring-4 ring-accent/5">
               <div className="text-accent scale-[0.7] md:scale-100">{icon}</div>
             </div>
           )}

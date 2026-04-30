@@ -58,7 +58,7 @@ export default function Settings() {
               whileTap={{ scale: 0.98 }}
               className={cn(
                 "relative z-10 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-sm font-semibold transition-colors duration-300",
-                active ? "text-white" : "text-content/50 hover:text-content"
+                active ? "text-primary-foreground" : "text-content/50 hover:text-content"
               )}
             >
               {active && (
@@ -85,15 +85,47 @@ export default function Settings() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Label className="mb-5 block text-neutral-700 dark:text-neutral-300 text-base">{t.settings.theme}</Label>
-            <div className="grid sm:grid-cols-3 gap-5">
+            <Label className="mb-5 block text-foreground text-base font-black">{t.settings.theme}</Label>
+            
+            {/* Segmented Theme Switcher */}
+            <div className="relative p-1.5 rounded-2xl bg-surface/50 border border-border backdrop-blur-xl grid grid-cols-3 gap-1 mb-8 shadow-inner overflow-hidden">
+              {(["light", "dark", "pink"] as const).map((tId) => {
+                const isActive = theme === tId;
+                return (
+                  <button
+                    key={tId}
+                    onClick={() => setTheme(tId)}
+                    className={cn(
+                      "relative py-3 rounded-xl text-sm font-black transition-all duration-500 z-10",
+                      isActive ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {isActive && (
+                      <motion.div
+                        layoutId="active-theme-segment"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                        className="absolute inset-0 bg-primary rounded-xl shadow-lg ring-1 ring-white/10"
+                      />
+                    )}
+                    <span className="relative z-20 uppercase tracking-widest flex items-center justify-center gap-2">
+                      {tId === "light" && <Sun className="h-4 w-4" />}
+                      {tId === "dark" && <Moon className="h-4 w-4" />}
+                      {tId === "pink" && <Palette className="h-4 w-4" />}
+                      {tId === "light" ? t.settings.light : tId === "dark" ? t.settings.dark : t.settings.pink}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="grid sm:grid-cols-3 gap-5 opacity-50 pointer-events-none">
               <ThemeCard
                 active={theme === "light"}
                 onClick={() => setTheme("light")}
                 title={t.settings.light}
                 preview={
-                  <div className="h-32 rounded-2xl bg-[#F8FAFC] border border-slate-200 grid place-items-center">
-                    <Sun className="h-10 w-10 text-[#10B981]" />
+                  <div className="h-24 rounded-2xl bg-white border border-slate-200 grid place-items-center">
+                    <Sun className="h-8 w-8 text-cyan-500" />
                   </div>
                 }
               />
@@ -102,8 +134,8 @@ export default function Settings() {
                 onClick={() => setTheme("dark")}
                 title={t.settings.dark}
                 preview={
-                  <div className="h-32 rounded-2xl bg-[#020617] border border-white/10 grid place-items-center">
-                    <Moon className="h-10 w-10 text-[#34D399]" />
+                  <div className="h-24 rounded-2xl bg-black border border-white/10 grid place-items-center">
+                    <Moon className="h-8 w-8 text-cyan-400" />
                   </div>
                 }
               />
@@ -112,8 +144,8 @@ export default function Settings() {
                 onClick={() => setTheme("pink")}
                 title={t.settings.pink}
                 preview={
-                  <div className="h-32 rounded-2xl bg-[#FFF0F5] border border-[#FBCFE8] grid place-items-center">
-                    <div className="h-10 w-10 rounded-full bg-[#DB2777] shadow-[0_0_20px_rgba(219,39,119,0.5)]" />
+                  <div className="h-24 rounded-2xl bg-[#D81B60] border border-white/10 grid place-items-center">
+                    <Palette className="h-8 w-8 text-white" />
                   </div>
                 }
               />
@@ -129,7 +161,7 @@ export default function Settings() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Label className="mb-5 block text-neutral-700 dark:text-neutral-300 text-base">{t.settings.lang}</Label>
+            <Label className="mb-5 block text-foreground text-base">{t.settings.lang}</Label>
             <div className="grid sm:grid-cols-2 gap-5">
               <LanguageCard
                 active={lang === "en"}
@@ -159,7 +191,7 @@ function CornerCheck() {
       initial={{ scale: 0.5, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ type: "spring", stiffness: 380, damping: 22 }}
-      className="absolute top-4 end-4 h-9 w-9 rounded-full grid place-items-center bg-primary text-white shadow-[0_0_20px_hsl(var(--primary)/0.7)]"
+      className="absolute top-4 end-4 h-9 w-9 rounded-full grid place-items-center bg-primary text-primary-foreground shadow-[0_0_20px_hsl(var(--primary)/0.7)]"
     >
       <Check className="h-5 w-5 stroke-[3]" />
     </motion.div>
@@ -182,7 +214,7 @@ function ThemeCard({ active, onClick, title, preview }: ThemeCardProps) {
         "relative p-5 rounded-2xl border text-start transition-all duration-300 backdrop-blur-xl overflow-hidden",
         active
           ? "border-primary bg-surface shadow-[0_0_30px_hsl(var(--primary)/0.2),inset_0_0_30px_hsl(var(--primary)/0.05)]"
-          : "border-border bg-surface/40 hover:border-primary/50"
+          : "border-border bg-card hover:border-primary/50 text-foreground"
       )}
     >
       {preview}
@@ -211,7 +243,7 @@ function LanguageCard({ active, onClick, flag, title, subtitle }: LanguageCardPr
         "relative p-8 rounded-2xl border text-start transition-all duration-300 backdrop-blur-xl overflow-hidden min-h-[180px]",
         active
           ? "border-primary bg-surface shadow-[0_0_36px_hsl(var(--primary)/0.2),inset_0_0_40px_hsl(var(--primary)/0.05)]"
-          : "border-border bg-surface/40 hover:border-primary/50"
+          : "border-border bg-card hover:border-primary/50 text-foreground"
       )}
     >
       {active && (

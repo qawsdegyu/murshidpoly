@@ -78,7 +78,7 @@ export default function Vault() {
   }, [q, activeTab, lang]);
 
   return (
-    <div className="relative min-h-screen overflow-y-auto scrollbar-hide pointer-events-auto pb-20">
+    <div className="relative min-h-screen overflow-y-auto scrollbar-hide pointer-events-auto pb-20 gpu-accelerated" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}>
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 pt-32 md:pt-44 pointer-events-auto transition-all duration-700">
         <PageHeader 
           title={t.vault.title} 
@@ -89,30 +89,23 @@ export default function Vault() {
         
         <div className="space-y-12">
           {/* ── Contribute Card ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 md:p-8 rounded-2xl md:rounded-[2.5rem] bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent border border-emerald-500/20 backdrop-blur-xl relative overflow-hidden group pointer-events-auto"
+          <div
+            className="mb-6 p-4 md:p-8 rounded-2xl md:rounded-[2.5rem] bg-surface/80 border border-border relative overflow-hidden group pointer-events-auto shadow-sm"
           >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 blur-[80px] -mr-32 -mt-32 rounded-full hidden md:block" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[80px] -mr-32 -mt-32 rounded-full hidden md:block" />
             
             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="flex items-center gap-6">
-                <motion.div 
-                  animate={{ 
-                    scale: [1, 1.1, 1],
-                    rotate: [0, 5, -5, 0]
-                  }}
-                  transition={{ duration: 4, repeat: Infinity }}
-                  className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0 hidden md:flex"
+                <div 
+                  className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent shrink-0 hidden md:flex"
                 >
                   <Upload className="w-6 h-6 md:w-8 md:h-8" />
-                </motion.div>
+                </div>
                 <div className="text-center md:text-start">
-                  <h3 className="text-lg md:text-2xl font-black text-slate-900 dark:text-white mb-1.5">
+                  <h3 className="text-lg md:text-2xl font-black text-foreground mb-1.5">
                     {lang === "ar" ? "شاركنا ملفاتك أو تلاخيصك" : "Share your files or summaries"}
                   </h3>
-                  <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 font-medium max-w-xl">
+                  <p className="text-sm md:text-base text-content/60 font-medium max-w-xl">
                     {lang === "ar" 
                       ? "ساعد زملائك من خلال مشاركة مصادرك الدراسية في خزانة مرشد." 
                       : "Help your colleagues by sharing your study resources in Murshid's Vault."}
@@ -126,13 +119,13 @@ export default function Vault() {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-3 px-6 py-3 md:px-8 md:py-4 rounded-2xl bg-emerald-500 text-white font-black hover:bg-emerald-400 transition-all shadow-xl shadow-emerald-500/20 text-sm md:text-base"
+                className="flex items-center gap-3 px-6 py-3 md:px-8 md:py-4 rounded-2xl bg-success text-success-foreground font-black hover:bg-success/90 transition-all shadow-xl shadow-success/20 text-sm md:text-base"
               >
                 <Share2 className="w-5 h-5" />
                 {lang === "ar" ? "تواصل معنا" : "Contact Us"}
               </motion.a>
             </div>
-          </motion.div>
+          </div>
 
           {/* Search Bar - Center and Wider */}
           <div className="relative max-w-4xl mx-auto mb-12 pointer-events-auto group">
@@ -161,32 +154,25 @@ export default function Vault() {
                   whileTap={{ scale: 0.95 }}
                   className={`flex items-center gap-2.5 px-5 py-3 md:px-6 md:py-4 rounded-xl md:rounded-2xl whitespace-nowrap transition-all border shrink-0 ${
                     isActive 
-                      ? "bg-primary text-primary-foreground border-transparent shadow-[0_0_25px_rgba(16,185,129,0.3)] scale-105 z-10" 
-                      : "glass hover:bg-white/10 border-white/5 text-muted-foreground"
+                      ? "bg-primary text-primary-foreground border-transparent shadow-[0_0_25px_hsl(var(--primary)/0.3)] scale-105 z-10" 
+                      : "glass hover:bg-foreground/5 border-border text-muted-foreground"
                   }`}
                 >
                   <Icon className={`h-4 w-4 md:h-5 md:w-5 ${isActive ? "text-primary-foreground" : "text-accent"}`} />
                   <span className="font-black text-xs md:text-sm tracking-wide">{lang === "ar" ? cat.nameAr : cat.nameEn}</span>
-                  {isActive && (
-                    <motion.div 
-                      layoutId="activeTabGlow"
-                      className="absolute inset-0 bg-primary/20 blur-2xl -z-10 rounded-2xl"
-                    />
-                  )}
                 </motion.button>
               );
             })}
           </div>
 
           {/* Course Grid - Responsive Columns */}
-          <div className="space-y-16 min-h-[400px] pointer-events-auto">
-            <AnimatePresence mode="popLayout" initial={false}>
+          <div className="space-y-16 min-h-[600px] pointer-events-auto">
               {groupedData.map((group) => (
                 <div key={group.categoryId} className="space-y-8">
                   {activeTab === "all" && (
                     <div className="flex items-center gap-4">
                       <div className="h-10 w-2 rounded-full bg-primary shadow-elegant" />
-                      <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white font-['Cairo']">
+                      <h2 className="text-2xl md:text-3xl font-black text-foreground font-['Cairo']">
                         {group.categoryName}
                       </h2>
                     </div>
@@ -210,7 +196,6 @@ export default function Vault() {
                   </div>
                 </div>
               ))}
-            </AnimatePresence>
           </div>
 
           {groupedData.length === 0 && (

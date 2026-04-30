@@ -18,11 +18,11 @@ const FloatingActionMenu = () => {
   const isPink = theme === "pink";
 
   const buttonStyles = cn(
-    "fixed bottom-6 z-50 h-14 w-14 rounded-full shadow-2xl transition-all duration-300 flex items-center justify-center hover:scale-110 active:scale-95 border border-white/10",
-    dir === "rtl" ? "left-6" : "right-6", // Move to opposite of Sidebar toggle
-    isDark 
-      ? "bg-white text-[#003366]" 
-      : "bg-[#003366] text-white"
+    "fixed bottom-6 z-50 h-14 w-14 rounded-full shadow-2xl transition-all duration-500 flex items-center justify-center hover:scale-110 active:scale-95 border-2 border-accent",
+    dir === "rtl" ? "left-6" : "right-6",
+    isOpen 
+      ? "bg-accent text-accent-foreground shadow-[0_0_30px_hsl(var(--accent)/0.6)]" 
+      : "bg-foreground text-background shadow-[0_0_20px_hsl(var(--accent)/0.3)] hover:bg-accent hover:text-accent-foreground"
   );
 
   const menuActions = [
@@ -65,20 +65,20 @@ const FloatingActionMenu = () => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               className={cn(
-                "relative w-full max-w-md p-6 rounded-[2.5rem] shadow-2xl border border-white/10 overflow-hidden",
-                isDark ? "bg-slate-900" : "bg-white"
+                "relative w-full max-w-md p-6 rounded-[2.5rem] shadow-2xl border border-border overflow-hidden",
+                "bg-card"
               )}
             >
               {/* Close Button */}
               <button
                 onClick={() => setIsOpen(false)}
-                className="absolute top-4 right-4 p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                className="absolute top-4 right-4 p-2 rounded-full hover:bg-foreground/5 transition-colors"
               >
                 <X className="h-6 w-6" />
               </button>
 
               <div className="mb-8 text-center">
-                <h2 className={cn("text-2xl font-black mb-2", isDark ? "text-white" : "text-slate-900")}>
+                <h2 className="text-2xl font-black mb-2 text-foreground">
                   {lang === "ar" ? "الإجراءات السريعة" : "Quick Actions"}
                 </h2>
                 <p className="text-sm text-muted-foreground">
@@ -96,11 +96,11 @@ const FloatingActionMenu = () => {
                     className={cn(
                       "flex flex-col items-center justify-center p-6 rounded-3xl transition-all hover:scale-105 active:scale-95 border",
                       isDark 
-                        ? "bg-white/5 border-white/10 text-white hover:bg-white/10" 
-                        : "bg-slate-50 border-slate-200 text-slate-900 hover:bg-slate-100"
+                        ? "bg-surface border-border text-foreground hover:bg-surface/80" 
+                        : "bg-surface border-border text-foreground hover:bg-surface/80"
                     )}
                   >
-                    <div className="h-12 w-12 rounded-2xl gradient-primary flex items-center justify-center text-white mb-3 shadow-lg">
+                    <div className="h-12 w-12 rounded-2xl gradient-primary flex items-center justify-center text-primary-foreground mb-3 shadow-lg">
                       <action.icon className="h-6 w-6" />
                     </div>
                     <span className="font-bold text-sm text-center leading-tight">

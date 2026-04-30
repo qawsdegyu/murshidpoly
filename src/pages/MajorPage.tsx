@@ -176,8 +176,8 @@ export default function MajorPage() {
             label={isAr ? "عن التخصص" : "About the Major"}
             color={major.accentColor}
           />
-          <div className="mt-3 md:mt-4 p-5 md:p-9 rounded-2xl md:rounded-3xl bg-white dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.08] backdrop-blur-2xl shadow-sm dark:shadow-none">
-            <p className="text-slate-600 dark:text-slate-300 text-sm md:text-lg leading-[1.8] md:leading-[2.1] font-medium">
+          <div className="mt-3 md:mt-4 p-5 md:p-9 rounded-2xl md:rounded-3xl bg-card border border-border backdrop-blur-2xl shadow-sm">
+            <p className="text-muted-foreground text-sm md:text-lg leading-[1.8] md:leading-[2.1] font-medium">
               {isAr ? major.longDescriptionAr : major.descriptionAr}
             </p>
           </div>
@@ -208,7 +208,7 @@ export default function MajorPage() {
                 >
                   <DollarSign className="h-5 w-5" />
                 </div>
-                <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500 dark:text-slate-400 mb-4">
+                <div className="text-[10px] font-black uppercase tracking-[0.22em] text-muted-foreground mb-4">
                   {isAr ? "سعر الساعة المعتمدة" : "Credit Hour Price"}
                 </div>
                 
@@ -251,10 +251,10 @@ export default function MajorPage() {
                 <div className="inline-flex items-center justify-center w-11 h-11 rounded-2xl mb-4 bg-emerald-400/15 text-emerald-400">
                   <Briefcase className="h-5 w-5" />
                 </div>
-                <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500 dark:text-slate-400 mb-2">
+                <div className="text-[10px] font-black uppercase tracking-[0.22em] text-muted-foreground mb-2">
                   {isAr ? "الراتب المتوقع" : "Expected Salary"}
                 </div>
-                <div className="text-xl font-black text-slate-900 dark:text-slate-100 [data-theme=pink]:text-rose-950 leading-snug">{major.expectedSalaryAr}</div>
+                <div className="text-xl font-black text-foreground leading-snug">{major.expectedSalaryAr}</div>
               </div>
             </motion.div>
 
@@ -281,13 +281,13 @@ export default function MajorPage() {
                       initial={{ opacity: 0, x: -8 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.3 + i * 0.06, duration: 0.4 }}
-                      className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-slate-50 dark:bg-white/[0.04] border border-slate-100 dark:border-white/[0.06] group hover:border-slate-300 dark:hover:border-white/[0.14] transition-colors duration-300"
+                      className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-muted/30 border border-border group hover:border-accent/30 transition-colors duration-300"
                     >
                       <CheckCircle2
                         className="h-4 w-4 shrink-0 transition-transform group-hover:scale-110"
                         style={{ color: major.accentColor }}
                       />
-                      <span className="text-sm font-semibold text-slate-600 dark:text-slate-300 [data-theme=pink]:text-rose-900 group-hover:text-slate-900 dark:group-hover:text-slate-100 transition-colors">
+                      <span className="text-sm font-semibold text-muted-foreground group-hover:text-foreground transition-colors">
                         {field}
                       </span>
                     </motion.div>
@@ -390,10 +390,10 @@ export default function MajorPage() {
                           <div className="absolute inset-0 rounded-full blur-xl opacity-50" style={{ background: major.accentColor }} />
                           <LucideIcons.Layers className="h-10 w-10 relative z-10" style={{ color: major.accentColor }} />
                         </div>
-                        <h3 className="text-xl font-black text-slate-900 dark:text-slate-200 mb-2">
+                        <h3 className="text-xl font-black text-foreground mb-2">
                           {isAr ? "سيتم إضافة مواد هذا التخصص قريباً" : "Materials coming soon"}
                         </h3>
-                        <p className="text-slate-600 dark:text-slate-500 text-sm max-w-xs font-medium">
+                        <p className="text-muted-foreground text-sm max-w-xs font-medium">
                           {isAr 
                             ? "نحن نعمل على جمع وتنقيح أفضل المصادر الدراسية لهذا القسم." 
                             : "We are working on collecting and curating the best academic resources for this section."}

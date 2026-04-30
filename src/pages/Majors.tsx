@@ -50,7 +50,7 @@ export default function Majors() {
         <PageHeader
           title={isAr ? "دليل التخصصات الهندسية" : "Engineering Majors Guide"}
           subtitle={isAr ? "اختر تخصصك واستعرض الخطة الدراسية والمسار المهني" : "Choose your major and explore the curriculum and career path"}
-          icon={<GraduationCap className="h-6 w-6 text-cyan-400" />}
+          icon={<GraduationCap className="h-6 w-6 text-accent" />}
         />
 
         <m.div
@@ -74,9 +74,9 @@ export default function Majors() {
                 whileTap={{ scale: 0.98 }}
                 className={cn(
                   getBentoClass(i),
-                  "group relative p-0 rounded-xl md:rounded-[2rem] overflow-hidden border border-slate-100 dark:border-slate-800 shadow-sm",
-                  "bg-white dark:bg-slate-900 transition-all duration-500 text-start",
-                  "hover:border-slate-300 dark:hover:border-white/15 hover:shadow-lg",
+                  "group relative p-0 rounded-xl md:rounded-[2rem] overflow-hidden border border-border shadow-sm",
+                  "bg-card transition-all duration-500 text-start",
+                  "hover:border-accent/30 hover:shadow-lg",
                   "flex flex-row md:flex-col h-20 md:h-auto"
                 )}
               >
@@ -89,7 +89,7 @@ export default function Majors() {
                     decoding="async"
                     className="w-full h-full object-cover object-center opacity-100 md:opacity-90 dark:md:opacity-60 transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent md:from-slate-950 md:via-slate-900/40" />
+                  <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
                   <div className={cn("hidden md:block absolute inset-0 bg-gradient-to-br opacity-20 mix-blend-overlay", major.color)} />
                 </div>
 
@@ -103,15 +103,15 @@ export default function Majors() {
                     <Icon className="w-5.5 h-5.5 text-white" strokeWidth={1.5} />
                   </div>
 
-                  <h3 className="text-[17px] md:text-2xl font-black text-slate-900 dark:text-white [data-theme=pink]:text-rose-950 dark:[data-theme=pink]:text-rose-100 mb-0.5 md:mb-1.5 tracking-tight leading-tight group-hover:text-accent transition-colors">
+                  <h3 className="text-[17px] md:text-2xl font-black text-foreground mb-0.5 md:mb-1.5 tracking-tight leading-tight group-hover:text-accent transition-colors">
                     {isAr ? major.nameAr : major.name}
                   </h3>
                   
-                  <p className="text-slate-500 dark:text-slate-400 text-[11px] md:text-xs leading-relaxed line-clamp-1 md:line-clamp-2 mb-0 md:mb-4 font-medium">
+                  <p className="text-muted-foreground text-[11px] md:text-xs leading-relaxed line-clamp-1 md:line-clamp-2 mb-0 md:mb-4 font-medium">
                     {isAr ? major.descriptionAr : major.description}
                   </p>
 
-                  <div className="hidden md:flex items-center justify-between border-t border-slate-200 dark:border-white/8 pt-3 w-full">
+                  <div className="hidden md:flex items-center justify-between border-t border-border/50 pt-3 w-full">
                     <span
                       className="inline-flex items-center gap-1.5 text-[11px] font-black tracking-widest uppercase transition-all duration-300 group-hover:gap-2.5"
                       style={{ color: major.accentColor }}
@@ -120,7 +120,7 @@ export default function Majors() {
                       <ChevronRight className={cn("w-3.5 h-3.5", dir === "rtl" ? "rotate-180" : "")} />
                     </span>
                     {major.studyPlanUrl && (
-                      <span className="text-[9px] font-black text-slate-400 dark:text-white/30 uppercase tracking-widest">
+                      <span className="text-[9px] font-black text-muted-foreground/30 uppercase tracking-widest">
                         {isAr ? "PDF متاح" : "PDF available"}
                       </span>
                     )}
@@ -128,12 +128,12 @@ export default function Majors() {
                 </div>
 
                 <div className="md:hidden pr-4 rtl:pl-4">
-                  <ChevronRight className={cn("w-5 h-5 text-slate-300", dir === "rtl" ? "rotate-180" : "")} />
+                  <ChevronRight className={cn("w-5 h-5 text-muted-foreground/40", dir === "rtl" ? "rotate-180" : "")} />
                 </div>
 
                 {/* Corner lines */}
-                <div className="absolute top-0 left-0 w-10 h-10 border-t-2 border-l-2 border-slate-200 dark:border-white/10 rounded-tl-[2.5rem] group-hover:border-white/25 transition-colors duration-500" />
-                <div className="absolute bottom-0 right-0 w-10 h-10 border-b-2 border-r-2 border-slate-200 dark:border-white/10 rounded-br-[2.5rem] group-hover:border-white/25 transition-colors duration-500" />
+                <div className="absolute top-0 left-0 w-10 h-10 border-t-2 border-l-2 border-border/20 rounded-tl-[2.5rem] group-hover:border-accent/25 transition-colors duration-500" />
+                <div className="absolute bottom-0 right-0 w-10 h-10 border-b-2 border-r-2 border-border/20 rounded-br-[2.5rem] group-hover:border-accent/25 transition-colors duration-500" />
               </m.button>
             );
           })}

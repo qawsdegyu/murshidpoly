@@ -37,7 +37,7 @@ const CourseCard = memo(forwardRef<HTMLButtonElement, CourseCardProps>(
         style={{ willChange: "transform, opacity" }}
         onClick={onClick}
         onMouseEnter={() => prefetchPage(PAGE_IMPORTS.CoursePage)}
-        className="group relative text-start p-6 md:p-8 rounded-[2rem] bg-slate-900/40 border border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.2)] backdrop-blur-xl hover:shadow-[0_20px_50px_rgba(0,255,255,0.1)] hover:border-accent/40 hover:bg-slate-900/60 transition-all duration-500 overflow-hidden flex flex-col h-full isolation-isolate"
+        className="group relative text-start p-6 md:p-8 rounded-[2rem] bg-background border border-accent/30 shadow-[0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-xl hover:shadow-[0_20px_50px_hsl(var(--accent)/0.15)] hover:border-accent/60 transition-all duration-500 overflow-hidden flex flex-col h-full isolation-isolate"
       >
         {/* Animated Background Gradient */}
         <div 
@@ -52,22 +52,23 @@ const CourseCard = memo(forwardRef<HTMLButtonElement, CourseCardProps>(
         
         <div className="flex items-start justify-between gap-4 relative z-10 mb-6 pointer-events-none">
           <div className="flex-1 min-w-0">
-            <div className="text-[10px] md:text-[11px] font-black tracking-[0.2em] uppercase text-accent/60 mb-2 font-mono drop-shadow-sm">
+            <div className="h-[2px] w-12 bg-accent/30 rounded-full mb-3" />
+            <div className="text-[10px] md:text-[11px] font-black tracking-[0.2em] uppercase text-accent/80 mb-2 font-mono drop-shadow-sm">
               {course?.code || "COURSE"}
             </div>
-            <h3 className="text-lg md:text-xl font-black text-white leading-tight group-hover:text-accent transition-colors break-words font-['Cairo'] tracking-tight">
+            <h3 className="text-lg md:text-xl font-black text-foreground leading-tight group-hover:text-accent transition-colors break-words font-['Cairo'] tracking-tight">
               {isAr ? (course?.nameAr || "مادة غير معرفة") : (course?.name || "Unknown Course")}
             </h3>
           </div>
           <div 
-            className="h-12 w-12 rounded-2xl flex items-center justify-center shrink-0 border border-white/10 shadow-inner group-hover:border-accent/50 group-hover:scale-110 transition-all duration-500"
+            className="h-12 w-12 rounded-2xl flex items-center justify-center shrink-0 border border-border/20 shadow-inner group-hover:border-accent/50 group-hover:scale-110 transition-all duration-500"
             style={{ background: `${accentColor}15`, color: accentColor }}
           >
             {icon || <BookOpen className="h-5 w-5 md:h-6 md:w-6" />}
           </div>
         </div>
 
-        <div className="mt-auto pt-5 border-t border-white/5 flex items-center justify-between relative z-10 pointer-events-none">
+        <div className="mt-auto pt-5 border-t border-border/50 flex items-center justify-between relative z-10 pointer-events-none">
           <div className="flex items-center gap-3">
             {hasResources ? (
               <span
@@ -82,12 +83,12 @@ const CourseCard = memo(forwardRef<HTMLButtonElement, CourseCardProps>(
                 {isAr ? "قريباً" : "Soon"}
               </span>
             )}
-            <span className="text-[10px] md:text-xs text-slate-400 font-black uppercase tracking-[0.1em]">
+            <span className="text-[10px] md:text-xs text-muted-foreground/60 font-black uppercase tracking-[0.1em]">
               {course?.hours || 0} {isAr ? "ساعات" : "hrs"}
             </span>
           </div>
           
-          <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-accent group-hover:text-black transition-all duration-500">
+          <div className="w-8 h-8 rounded-full bg-foreground/5 flex items-center justify-center group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-500">
             <ChevronRight
               className={cn(
                 "h-4 w-4 transition-all",
