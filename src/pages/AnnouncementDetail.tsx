@@ -25,7 +25,13 @@ export default function AnnouncementDetail() {
           .maybeSingle();
 
         if (data) {
-          setAnn(data);
+          // If it's the official launch, merge founder data from local mock
+          if (id === 'official-launch-v1') {
+            const mock = announcements.find(a => a.id === id);
+            setAnn({ ...data, founders: mock?.founders });
+          } else {
+            setAnn(data);
+          }
         } else {
           const mock = announcements.find(a => a.id === id);
           setAnn(mock);
@@ -167,7 +173,7 @@ export default function AnnouncementDetail() {
               className="mt-16 space-y-10"
             >
               <div className="flex items-center gap-4">
-                <h2 className="text-2xl md:text-4xl font-black text-white font-['Cairo'] tracking-tight">
+                <h2 className="text-2xl md:text-4xl font-black text-foreground font-['Cairo'] tracking-tight">
                   {lang === "ar" ? "المواصفات الفنية للفريق" : "Team Technical Specifications"}
                 </h2>
                 <div className="h-px flex-1 bg-gradient-to-r from-cyan-500/30 to-transparent" />
@@ -184,7 +190,7 @@ export default function AnnouncementDetail() {
                     </div>
                     <div className="flex-1 space-y-4 text-center md:text-start">
                       <div>
-                        <h3 className="text-xl md:text-2xl font-black text-white font-['Cairo'] mb-1">
+                        <h3 className="text-xl md:text-2xl font-black text-foreground font-['Cairo'] mb-1">
                           {lang === "ar" ? founder.nameAr : founder.name}
                         </h3>
                         <p className="text-accent text-xs font-black uppercase tracking-widest">

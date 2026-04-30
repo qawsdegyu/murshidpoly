@@ -43,7 +43,7 @@ export const announcements: Announcement[] = [
       "We are proud to announce the official launch of Murshid v1.0, the ultimate engineering hub for BAU students. This project was conceptualized and built by a dedicated team of 2nd-year engineering students who saw a gap in student resources and decided to bridge it.\n\nOur mission is to empower every engineering student at BAU with the tools they need to succeed.",
     fullDescriptionAr:
       "نفخر بالإعلان عن الإطلاق الرسمي لـ مرشد v1.0، المركز الهندسي المتكامل لطلاب جامعة البلقاء التطبيقية. تم تصور هذا المشروع وبناؤه بواسطة فريق متخصص من طلاب الهندسة في السنة الثانية الذين رأوا فجوة في المصادر الطلابية وقرروا جسرها.\n\nمهمتنا هي تمكين كل طالب هندسة في جامعة البلقاء بالأدوات التي يحتاجها للنجاح.",
-    imageUrl: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1000",
+    imageUrl: "/rs.png.png",
     ctaLabel: "View Founder Story",
     ctaLabelAr: "عرض قصة المؤسسين",
     ctaLink: "#",
@@ -58,7 +58,7 @@ export const announcements: Announcement[] = [
         roleAr: "المؤسس والمدير التقني (CTO)",
         bio: "The technical architect who brought the vision to life.",
         bioAr: "المهندس التقني الذي حول الرؤية إلى واقع.",
-        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Abdulrahman"
+        image: "/abdelrahman.jpg.png"
       },
       {
         name: "Mohammed Saqr",
@@ -67,7 +67,7 @@ export const announcements: Announcement[] = [
         roleAr: "رئيس العلاقات والبيانات",
         bio: "The engine behind gathering academic data and ensuring accuracy.",
         bioAr: "المحرك خلف جمع البيانات الأكاديمية وضمان دقتها.",
-        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mohammad"
+        image: "/mohammad.jpg.png"
       },
       {
         name: "Abdullah Tahat",
@@ -76,7 +76,7 @@ export const announcements: Announcement[] = [
         roleAr: "الهوية البصرية والتواصل الاجتماعي",
         bio: "The creative force who crafted Murshid's stunning brand.",
         bioAr: "القوة المبدعة التي صممت علامة مرشد التجارية المذهلة.",
-        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Abdullah"
+        image: "/abdullah.jpg.png.png"
       }
     ]
   },

@@ -36,7 +36,7 @@ const FoundingTeamAnnouncement = () => {
             {/* Team Image Section - Vertical on mobile, Horizontal on desktop */}
             <div className="w-full md:w-[42%] h-56 sm:h-64 md:h-auto relative overflow-hidden shrink-0">
               <img 
-                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1200" 
+                src="/rs.png.png" 
                 alt="The Founding Team" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
               />
@@ -58,7 +58,7 @@ const FoundingTeamAnnouncement = () => {
             <div className={`flex-1 p-6 sm:p-8 md:p-12 lg:p-14 flex flex-col justify-center ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
               <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
                 <Users className="text-cyan-400 h-5 w-5 md:h-8 md:w-8" />
-                <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-black text-white font-['Cairo'] tracking-tight leading-tight">
+                <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-black text-foreground font-['Cairo'] tracking-tight leading-tight">
                   {isAr ? "تحية من الفريق المؤسس" : "Greetings from the Founders"}
                 </h2>
               </div>
@@ -79,13 +79,11 @@ const FoundingTeamAnnouncement = () => {
                     transition={{ delay: 0.1 * idx, duration: 0.5 }}
                     className="flex items-start gap-3 md:gap-4 group/member"
                   >
-                    <div className="h-9 w-9 md:h-12 md:w-12 rounded-xl md:rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0 group-hover/member:bg-cyan-500/20 transition-all duration-300 transform group-hover/member:scale-110 shadow-[0_0_15px_rgba(0,255,255,0.1)]">
-                      <div className="scale-75 md:scale-100 flex items-center justify-center">
-                        {getIcon(founder.role)}
-                      </div>
+                    <div className="h-10 w-10 md:h-14 md:w-14 rounded-xl md:rounded-2xl border border-cyan-500/20 overflow-hidden shrink-0 group-hover/member:border-cyan-400 transition-all duration-300 transform group-hover/member:scale-110 shadow-[0_0_15px_rgba(0,255,255,0.1)]">
+                      <img src={founder.image} alt={founder.name} className="w-full h-full object-cover" />
                     </div>
                     <div>
-                      <h3 className="text-base sm:text-lg md:text-2xl font-black text-white font-['Cairo'] group-hover/member:text-cyan-300 transition-colors leading-tight mb-1">
+                      <h3 className="text-base sm:text-lg md:text-2xl font-black text-foreground group-hover/member:text-cyan-400 transition-colors leading-tight mb-1 font-['Cairo']">
                         {isAr ? founder.nameAr : founder.name}
                       </h3>
                       <p className="text-[10px] sm:text-xs md:text-base text-slate-400 font-bold font-['Cairo'] opacity-80">
