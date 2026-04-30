@@ -121,12 +121,12 @@ const Sidebar = memo(({ isOpen, onOpenChange }: SidebarProps) => {
                 onClick={async () => {
                   await signOut();
                   onOpenChange(false);
-                  navigate("/");
+                  navigate("/auth");
                 }}
                 className="flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all w-full hover:bg-red-500/10 text-red-400 hover:text-red-300"
               >
                 <LogOut className="h-[18px] w-[18px] shrink-0" />
-                <span className="font-bold text-sm whitespace-nowrap">Logout</span>
+                <span className="font-bold text-sm whitespace-nowrap">{t.nav.logout}</span>
               </button>
             </div>
           ) : (

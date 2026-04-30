@@ -51,10 +51,14 @@ export default function Dashboard() {
         let isAdmin = false;
 
         if (profileData) {
-          const first = profileData.full_name?.split(" ")[0] || null;
+          const first = profileData.full_name?.split(" ")[0] || "المستقبل";
           currentMajor = profileData.major;
           isAdmin = !!profileData.is_admin;
           setProfile({ name: first, major: currentMajor, isAdmin });
+        } else if (user?.user_metadata?.full_name) {
+          // Fallback to metadata if profile table is empty
+          const first = user.user_metadata.full_name.split(" ")[0];
+          setProfile({ name: first, major: null, isAdmin: false });
         }
 
         // 2. Fetch Announcements from Supabase

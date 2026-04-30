@@ -16,6 +16,7 @@ const en = {
       recreation: "Student Life",
 
       settings: "Settings",
+      logout: "Logout",
     },
     recreation: {
       title: "Student Life & Recreation",
@@ -142,6 +143,7 @@ const en = {
       recreation: "الترفيه والخدمات",
 
       settings: "الإعدادات",
+      logout: "تسجيل الخروج",
     },
     recreation: {
       title: "الترفيه والخدمات الطلابية",
