@@ -56,9 +56,9 @@ export default function Dashboard() {
           isAdmin = !!profileData.is_admin;
           setProfile({ name: first, major: currentMajor, isAdmin });
         } else if (user?.user_metadata?.full_name) {
-          // Fallback to metadata if profile table is empty
+          // Fallback to metadata if profile table is empty or request fails
           const first = user.user_metadata.full_name.split(" ")[0];
-          setProfile({ name: first, major: null, isAdmin: false });
+          setProfile({ name: first, major: user.user_metadata.major || null, isAdmin: false });
         }
 
         // 2. Fetch Announcements from Supabase
@@ -80,7 +80,7 @@ export default function Dashboard() {
           if (filtered.length > 0) {
             setAnnouncementsList(filtered);
           } else {
-            // Fallback to local mock data if Supabase is empty or filtering fails
+            // Fallback to local mock data if filtering results in empty list
             const { announcements: localAnnouncements } = await import("@/data/announcements");
             const localFiltered = localAnnouncements.filter(ann => {
               if (isAdmin) return true;
@@ -90,7 +90,7 @@ export default function Dashboard() {
             setAnnouncementsList(localFiltered);
           }
         } else {
-          // Fallback to local mock data
+          // Fallback to local mock data if Supabase table is missing or empty
           const { announcements: localAnnouncements } = await import("@/data/announcements");
           const localFiltered = localAnnouncements.filter(ann => {
             if (isAdmin) return true;
@@ -100,7 +100,10 @@ export default function Dashboard() {
           setAnnouncementsList(localFiltered);
         }
       } catch (err) {
-        console.error("Error fetching dashboard data:", err);
+        console.error("Critical Dashboard Fetch Error:", err);
+        // Last resort fallback
+        const { announcements: localAnnouncements } = await import("@/data/announcements");
+        setAnnouncementsList(localAnnouncements.slice(0, 3));
       } finally {
         setIsProfileLoading(false);
       }

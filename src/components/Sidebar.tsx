@@ -50,7 +50,7 @@ const Sidebar = memo(({ isOpen, onOpenChange }: SidebarProps) => {
     end ? location.pathname === to : location.pathname.startsWith(to);
 
   const sideClasses = cn(
-    "fixed top-0 z-40 h-screen bg-sidebar/95 backdrop-blur-[20px] border-sidebar-border transition-all duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] flex flex-col shadow-2xl will-change-transform",
+    "fixed top-0 z-40 h-screen bg-sidebar/95 backdrop-blur-[20px] border-sidebar-border transition-all duration-200 [transition-timing-function:cubic-bezier(0.33,1,0.68,1)] flex flex-col shadow-2xl will-change-transform",
     dir === "rtl" ? "right-0 border-l" : "left-0 border-r",
     "w-[55%] md:w-60", // Strict width: 55% Mobile, 240px Desktop
     isOpen ? "translate-x-0" : (dir === "rtl" ? "translate-x-full" : "-translate-x-full"),

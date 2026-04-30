@@ -107,12 +107,17 @@ const Auth = () => {
         }
 
         if (data.user) {
-          await supabase.from("user_devices").upsert({
-            user_id: data.user.id,
-            device_id: deviceId,
-            user_agent: navigator.userAgent,
-            last_login: new Date().toISOString()
-          }, { onConflict: 'user_id,device_id' });
+          try {
+            await supabase.from("user_devices").upsert({
+              user_id: data.user.id,
+              device_id: deviceId,
+              user_agent: navigator.userAgent,
+              last_login: new Date().toISOString()
+            }, { onConflict: 'user_id,device_id' });
+          } catch (deviceError) {
+            console.error("Device logging failed:", deviceError);
+            // Non-critical error, continue to login
+          }
         }
 
         toast.success("أهلاً بك مجدداً في مرشد!");
@@ -126,13 +131,19 @@ const Auth = () => {
           throw new Error("يجب أن تحتوي كلمة المرور على 8 خانات، تشمل حروفاً كبيرة وصغيرة وأرقاماً ورموزاً.");
         }
 
-        const { data: deviceCheck } = await supabase
-          .from("profiles")
-          .select("id")
-          .eq("last_device_id", deviceId)
-          .maybeSingle();
+        let deviceAlreadyUsed = false;
+        try {
+          const { data: deviceCheck } = await supabase
+            .from("profiles")
+            .select("id")
+            .eq("last_device_id", deviceId)
+            .maybeSingle();
+          if (deviceCheck) deviceAlreadyUsed = true;
+        } catch (e) {
+          console.warn("Device check skipped:", e);
+        }
 
-        if (deviceCheck) {
+        if (deviceAlreadyUsed) {
           throw new Error("هذا الجهاز مسجل به حساب بالفعل. يرجى تسجيل الدخول.");
         }
 
