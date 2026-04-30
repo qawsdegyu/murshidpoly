@@ -19,7 +19,7 @@ const TopHeader = memo(({ onMenuToggle, isMenuOpen }: TopHeaderProps) => {
           onClick={onMenuToggle}
           className={cn(
             "fixed top-4 right-4 z-50 pointer-events-auto",
-            "h-14 w-14 rounded-full flex items-center justify-center transition-all active:scale-90",
+            "h-14 w-14 rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 will-change-transform",
             "bg-[#001a33] text-[#00ffff] shadow-[0_0_20px_rgba(0,255,255,0.1)] border-2 border-[#00ffff]",
             isMenuOpen && "rotate-90 bg-[#001a33] text-white border-white shadow-[0_0_30px_rgba(255,255,255,0.2)]"
           )}

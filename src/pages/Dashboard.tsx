@@ -17,7 +17,7 @@ import AdSpace from "@/components/AdSpace";
 const container: Variants = {
   hidden: {},
   show: {
-    transition: { staggerChildren: 0.06, delayChildren: 0.05 },
+    transition: { staggerChildren: 0.04, delayChildren: 0.02 },
   },
 };
 const item: Variants = {
