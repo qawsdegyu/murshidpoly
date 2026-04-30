@@ -63,7 +63,7 @@ export default function MurshidAssistant() {
     return saved ? JSON.parse(saved) : { x: 0, y: 0 };
   });
 
-  const fabRef = useRef<HTMLButtonElement>(null);
+
 
   // Seed welcome message on first open
   useEffect(() => {
@@ -130,7 +130,6 @@ export default function MurshidAssistant() {
         {!open && (
           <motion.button
             key="fab"
-            ref={fabRef}
             drag
             dragMomentum={false}
             dragElastic={0.1}

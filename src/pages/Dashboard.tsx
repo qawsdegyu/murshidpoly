@@ -203,7 +203,7 @@ export default function Dashboard() {
                       <>
                         {user ? (
                           <>
-                            <span className="block opacity-90 text-2xl md:text-3xl lg:text-4xl mb-2">مرحباً بك يا انجنير</span>
+                            <span className="block opacity-90 text-2xl md:text-3xl lg:text-4xl mb-2">مرحباً بك يا مهندس</span>
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-[#00ffff] to-yellow-400 drop-shadow-[0_0_30px_rgba(0,255,255,0.3)]">
                               {profile.name || "المستقبل"}
                             </span>
