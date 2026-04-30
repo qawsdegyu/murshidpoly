@@ -21,7 +21,8 @@ export default function Recreation() {
       transition={{ type: "spring", stiffness: 260, damping: 20 }}
       className="font-cairo min-h-screen bg-background"
     >
-      <PageHeader
+      <div className="max-w-[1440px] mx-auto px-4 md:px-8 pt-28 pb-10">
+        <PageHeader
         title={t.recreation.title}
         subtitle={t.recreation.subtitle}
         icon={<Sparkles className="h-6 w-6" />}
@@ -78,6 +79,7 @@ export default function Recreation() {
             </motion.div>
           );
         })}
+      </div>
       </div>
     </motion.div>
   );

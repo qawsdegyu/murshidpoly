@@ -4,8 +4,9 @@ import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import MurshidAssistant from "@/components/MurshidAssistant";
 import StaticBackground from "@/components/StaticBackground";
-import FloatingActionMenu from "@/components/FloatingActionMenu";
+import TopHeader from "@/components/TopHeader";
 import { usePreferences } from "@/contexts/PreferencesContext";
+import { useState } from "react";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -13,18 +14,19 @@ interface AppLayoutProps {
 
 const AppLayout = memo(({ children }: AppLayoutProps) => {
   const { dir } = usePreferences();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen selection:bg-accent/30 flex flex-col relative" dir={dir}>
       <StaticBackground />
-      <Sidebar />
-      <main className="flex-1 w-full max-w-[1440px] mx-auto px-2 sm:px-3 lg:px-4 py-3 md:py-4 relative z-10 min-h-screen">
+      <TopHeader isMenuOpen={isMenuOpen} onMenuToggle={() => setIsMenuOpen(!isMenuOpen)} />
+      <Sidebar isOpen={isMenuOpen} onOpenChange={setIsMenuOpen} />
+      <main className="flex-1 w-full relative z-10">
         {children}
       </main>
       <Footer />
       <ScrollToTop />
       <MurshidAssistant />
-      <FloatingActionMenu />
     </div>
   );
 });

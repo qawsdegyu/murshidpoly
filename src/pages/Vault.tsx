@@ -79,22 +79,19 @@ export default function Vault() {
   }, [q, activeTab, lang]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="relative min-h-[100vh] overflow-y-scroll scrollbar-hide pointer-events-none pb-20"
+    <div
+      className="relative min-h-screen overflow-y-auto scrollbar-hide pointer-events-auto pb-20"
     >
-      {/* ── Background Stability Layer ── */}
-      <div className="fixed inset-0 pointer-events-none -z-10 bg-background" />
 
-      <div className="pointer-events-auto">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12 pt-32 md:pt-44 pointer-events-auto transition-all duration-700">
         <PageHeader 
           title={t.vault.title} 
           subtitle={t.vault.subtitle} 
-          icon={<BookOpen className="h-6 w-6" />} 
+          icon={<BookOpen className="h-10 w-10 md:h-14 md:w-14 text-accent" />} 
+          className="mb-10"
         />
-      </div>
+        
+        <div className="space-y-12">
 
       {/* ── Contribute Card ── */}
       <motion.div
@@ -147,18 +144,21 @@ export default function Vault() {
       </motion.div>
 
       {/* Search Bar */}
-      <div className="relative mb-6 pointer-events-auto">
-        <Search className="absolute top-1/2 -translate-y-1/2 ltr:left-4 rtl:right-4 h-4.5 w-4.5 text-muted-foreground" />
-        <Input 
-          value={q} 
-          onChange={e => setQ(e.target.value)} 
-          placeholder={t.vault.search} 
-          className="ltr:pl-11 rtl:pr-11 h-10 md:h-12 glass text-sm md:text-base rounded-xl border-white/10 shadow-elegant transition-all focus:ring-2 focus:ring-primary/20" 
-        />
+      <div className="relative max-w-2xl mx-auto mb-10 pointer-events-auto group">
+        <div className="absolute -inset-1 bg-gradient-to-r from-accent/0 via-accent/0 to-accent/0 rounded-2xl blur opacity-0 group-focus-within:opacity-30 group-focus-within:from-accent group-focus-within:to-blue-500 transition-all duration-500" />
+        <div className="relative">
+          <Search className="absolute top-1/2 -translate-y-1/2 ltr:left-5 rtl:right-5 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+          <Input 
+            value={q} 
+            onChange={e => setQ(e.target.value)} 
+            placeholder={t.vault.search} 
+            className="ltr:pl-14 rtl:pr-14 h-12 md:h-16 glass text-base md:text-lg rounded-2xl border-white/10 shadow-elegant transition-all focus:ring-0 focus:border-accent/50" 
+          />
+        </div>
       </div>
 
       {/* Category Tabs */}
-      <div className="flex flex-wrap gap-1.5 mb-8 overflow-x-auto pb-2 scrollbar-hide pointer-events-auto">
+      <div className="flex flex-wrap items-center justify-center gap-3 mb-12 pointer-events-auto">
         {categories?.map((cat) => {
           const Icon = cat.icon;
           const isActive = activeTab === cat.id;
@@ -166,20 +166,20 @@ export default function Vault() {
             <motion.button
               key={cat.id}
               onClick={() => setActiveTab(cat.id)}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className={`flex items-center gap-1.5 px-3 py-2 md:px-4 md:py-2.5 rounded-lg md:rounded-xl whitespace-nowrap transition-all border ${
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              className={`flex items-center gap-2.5 px-5 py-3.5 rounded-2xl whitespace-nowrap transition-all border shrink-0 ${
                 isActive 
-                  ? "gradient-primary text-primary-foreground border-transparent shadow-gold" 
+                  ? "gradient-primary text-primary-foreground border-transparent shadow-[0_0_25px_rgba(16,185,129,0.3)] scale-105 z-10" 
                   : "glass hover:bg-white/10 border-white/5 text-muted-foreground"
               }`}
             >
-              <Icon className={`h-3 w-3 md:h-3.5 md:w-3.5 ${isActive ? "text-primary-foreground" : "text-primary dark:text-accent"}`} />
-              <span className="font-bold text-[11px] md:text-sm">{lang === "ar" ? cat.nameAr : cat.nameEn}</span>
+              <Icon className={`h-4.5 w-4.5 ${isActive ? "text-primary-foreground" : "text-primary dark:text-accent"}`} />
+              <span className="font-black text-xs md:text-sm tracking-wide">{lang === "ar" ? cat.nameAr : cat.nameEn}</span>
               {isActive && (
                 <motion.div 
                   layoutId="activeTabGlow"
-                  className="absolute inset-0 bg-primary/20 blur-xl -z-10 rounded-2xl"
+                  className="absolute inset-0 bg-primary/20 blur-2xl -z-10 rounded-2xl"
                 />
               )}
             </motion.button>
@@ -201,7 +201,7 @@ export default function Vault() {
                 </div>
               )}
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
                 {group.courses.map((c, i) => {
                   const categoryObj = categories.find(cat => cat.id === (c.category || "math"));
                   const Icon = categoryObj?.icon || BookOpen;
@@ -211,7 +211,7 @@ export default function Vault() {
                       key={c.id}
                       course={c}
                       index={i}
-                      icon={<Icon className="h-4 w-4" />}
+                      icon={<Icon className="h-5 w-5" />}
                       onClick={() => navigate(`/materials/${c.id}`)}
                     />
                   );
@@ -239,6 +239,8 @@ export default function Vault() {
           </p>
         </motion.div>
       )}
-    </motion.div>
+      </div>
+      </div>
+    </div>
   );
 }

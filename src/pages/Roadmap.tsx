@@ -141,7 +141,7 @@ export default function Roadmap() {
         />
       </div>
 
-      <div className="relative z-10 px-4 md:px-8 pt-8">
+      <div className="relative z-10 max-w-[1440px] mx-auto px-4 md:px-8 pt-28">
         <PageHeader 
           title={lang === "ar" ? "خريطة المسار الأكاديمي" : "Academic Roadmap"} 
           subtitle={lang === "ar" ? "نظام تتبع المتطلبات الهندسي المتطور" : "Advanced Engineering Prerequisite Tracking System"} 

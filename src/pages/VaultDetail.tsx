@@ -209,7 +209,7 @@ export default function VaultDetail() {
             {course.department} • {course.hours} {isAr ? "ساعات" : "hrs"}
           </span>
         </div>
-        <h1 className="text-4xl md:text-7xl font-black text-slate-900 dark:text-slate-100 tracking-tighter leading-[1.1] break-words">
+        <h1 className="text-3xl md:text-6xl font-black text-slate-900 dark:text-slate-100 tracking-tighter leading-[1.2] break-words font-['Cairo']">
           {isAr ? course.nameAr : course.name}
         </h1>
       </div>

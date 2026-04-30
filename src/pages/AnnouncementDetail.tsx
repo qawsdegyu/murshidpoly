@@ -1,181 +1,269 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Megaphone, ImagePlus, Sparkles, ExternalLink } from "lucide-react";
+import { ArrowLeft, ArrowRight, Megaphone, ImagePlus, Sparkles, ExternalLink, GraduationCap, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { announcements } from "@/data/announcements";
+import { supabase } from "@/lib/supabase";
+import { useState, useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { usePreferences } from "@/contexts/PreferencesContext";
+import { announcements } from "@/data/announcements";
 
 export default function AnnouncementDetail() {
   const { id } = useParams();
   const nav = useNavigate();
   const { lang, dir } = usePreferences();
+  const [ann, setAnn] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  const ann = announcements.find(a => a.id === id);
+  useEffect(() => {
+    async function fetchAnnouncement() {
+      try {
+        const { data } = await supabase
+          .from("announcements")
+          .select("*")
+          .eq("id", id)
+          .maybeSingle();
+
+        if (data) {
+          setAnn(data);
+        } else {
+          const mock = announcements.find(a => a.id === id);
+          setAnn(mock);
+        }
+      } catch (err) {
+        console.error("Error fetching announcement:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchAnnouncement();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="max-w-[1440px] mx-auto px-4 pt-28 pb-20">
+        <Skeleton className="w-full h-64 md:h-96 rounded-2xl mb-8" />
+        <Skeleton className="h-12 w-3/4 mb-6" />
+        <Skeleton className="h-40 w-full rounded-2xl" />
+      </div>
+    );
+  }
 
   if (!ann) {
     return (
-      <div className="text-center py-20">
-        <p className="text-muted-foreground mb-4">
+      <div className="text-center py-20 bg-slate-950 min-h-screen flex flex-col items-center justify-center">
+        <p className="text-muted-foreground mb-4 font-['Cairo']">
           {lang === "ar" ? "الإعلان غير موجود." : "Announcement not found."}
         </p>
-        <Button onClick={() => nav("/")}>
+        <Button onClick={() => nav("/")} className="bg-cyan-500 hover:bg-cyan-600 text-white font-bold">
           {lang === "ar" ? "الرئيسية" : "Dashboard"}
         </Button>
       </div>
     );
   }
 
-  const title = lang === "ar" ? ann.titleAr : ann.title;
-  const full = lang === "ar" ? ann.fullDescriptionAr : ann.fullDescription;
-  const badge = lang === "ar" ? ann.badgeAr : ann.badge;
-  const ctaLabel = lang === "ar" ? ann.ctaLabelAr : ann.ctaLabel;
+  const title = lang === "ar" ? (ann.titleAr || ann.title) : ann.title;
+  const full = lang === "ar" ? (ann.fullDescriptionAr || ann.fullDescription) : (ann.fullDescription);
+  const badge = lang === "ar" ? (ann.badgeAr || ann.badge) : ann.badge;
+  const ctaLabel = lang === "ar" ? (ann.ctaLabelAr || ann.ctaLabel) : (ann.ctaLabel);
+  const ctaLink = ann.ctaLink;
+  const imageUrl = ann.imageUrl;
   const backLabel = lang === "ar" ? "العودة إلى الرئيسية" : "Back to Dashboard";
 
   return (
     <motion.div
       dir={dir}
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
-      className="font-cairo min-h-screen bg-background"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="font-cairo min-h-screen bg-slate-950 pb-20"
     >
-      {/* Back */}
-      <Link
-        to="/"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-accent mb-6 transition-colors"
-      >
-        <ArrowLeft className={`h-4 w-4 ${dir === "rtl" ? "rotate-180" : ""}`} />
-        {backLabel}
-      </Link>
+      {/* Header / Back Navigation */}
+      <div className="max-w-[1440px] mx-auto px-4 md:px-8 pt-8 md:pt-12 mb-8 flex justify-between items-center relative z-20">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/70 hover:text-cyan-400 hover:bg-white/10 transition-all font-bold"
+        >
+          <ArrowLeft className={`h-4 w-4 ${dir === "rtl" ? "rotate-180" : ""}`} />
+          {backLabel}
+        </Link>
+        <div className="h-10 w-10 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+          <Megaphone className="h-5 w-5" />
+        </div>
+      </div>
 
-      {/* HERO IMAGE */}
+      {/* FULL-WIDTH HERO IMAGE */}
       <motion.section
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="relative w-full h-56 sm:h-72 md:h-96 rounded-2xl overflow-hidden shadow-elegant mb-8 border border-accent/30"
+        initial={{ opacity: 0, scale: 1.05 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8 }}
+        className="relative w-full h-[50vh] md:h-[65vh] overflow-hidden"
       >
-        {ann.imageUrl ? (
-          <img src={ann.imageUrl} alt={title} className="w-full h-full object-cover" />
+        {imageUrl ? (
+          <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
         ) : (
-          <PlaceholderHero />
+          <div className="w-full h-full bg-gradient-to-br from-[#0a192f] to-[#001a33] flex items-center justify-center">
+             <Sparkles className="h-20 w-20 text-cyan-500/20" />
+          </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent pointer-events-none" />
-
-        {/* Badge floating on hero */}
-        <div className="absolute top-4 ltr:left-4 rtl:right-4 inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full bg-background/70 backdrop-blur-md text-accent border border-accent/40">
-          <Megaphone className="h-3.5 w-3.5" />
-          {badge}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+        
+        {/* Content Over Hero */}
+        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16 max-w-[1440px] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500 text-slate-950 text-xs font-black uppercase tracking-widest mb-6 shadow-[0_0_30px_rgba(0,255,255,0.3)]"
+          >
+            {badge}
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="text-4xl md:text-7xl font-black text-white font-['Cairo'] tracking-tight mb-4 drop-shadow-2xl"
+          >
+            {title}
+          </motion.h1>
         </div>
       </motion.section>
 
-      {/* TITLE */}
-      <motion.h1
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1, duration: 0.4 }}
-        className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gold tracking-tight mb-6 flex items-center gap-3"
-      >
-        <Sparkles className="h-7 w-7 text-accent shrink-0" />
-        {title}
-      </motion.h1>
+      {/* MAIN CONTENT AREA */}
+      <div className="max-w-[1440px] mx-auto px-4 md:px-8 mt-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
+        {/* Description Column */}
+        <div className="lg:col-span-2 space-y-12">
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-[#0a192f]/40 backdrop-blur-3xl border border-white/5 rounded-[2.5rem] p-8 md:p-12 shadow-2xl"
+          >
+            <p className="text-lg md:text-xl leading-[1.8] text-slate-300 font-bold font-['Cairo'] whitespace-pre-line">
+              {full}
+            </p>
 
-      {/* DESCRIPTION */}
-      <motion.section
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.18, duration: 0.4 }}
-        className="glass rounded-2xl p-6 md:p-8 mb-8 border border-border"
-      >
-        <p
-          className="text-base md:text-[17px] leading-[1.95] text-foreground/90 dark:text-foreground tracking-normal whitespace-pre-line"
-          style={{ fontFamily: "'Cairo', 'Tajawal', 'Inter', system-ui, sans-serif" }}
-        >
-          {full}
-        </p>
-      </motion.section>
+            {ctaLink && ann.id !== 'official-launch-v1' && (
+              <div className="mt-12">
+                <a 
+                  href={ctaLink} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-10 py-5 rounded-2xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black transition-all shadow-[0_0_40px_rgba(0,255,255,0.2)] hover:scale-105"
+                >
+                  {ctaLabel}
+                  <ExternalLink className="h-5 w-5" />
+                </a>
+              </div>
+            )}
+          </motion.section>
 
-      {/* CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.28, duration: 0.4 }}
-        className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3"
-      >
-        <Button
-          asChild
-          size="lg"
-          className="gradient-gold text-primary font-extrabold text-base h-12 px-8 hover:opacity-90 shadow-gold"
-        >
-          <a href={ann.ctaLink} target="_blank" rel="noopener noreferrer">
-            {ctaLabel}
-            <ExternalLink className="h-4 w-4" />
-          </a>
-        </Button>
-        <Button
-          asChild
-          variant="outline"
-          size="lg"
-          className="h-12 border-accent/40 hover:border-accent hover:text-accent"
-        >
-          <Link to="/">
-            <ArrowRight className={`h-4 w-4 ${dir === "rtl" ? "" : "rotate-180"}`} />
-            {backLabel}
-          </Link>
-        </Button>
-      </motion.div>
-    </motion.div>
-  );
-}
+          {/* TEAM SPECIFICATIONS (Only for official launch) */}
+          {ann.id === 'official-launch-v1' && ann.founders && (
+            <motion.section
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mt-16 space-y-10"
+            >
+              <div className="flex items-center gap-4">
+                <h2 className="text-2xl md:text-4xl font-black text-white font-['Cairo'] tracking-tight">
+                  {lang === "ar" ? "المواصفات الفنية للفريق" : "Team Technical Specifications"}
+                </h2>
+                <div className="h-px flex-1 bg-gradient-to-r from-cyan-500/30 to-transparent" />
+              </div>
 
-/* ---------- Placeholder hero (engineering blueprint) ---------- */
-function PlaceholderHero() {
-  return (
-    <div className="relative w-full h-full bg-gradient-to-br from-primary via-primary/80 to-accent/70">
-      <div
-        className="absolute inset-0 opacity-25"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(255,255,255,0.35) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255,255,255,0.35) 1px, transparent 1px)
-          `,
-          backgroundSize: "40px 40px",
-        }}
-      />
-      <div
-        className="absolute inset-0 opacity-15"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(255,255,255,0.5) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255,255,255,0.5) 1px, transparent 1px)
-          `,
-          backgroundSize: "8px 8px",
-        }}
-      />
-      <svg className="absolute -top-10 -right-10 w-72 h-72 opacity-15 text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5">
-        <circle cx="50" cy="50" r="40" />
-        <circle cx="50" cy="50" r="30" />
-        <circle cx="50" cy="50" r="20" />
-        <line x1="10" y1="50" x2="90" y2="50" />
-        <line x1="50" y1="10" x2="50" y2="90" />
-      </svg>
-      <div className="relative z-10 h-full w-full grid place-items-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.15, duration: 0.4 }}
-          className="text-center px-6"
-        >
-          <div className="mx-auto h-16 w-16 rounded-2xl bg-white/15 backdrop-blur-md grid place-items-center border border-white/30 shadow-elegant mb-3">
-            <ImagePlus className="h-8 w-8 text-white" strokeWidth={1.5} />
-          </div>
-          <div className="text-white font-bold text-lg drop-shadow">Hero Image Placeholder</div>
-          <div className="text-white/80 text-xs mt-1 drop-shadow">
-            Set imageUrl in src/data/announcements.ts
-          </div>
-        </motion.div>
+              <div className="grid grid-cols-1 gap-6">
+                {ann.founders.map((founder: any, idx: number) => (
+                  <div 
+                    key={idx}
+                    className="group bg-[#0a192f]/60 backdrop-blur-3xl border border-cyan-500/10 p-6 md:p-8 rounded-[2rem] flex flex-col md:flex-row gap-6 items-center md:items-start transition-all hover:border-cyan-500/30"
+                  >
+                    <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl border border-cyan-500/20 overflow-hidden shrink-0">
+                      <img src={founder.image} alt={founder.name} className="w-full h-full object-cover" />
+                    </div>
+                    <div className="flex-1 space-y-4 text-center md:text-start">
+                      <div>
+                        <h3 className="text-xl md:text-2xl font-black text-white font-['Cairo'] mb-1">
+                          {lang === "ar" ? founder.nameAr : founder.name}
+                        </h3>
+                        <p className="text-cyan-400 text-xs font-black uppercase tracking-widest">
+                          {lang === "ar" ? founder.roleAr : founder.role}
+                        </p>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="bg-white/5 p-3 rounded-xl border border-white/10">
+                          <span className="block text-[10px] text-white/40 uppercase font-black tracking-widest mb-1">{lang === 'ar' ? 'المسؤولية' : 'Responsibility'}</span>
+                          <span className="text-slate-300 text-sm font-bold font-['Cairo']">{lang === 'ar' ? founder.bioAr : founder.bio}</span>
+                        </div>
+                        <div className="bg-white/5 p-3 rounded-xl border border-white/10">
+                          <span className="block text-[10px] text-white/40 uppercase font-black tracking-widest mb-1">{lang === 'ar' ? 'الدفعة' : 'Class'}</span>
+                          <span className="text-slate-300 text-sm font-bold font-['Cairo']">{lang === 'ar' ? 'دفعة 2028 (مهندس مستقبل)' : 'Class of 2028 (Future Engineer)'}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.section>
+          )}
+        </div>
+
+        {/* Sidebar Info Column */}
+        <div className="space-y-8">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="bg-white/5 border border-white/10 rounded-[2rem] p-8"
+          >
+            <h3 className="text-white font-black mb-6 flex items-center gap-2 font-['Cairo']">
+              <GraduationCap className="h-5 w-5 text-cyan-400" />
+              {lang === "ar" ? "معلومات المشروع" : "Project Info"}
+            </h3>
+            <ul className="space-y-4">
+               <li className="flex flex-col gap-1">
+                 <span className="text-[10px] text-white/40 uppercase font-black tracking-widest">{lang === 'ar' ? 'الحالة الأكاديمية' : 'Academic Status'}</span>
+                 <span className="text-white font-bold font-['Cairo']">{lang === 'ar' ? 'طالب هندسة - السنة الثانية - جامعة البلقاء التطبيقية' : 'Engineering Student - 2nd Year - BAU'}</span>
+               </li>
+               <li className="flex flex-col gap-1">
+                 <span className="text-[10px] text-white/40 uppercase font-black tracking-widest">{lang === 'ar' ? 'التخصص' : 'Major'}</span>
+                 <span className="text-white font-bold font-['Cairo']">{lang === 'ar' ? 'جميع التخصصات الهندسية' : 'All Engineering Majors'}</span>
+               </li>
+               <li className="flex flex-col gap-1">
+                 <span className="text-[10px] text-white/40 uppercase font-black tracking-widest">{lang === 'ar' ? 'الإصدار' : 'Version'}</span>
+                 <span className="text-cyan-400 font-black">v1.0.0 Stable</span>
+               </li>
+            </ul>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="bg-cyan-500/10 border border-cyan-500/20 rounded-[2rem] p-8 group hover:bg-cyan-500/20 transition-all"
+          >
+            <h3 className="text-white font-black mb-4 flex items-center gap-2 font-['Cairo']">
+              <Users className="h-5 w-5 text-cyan-400" />
+              {lang === "ar" ? "تواصل معنا" : "Connect with Us"}
+            </h3>
+            <p className="text-sm text-slate-400 font-bold mb-6 font-['Cairo']">
+              {lang === "ar" ? "للمقترحات والتعاون الأكاديمي، تواصل مع الفريق عبر حسابنا الرسمي." : "For suggestions and academic collaboration, connect with the team via our official handle."}
+            </p>
+            <a 
+              href="https://wa.me/962785159906" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="block"
+            >
+              <Button className="w-full bg-white text-slate-950 font-black hover:bg-cyan-400 transition-colors">
+                {lang === "ar" ? "تواصل عبر الواتساب" : "Contact via WhatsApp"}
+              </Button>
+            </a>
+          </motion.div>
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

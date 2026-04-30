@@ -661,15 +661,18 @@ export default function BuildingsPage() {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
-      className="min-h-screen pb-24"
+      className="min-h-screen pb-24 pointer-events-none"
     >
-      <PageHeader
-        title={ar ? "مواقع المباني" : "Campus Map"}
-        subtitle={ar
-          ? "دليل شامل لمباني الحرم الجامعي — ابحث عن القاعات أو المكاتب أو الدكاترة."
-          : "Complete guide to BAU campus buildings — search for rooms, offices, or doctors."}
-        icon={<Building2 className="w-6 h-6 text-primary dark:text-accent" />}
-      />
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 pt-32 md:pt-44 pointer-events-auto transition-all duration-700">
+
+        <PageHeader
+          title={ar ? "مواقع المباني" : "Campus Map"}
+          subtitle={ar
+            ? "دليل شامل لمباني الحرم الجامعي — ابحث عن القاعات أو المكاتب أو الدكاترة."
+            : "Complete guide to BAU campus buildings — search for rooms, offices, or doctors."}
+          icon={<Building2 className="w-8 h-8 md:w-12 md:h-12 text-primary dark:text-accent" />}
+          className="mb-10 md:mb-16"
+        />
 
       <div className="max-w-3xl mx-auto mb-10 px-4">
         <div className="relative group">
@@ -724,6 +727,7 @@ export default function BuildingsPage() {
           />
         )}
       </AnimatePresence>
+      </div>
     </motion.div>
   );
 }
@@ -748,28 +752,27 @@ function BuildingCard({ b, i, ar, onClick }: { b: Building, i: number, ar: boole
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
       </div>
       
-      <div className="p-6 flex flex-col justify-between flex-1 gap-4 bg-white dark:bg-neutral-900/50">
+      <div className="p-6 flex flex-col justify-between flex-1 gap-4 bg-white/50 dark:bg-neutral-900/30 backdrop-blur-md">
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <Badge className={cn("text-[10px] px-2.5 py-0.5 font-bold bg-primary/10 text-primary border-primary/20 navy-pop")}>
+            <Badge className={cn("text-[9px] px-2.5 py-0.5 font-black uppercase tracking-widest bg-accent/10 text-accent border-accent/20")}>
               {ar ? b.tag : b.tagEn}
             </Badge>
           </div>
-          {/* Enhanced Color Scheme: Strong Navy Blue (#003366) */}
-          <h3 className="text-[#003366] font-black text-xl leading-tight mb-3 navy-pop drop-shadow-sm">
+          <h3 className="text-slate-900 dark:text-white font-black text-xl md:text-2xl leading-tight mb-4 font-['Cairo'] tracking-tight group-hover:text-accent transition-colors">
             {ar ? b.nameAr : b.nameEn}
           </h3>
-          <p className="text-xs text-neutral-500 dark:text-neutral-300 font-medium line-clamp-2 leading-relaxed">
+          <p className="text-[11px] md:text-xs text-muted-foreground font-bold line-clamp-2 leading-relaxed opacity-80">
             {ar ? b.descAr : b.descEn}
           </p>
         </div>
         
-        <div className="flex justify-between items-center pt-4 border-t border-neutral-100 dark:border-white/5">
-          <span className="text-[10px] font-black text-primary uppercase tracking-wider navy-pop">
+        <div className="flex justify-between items-center pt-4 border-t border-border/50">
+          <span className="text-[10px] font-black text-accent uppercase tracking-widest">
             {ar ? "عرض التفاصيل" : "Explore Building"}
           </span>
-          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary transition-colors group-hover:bg-primary group-hover:text-white">
-            <ExternalLink className="w-3.5 h-3.5" />
+          <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center text-accent transition-all group-hover:bg-accent group-hover:text-white group-hover:shadow-lg group-hover:shadow-accent/20">
+            <ExternalLink className="w-4 h-4" />
           </div>
         </div>
       </div>
@@ -872,7 +875,7 @@ function BuildingDetailModal({
               </Badge>
             </div>
             <h2 className="text-white text-2xl sm:text-3xl font-black navy-pop">{ar ? building.nameAr : building.nameEn}</h2>
-            <p className="text-white/70 text-[11px] sm:text-xs font-medium mt-1 max-w-2xl line-clamp-2 navy-pop">
+            <p className="text-white/70 text-[11px] sm:text-xs font-medium mt-3 max-w-2xl line-clamp-2 navy-pop">
               {ar ? building.descAr : building.descEn}
             </p>
           </div>

@@ -56,6 +56,14 @@ export default function MurshidAssistant() {
   const [input, setInput] = useState("");
   const [thinking, setThinking] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  
+  // Persistence logic for FAB position
+  const [position, setPosition] = useState(() => {
+    const saved = localStorage.getItem("murshid_ai_pos");
+    return saved ? JSON.parse(saved) : { x: 0, y: 0 };
+  });
+
+  const fabRef = useRef<HTMLButtonElement>(null);
 
   // Seed welcome message on first open
   useEffect(() => {
@@ -90,6 +98,31 @@ export default function MurshidAssistant() {
     if (e.key === "Enter") handleSend();
   };
 
+  const handleDragEnd = (_: any, info: any) => {
+    const screenWidth = window.innerWidth;
+    const fabWidth = 56; // 14 * 4
+    const margin = 24;
+    
+    // Calculate final X position relative to viewport
+    const currentX = position.x + info.offset.x;
+    const currentY = position.y + info.offset.y;
+
+    // Snap to nearest vertical edge
+    // Since it's fixed bottom-24 left-8 initially
+    // The initial left is 32px (8 * 4)
+    // We want to snap to left (32px) or right (screenWidth - fabWidth - 32px)
+    
+    const snapLeft = 0;
+    const snapRight = screenWidth - fabWidth - (margin * 2); // adjusted for container padding or offset
+    
+    // Simplified: snap to left/right 5% margin
+    const targetX = info.point.x < screenWidth / 2 ? 0 : snapRight;
+    
+    const newPos = { x: targetX, y: currentY };
+    setPosition(newPos);
+    localStorage.setItem("murshid_ai_pos", JSON.stringify(newPos));
+  };
+
   return (
     <>
       {/* Floating Action Button — breathing gold orb */}
@@ -97,16 +130,33 @@ export default function MurshidAssistant() {
         {!open && (
           <motion.button
             key="fab"
-            onClick={() => { setOpen(true); setMinimized(false); }}
+            ref={fabRef}
+            drag
+            dragMomentum={false}
+            dragElastic={0.1}
+            onDragEnd={handleDragEnd}
+            animate={{ 
+              x: position.x, 
+              y: position.y,
+              opacity: 1, 
+              scale: 1 
+            }}
             initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            style={{ willChange: "transform, opacity" }}
+            style={{ 
+              willChange: "transform, opacity",
+              touchAction: "none" // Essential for dragging on mobile
+            }}
+            onClick={() => { 
+              // Only open if it wasn't a significant drag
+              setOpen(true); 
+              setMinimized(false); 
+            }}
             aria-label={s.open}
-            className="fixed bottom-24 left-8 z-[100] h-14 w-14 rounded-full flex items-center justify-center bg-gradient-to-br from-accent via-accent to-amber-500 shadow-[0_0_20px_hsl(var(--accent)/0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
+            className="fixed bottom-24 left-6 z-[100] h-14 w-14 rounded-full flex items-center justify-center bg-gradient-to-br from-accent via-accent to-amber-500 shadow-[0_0_20px_hsl(var(--accent)/0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background group cursor-grab active:cursor-grabbing"
           >
             {/* Breathing rings - Optimized */}
             <span className="absolute inset-0 rounded-full bg-accent/30 animate-pulse scale-125 blur-md pointer-events-none hidden md:block" />

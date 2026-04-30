@@ -8,73 +8,80 @@ import type { Announcement } from "../data/mockData";
 
 interface AnnouncementCardProps {
   id?: string;
+  data?: any;
 }
 
-const AnnouncementCard = memo(({ id }: AnnouncementCardProps) => {
+const AnnouncementCard = memo(({ id, data }: AnnouncementCardProps) => {
   const { dir, lang } = usePreferences();
 
-  const ann: Announcement | undefined =
-    (id && announcements.find(a => a.id === id)) || announcements[0];
+  const ann = data || (id && announcements.find(a => a.id === id)) || announcements[0];
   if (!ann) return null;
 
-  const title = lang === "ar" ? ann.titleAr : ann.title;
-  const desc = lang === "ar" ? ann.shortDescriptionAr : ann.shortDescription;
-  const badge = lang === "ar" ? ann.badgeAr : ann.badge;
+  const title = lang === "ar" ? (ann.title_ar || ann.titleAr) : ann.title;
+  const desc = lang === "ar" ? (ann.short_description_ar || ann.shortDescriptionAr) : (ann.short_description || ann.shortDescription);
+  const badge = lang === "ar" ? (ann.badge_ar || ann.badgeAr) : ann.badge;
   const ctaLabel = lang === "ar" ? "اعرف المزيد" : "Learn More";
+  const imageUrl = ann.image_url || ann.imageUrl;
+  const targetId = ann.id;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      whileHover={{ y: -8, transition: { duration: 0.2 } }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      style={{ willChange: "transform, opacity" }}
+      className="h-full"
     >
       <Link
-        to={`/announcement/${ann.id}`}
+        to={`/announcement/${targetId}`}
         aria-label={title}
-        className="group relative block overflow-hidden rounded-2xl bg-card/80 border border-border shadow-sm backdrop-blur-xl hover:border-accent/60 transition-all duration-300 isolation-isolate"
+        className="group relative flex flex-col md:flex-row h-full overflow-hidden rounded-3xl bg-[#0a192f]/70 border border-cyan-500/20 backdrop-blur-2xl hover:border-cyan-400/50 shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_0_40px_rgba(0,255,255,0.15)] transition-all duration-500 min-h-[160px]"
       >
-        {/* Optimized background wash */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/5 to-accent/15 pointer-events-none" />
-        <div className="absolute -top-24 ltr:-right-24 rtl:-left-24 h-64 w-64 rounded-full bg-accent/15 blur-3xl pointer-events-none hidden md:block" />
-        
-        <div className="relative grid md:grid-cols-[1fr_auto] gap-5 p-4 md:p-6 items-center pointer-events-none">
-          {/* Content */}
-          <div className="min-w-0">
-            <div className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-[0.2em] px-2.5 py-0.5 rounded-full bg-accent/15 text-accent border border-accent/30 backdrop-blur-sm mb-3">
-              <Megaphone className="h-3 w-3" />
+        {/* Featured Image */}
+        <div className="relative w-full md:w-[280px] lg:w-[320px] h-48 md:h-auto overflow-hidden shrink-0">
+          {imageUrl ? (
+            <img 
+              src={imageUrl} 
+              alt={title} 
+              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-slate-950 to-slate-900 grid place-items-center">
+              <Megaphone className="h-12 w-12 text-cyan-500/10" />
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#0a192f] via-[#0a192f]/40 to-transparent" />
+          
+          {/* Badge */}
+          <div className="absolute top-4 ltr:left-4 rtl:right-4">
+            <div className="px-3 py-1 rounded-full bg-cyan-500/10 backdrop-blur-md border border-cyan-500/30 text-cyan-400 text-[10px] font-black uppercase tracking-widest shadow-2xl">
               {badge}
             </div>
-            <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-slate-100 mb-2 flex items-start gap-1.5 leading-[1.1]">
-              <Sparkles className="h-5 w-5 text-accent shrink-0 mt-0.5" />
-              <span className="break-words">{title}</span>
-            </h3>
-            <p className="text-[11px] md:text-sm text-muted-foreground leading-snug max-w-2xl mb-4 break-words font-bold">
-              {desc}
-            </p>
-            <div className="inline-flex items-center gap-1.5 text-xs font-black text-accent group-hover:gap-3 transition-all">
-              {ctaLabel}
-              <ArrowRight className={`h-4 w-4 ${dir === "rtl" ? "rotate-180" : ""}`} />
-            </div>
-          </div>
-
-          {/* Optimized image */}
-          <div className="hidden md:block w-28 lg:w-36 aspect-[4/3] rounded-lg overflow-hidden border border-accent/30 bg-background/30 backdrop-blur-md shrink-0">
-            {ann.imageUrl ? (
-              <img 
-                src={ann.imageUrl} 
-                alt={title} 
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover transition-transform duration-700" 
-              />
-            ) : (
-              <div className="w-full h-full bg-accent/5 grid place-items-center">
-                <Megaphone className="h-8 w-8 text-accent/20" />
-              </div>
-            )}
           </div>
         </div>
+
+        {/* Content */}
+        <div className="flex-1 p-6 md:p-8 flex flex-col justify-center items-start text-right rtl:text-right ltr:text-left relative z-10">
+          <div className="w-full">
+            <h3 className="text-xl md:text-2xl lg:text-3xl font-black text-white mb-3 leading-tight font-['Cairo'] group-hover:text-cyan-300 transition-colors drop-shadow-sm">
+              {title}
+            </h3>
+            <p className="text-sm md:text-base text-slate-300 line-clamp-2 leading-relaxed font-bold font-['Cairo'] opacity-70 group-hover:opacity-100 transition-opacity">
+              {desc}
+            </p>
+          </div>
+
+          <div className="mt-6 flex items-center gap-2 text-xs font-black text-cyan-400 group-hover:gap-4 transition-all uppercase tracking-widest font-['Cairo']">
+            <span className="relative">
+              {ctaLabel}
+              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-cyan-400 transition-all group-hover:w-full" />
+            </span>
+            <ArrowRight className={`h-4 w-4 transition-transform group-hover:translate-x-1 ${dir === "rtl" ? "rotate-180 group-hover:-translate-x-1" : ""}`} />
+          </div>
+        </div>
+
+        {/* Decorative Internal Glow */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 blur-[80px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
       </Link>
     </motion.div>
   );

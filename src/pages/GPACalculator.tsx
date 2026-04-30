@@ -35,24 +35,24 @@ export default function GPACalculator() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      initial={{ opacity: 0, scale: 0.98 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 1.02 }}
     >
-      <PageHeader
-        title={t.gpa.title}
-        subtitle={t.gpa.subtitle}
-        icon={<Calculator className="h-6 w-6" />}
-        actions={
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button variant="outline" onClick={reset}>
-              <RotateCcw className="h-4 w-4 mr-2 rtl:ml-2 rtl:mr-0" />
-              {t.gpa.reset}
-            </Button>
-          </motion.div>
-        }
-      />
+      <div className="max-w-[1440px] mx-auto px-4 md:px-8 pt-28">
+        <PageHeader
+          title={t.gpa.title}
+          subtitle={t.gpa.subtitle}
+          icon={<Calculator className="h-6 w-6" />}
+          actions={
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button variant="outline" onClick={reset}>
+                <RotateCcw className="h-4 w-4 mr-2 rtl:ml-2 rtl:mr-0" />
+                {t.gpa.reset}
+              </Button>
+            </motion.div>
+          }
+        />
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Left: inputs */}

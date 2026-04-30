@@ -22,7 +22,7 @@ export default function Settings() {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
       transition={{ type: "spring", stiffness: 260, damping: 20 }}
-      className="max-w-4xl mx-auto w-full mt-6 md:mt-12"
+      className="max-w-4xl mx-auto w-full pt-28 pb-10"
     >
       {/* Header */}
       <motion.header

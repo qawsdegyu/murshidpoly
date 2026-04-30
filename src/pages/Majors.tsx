@@ -46,8 +46,7 @@ export default function Majors() {
       style={{ willChange: "transform, opacity" }}
       className="min-h-screen pb-24 bg-background transition-colors duration-500"
     >
-
-      <div className="relative z-10 px-4 md:px-8 pt-8">
+      <div className="max-w-[1440px] mx-auto px-4 md:px-8 pt-28">
         <PageHeader
           title={isAr ? "دليل التخصصات الهندسية" : "Engineering Majors Guide"}
           subtitle={isAr ? "اختر تخصصك واستعرض الخطة الدراسية والمسار المهني" : "Choose your major and explore the curriculum and career path"}

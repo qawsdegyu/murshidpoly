@@ -43,7 +43,7 @@ export default function Marketplace() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="text-3xl sm:text-5xl md:text-9xl font-black tracking-tighter mb-4 md:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-emerald-400 to-blue-500 bg-[length:200%_auto] animate-gradient-x"
+          className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-4 md:mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-emerald-400 to-blue-500 bg-[length:200%_auto] animate-gradient-x leading-tight py-2"
         >
           {isAr ? "قريباً" : "Soon"}
         </motion.h1>

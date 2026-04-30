@@ -5,15 +5,22 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { usePreferences } from "@/contexts/PreferencesContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
+import { LogIn, LogOut, User } from "lucide-react";
 import { PAGE_IMPORTS, prefetchPage } from "@/lib/prefetch";
 
 
-const Sidebar = memo(() => {
+interface SidebarProps {
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+const Sidebar = memo(({ isOpen, onOpenChange }: SidebarProps) => {
   const { t, dir } = usePreferences();
+  const { user, signOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
   const activeRef = useRef<HTMLAnchorElement>(null);
   const isRoot = location.pathname === "/";
 
@@ -51,40 +58,13 @@ const Sidebar = memo(() => {
 
   return (
     <>
-      {/* Universal toggle button (Top Right) */}
-      {/* Floating Smart Action Button (Bottom) */}
-      <button
-        onClick={() => {
-          if (isOpen) setIsOpen(false);
-          else if (!isRoot) navigate(-1);
-          else setIsOpen(true);
-        }}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          setIsOpen(true);
-        }}
-        className={cn(
-          "fixed bottom-6 z-50 h-14 w-14 rounded-full gradient-primary text-primary-foreground shadow-elegant border border-white/20 backdrop-blur-xl transition-all duration-300 active:scale-90 flex items-center justify-center hover:scale-105",
-          dir === "rtl" ? "right-6" : "left-6"
-        )}
-        aria-label="Toggle menu or go back"
-      >
-        {isOpen ? (
-          <X className="h-7 w-7" />
-        ) : !isRoot ? (
-          dir === "rtl" ? <ArrowRight className="h-7 w-7" /> : <ArrowLeft className="h-7 w-7" />
-        ) : (
-          <Menu className="h-7 w-7" />
-        )}
-      </button>
-
       {/* Backdrop */}
       <div 
         className={cn(
           "fixed inset-0 bg-background/80 backdrop-blur-md z-30 transition-opacity duration-300",
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
-        onClick={() => setIsOpen(false)} 
+        onClick={() => onOpenChange(false)} 
       />
 
       <aside className={cn(sideClasses, "border-navy-contrast")}>
@@ -112,7 +92,7 @@ const Sidebar = memo(() => {
                 <Link
                   to={it.to}
                   ref={active ? activeRef : null}
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => onOpenChange(false)}
                   onMouseEnter={() => prefetchPage(it.prefetch)}
                   className={cn(
                     "group relative flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg transition-all active-press w-full",
@@ -130,10 +110,44 @@ const Sidebar = memo(() => {
         </nav>
 
         {/* Bottom actions - Minimalist */}
-        <div className="p-2 border-t border-sidebar-border/50">
+        <div className="p-2 border-t border-sidebar-border/50 space-y-1">
+          {user ? (
+            <div className="space-y-1">
+              <div className="px-2 py-1 flex items-center gap-2 text-[10px] font-bold text-accent uppercase tracking-widest opacity-80 overflow-hidden">
+                <User className="h-3 w-3" />
+                <span className="truncate">{user.email}</span>
+              </div>
+              <button
+                onClick={async () => {
+                  await signOut();
+                  onOpenChange(false);
+                  navigate("/");
+                }}
+                className="flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all w-full hover:bg-red-500/10 text-red-400 hover:text-red-300"
+              >
+                <LogOut className="h-[18px] w-[18px] shrink-0" />
+                <span className="font-bold text-sm whitespace-nowrap">Logout</span>
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/auth"
+              onClick={() => onOpenChange(false)}
+              className={cn(
+                "flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all w-full",
+                isActive("/auth")
+                  ? "gradient-primary text-primary-foreground shadow-sm border border-white/20"
+                  : "hover:bg-white/5 text-white/70 hover:text-white"
+              )}
+            >
+              <LogIn className="h-[18px] w-[18px] shrink-0" />
+              <span className="font-bold text-sm whitespace-nowrap">Login</span>
+            </Link>
+          )}
+
           <Link
             to="/settings"
-            onClick={() => setIsOpen(false)}
+            onClick={() => onOpenChange(false)}
             className={cn(
               "flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all w-full",
               isActive("/settings")

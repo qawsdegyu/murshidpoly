@@ -293,7 +293,8 @@ export default function CampusMap() {
       exit={{ opacity: 0, x: -20 }}
       className="min-h-screen pb-20"
     >
-      <PageHeader
+      <div className="max-w-[1440px] mx-auto px-4 md:px-8 pt-28 pb-10">
+        <PageHeader
         title={ar ? "مواقع المباني" : "Campus Map"}
         subtitle={ar
           ? "دليل شامل لمباني الحرم الجامعي — ابحث عن القاعات أو المكاتب أو الدكاترة."
@@ -329,6 +330,7 @@ export default function CampusMap() {
           <h3 className="text-xl font-black">{ar ? "لم يتم العثور على نتائج" : "No results found"}</h3>
         </div>
       )}
+      </div>
     </motion.div>
   );
 }

@@ -1,7 +1,18 @@
 // Mock announcements for the Murshid dashboard.
 
+export interface Founder {
+  name: string;
+  nameAr: string;
+  role: string;
+  roleAr: string;
+  bio: string;
+  bioAr: string;
+  image: string;
+}
+
 export interface Announcement {
   id: string;
+  created_at?: string;
   title: string;
   titleAr: string;
   shortDescription: string;
@@ -14,9 +25,61 @@ export interface Announcement {
   ctaLink: string;
   badge: string;
   badgeAr: string;
+  target_major?: string;
+  is_global?: boolean;
+  founders?: Founder[];
 }
 
 export const announcements: Announcement[] = [
+  {
+    id: "official-launch-v1",
+    title: "Official Launch of Murshid v1.0",
+    titleAr: "الإطلاق الرسمي لـ مرشد v1.0",
+    shortDescription:
+      "Created by a team of 2nd-year Engineering Students from BAU (Class of 2028). Meet the founders.",
+    shortDescriptionAr:
+      "تم إنشاؤه بواسطة فريق من طلاب الهندسة في السنة الثانية من جامعة البلقاء (دفعة 2028). تعرف على المؤسسين.",
+    fullDescription:
+      "We are proud to announce the official launch of Murshid v1.0, the ultimate engineering hub for BAU students. This project was conceptualized and built by a dedicated team of 2nd-year engineering students who saw a gap in student resources and decided to bridge it.\n\nOur mission is to empower every engineering student at BAU with the tools they need to succeed.",
+    fullDescriptionAr:
+      "نفخر بالإعلان عن الإطلاق الرسمي لـ مرشد v1.0، المركز الهندسي المتكامل لطلاب جامعة البلقاء التطبيقية. تم تصور هذا المشروع وبناؤه بواسطة فريق متخصص من طلاب الهندسة في السنة الثانية الذين رأوا فجوة في المصادر الطلابية وقرروا جسرها.\n\nمهمتنا هي تمكين كل طالب هندسة في جامعة البلقاء بالأدوات التي يحتاجها للنجاح.",
+    imageUrl: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1000",
+    ctaLabel: "View Founder Story",
+    ctaLabelAr: "عرض قصة المؤسسين",
+    ctaLink: "#",
+    badge: "v1.0 Launch",
+    badgeAr: "إطلاق v1.0",
+    is_global: true,
+    founders: [
+      {
+        name: "Abdelrahman Al-Salhout",
+        nameAr: "عبد الرحمن السلحوت",
+        role: "Founder & CTO",
+        roleAr: "المؤسس والمدير التقني (CTO)",
+        bio: "The technical architect who brought the vision to life.",
+        bioAr: "المهندس التقني الذي حول الرؤية إلى واقع.",
+        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Abdulrahman"
+      },
+      {
+        name: "Mohammed Saqr",
+        nameAr: "محمد صقر",
+        role: "Head of Relations & Data",
+        roleAr: "رئيس العلاقات والبيانات",
+        bio: "The engine behind gathering academic data and ensuring accuracy.",
+        bioAr: "المحرك خلف جمع البيانات الأكاديمية وضمان دقتها.",
+        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mohammad"
+      },
+      {
+        name: "Abdullah Tahat",
+        nameAr: "عبد الله طاهات",
+        role: "Visual Identity & Social Media",
+        roleAr: "الهوية البصرية والتواصل الاجتماعي",
+        bio: "The creative force who crafted Murshid's stunning brand.",
+        bioAr: "القوة المبدعة التي صممت علامة مرشد التجارية المذهلة.",
+        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Abdullah"
+      }
+    ]
+  },
   {
     id: "career-day-2026",
     title: "Engineering Career Day 2026",

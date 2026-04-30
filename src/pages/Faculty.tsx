@@ -57,6 +57,7 @@ const Faculty = memo(function Faculty() {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
       transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className="max-w-[1440px] mx-auto px-4 md:px-8 pt-28 pb-10"
     >
       <PageHeader 
         title={t.faculty.title} 

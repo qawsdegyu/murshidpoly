@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { PreferencesProvider } from "@/contexts/PreferencesContext";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { lazy, Suspense } from "react";
 import AppLayout from "@/components/AppLayout";
 import ScrollRestoration from "@/components/ScrollRestoration";
@@ -32,7 +33,27 @@ const RecreationCategory = lazy(PAGE_IMPORTS.RecreationCategory);
 const RecreationDetail = lazy(PAGE_IMPORTS.RecreationDetail);
 const AnnouncementDetail = lazy(PAGE_IMPORTS.AnnouncementDetail);
 const BuildingsPage = lazy(PAGE_IMPORTS.BuildingsPage);
+const Auth = lazy(() => import("./pages/Auth"));
 const NotFound = lazy(PAGE_IMPORTS.NotFound);
+
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading } = useAuth();
+  const location = useLocation();
+
+  if (loading) {
+    return <BrandedLoader />;
+  }
+
+  if (!user) {
+    return <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+      <h2 className="text-2xl font-bold text-[#003366]">Access Restricted</h2>
+      <p className="text-slate-500">Please sign in to access this feature.</p>
+      <a href="/auth" className="bg-[#003366] text-white px-6 py-2 rounded-lg hover:bg-[#002244] transition-colors">Sign In</a>
+    </motion.div>;
+  }
+
+  return <>{children}</>;
+};
 
 import { LazyMotion, domAnimation } from "framer-motion";
 
@@ -47,7 +68,8 @@ const AppRoutes = () => {
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<PageTransition><Dashboard /></PageTransition>} />
-            <Route path="/gpa" element={<PageTransition><GPACalculator /></PageTransition>} />
+            <Route path="/auth" element={<PageTransition><Auth /></PageTransition>} />
+            <Route path="/gpa" element={<PageTransition><ProtectedRoute><GPACalculator /></ProtectedRoute></PageTransition>} />
             <Route path="/majors" element={<PageTransition><Majors /></PageTransition>} />
             <Route path="/major/:id" element={<PageTransition><MajorPage /></PageTransition>} />
             <Route path="/materials/:id" element={<PageTransition><CoursePage /></PageTransition>} />
@@ -58,8 +80,9 @@ const AppRoutes = () => {
             <Route path="/recreation/:category" element={<PageTransition><RecreationCategory /></PageTransition>} />
             <Route path="/recreation/:category/:placeId" element={<PageTransition><RecreationDetail /></PageTransition>} />
             <Route path="/campus-map" element={<PageTransition><BuildingsPage /></PageTransition>} />
-            <Route path="/settings" element={<PageTransition><Settings /></PageTransition>} />
+            <Route path="/settings" element={<PageTransition><ProtectedRoute><Settings /></ProtectedRoute></PageTransition>} />
             <Route path="/announcement/:id" element={<PageTransition><AnnouncementDetail /></PageTransition>} />
+            <Route path="/announcements/founders" element={<PageTransition><AnnouncementDetail /></PageTransition>} />
             <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
           </Routes>
         </AnimatePresence>
@@ -72,7 +95,8 @@ const AppRoutes = () => {
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <PreferencesProvider>
+      <AuthProvider>
+        <PreferencesProvider>
         <TooltipProvider>
           <LazyMotion features={domAnimation}>
             <Toaster />
@@ -87,7 +111,8 @@ const App = () => {
             </BrowserRouter>
           </LazyMotion>
         </TooltipProvider>
-      </PreferencesProvider>
+        </PreferencesProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 };
