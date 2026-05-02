@@ -12,18 +12,18 @@ import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
 
 const MAJORS = [
-  { id: "se", name: "هندسة البرمجيات" },
-  { id: "networks", name: "هندسة الشبكات" },
+  { id: "computer", name: "هندسة الحاسوب والبرمجيات" },
+  { id: "network-security", name: "أمن الشبكات والسيبراني" },
   { id: "mechatronics", name: "هندسة الميكاترونكس" },
   { id: "autotronics", name: "هندسة الأوتوترونكس" },
-  { id: "civil", name: "هندسة مدنية" },
-  { id: "arch", name: "هندسة عمارة" },
-  { id: "comm", name: "هندسة الاتصالات" },
-  { id: "comp", name: "هندسة الحاسوب" },
-  { id: "elec", name: "هندسة كهربائية" },
-  { id: "mech", name: "هندسة ميكانيكية" },
-  { id: "chem", name: "هندسة كيميائية" },
-  { id: "industrial", name: "هندسة صناعية" },
+  { id: "civil", name: "هندسة الطرق والجسور" },
+  { id: "architecture", name: "الهندسة المعمارية" },
+  { id: "telecom", name: "هندسة الاتصالات" },
+  { id: "electrical", name: "هندسة القوى الكهربائية" },
+  { id: "mechanical", name: "هندسة الميكانيك العام" },
+  { id: "chemical", name: "هندسة الصناعات الكيميائية" },
+  { id: "industrial", name: "الهندسة الصناعية" },
+  { id: "thermal", name: "الآلات الحرارية والهيدروليكية" },
 ];
 
 const ACADEMIC_YEARS = [

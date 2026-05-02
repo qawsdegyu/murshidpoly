@@ -127,4 +127,13 @@ export const majorCurriculum: Record<string, YearCurriculum[]> = {
   "telecom": [
     { year: 1, labelAr: "السنة الأولى", labelEn: "Year 1", semesters: STANDARD_YEAR_1 },
   ],
+  "electrical": [
+    { year: 1, labelAr: "السنة الأولى", labelEn: "Year 1", semesters: STANDARD_YEAR_1 },
+  ],
+  "industrial": [
+    { year: 1, labelAr: "السنة الأولى", labelEn: "Year 1", semesters: STANDARD_YEAR_1 },
+  ],
+  "architecture": [
+    { year: 1, labelAr: "السنة الأولى", labelEn: "Year 1", semesters: STANDARD_YEAR_1 },
+  ],
 };
