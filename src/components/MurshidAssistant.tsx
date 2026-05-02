@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, X, Minus, Bot, Lock } from "lucide-react";
 import { usePreferences } from "@/contexts/PreferencesContext";
@@ -25,12 +25,17 @@ export default function MurshidAssistant() {
   const s = STRINGS[lang];
   const [open, setOpen] = useState(false);
   const [minimized, setMinimized] = useState(false);
+  const isDragging = useRef(false);
   
   // Persistence logic for FAB position
   const [position, setPosition] = useState(() => {
     const saved = localStorage.getItem("murshid_ai_pos");
     return saved ? JSON.parse(saved) : { x: 0, y: 0 };
   });
+
+  const handleDragStart = () => {
+    isDragging.current = true;
+  };
 
   const handleDragEnd = (_: any, info: any) => {
     const screenWidth = window.innerWidth;
@@ -55,6 +60,10 @@ export default function MurshidAssistant() {
     const newPos = { x: targetX, y: currentY };
     setPosition(newPos);
     localStorage.setItem("murshid_ai_pos", JSON.stringify(newPos));
+
+    setTimeout(() => {
+      isDragging.current = false;
+    }, 150);
   };
 
   return (
@@ -67,6 +76,7 @@ export default function MurshidAssistant() {
             drag
             dragMomentum={false}
             dragElastic={0.1}
+            onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
             animate={{ 
               x: position.x, 
@@ -83,8 +93,11 @@ export default function MurshidAssistant() {
               willChange: "transform, opacity",
               touchAction: "none" // Essential for dragging on mobile
             }}
-            onClick={() => { 
-              // Only open if it wasn't a significant drag
+            onClick={(e) => { 
+              if (isDragging.current) {
+                e.preventDefault();
+                return;
+              }
               setOpen(true); 
               setMinimized(false); 
             }}

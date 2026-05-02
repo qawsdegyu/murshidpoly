@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useState, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { cn } from "@/lib/utils";
@@ -11,6 +11,7 @@ interface TopHeaderProps {
 
 const TopHeader = memo(({ onMenuToggle, isMenuOpen }: TopHeaderProps) => {
   const { dir } = usePreferences();
+  const isDragging = useRef(false);
   
   // Persistence logic for Menu button position
   const [position, setPosition] = useState(() => {
@@ -22,6 +23,10 @@ const TopHeader = memo(({ onMenuToggle, isMenuOpen }: TopHeaderProps) => {
     }
   });
 
+  const handleDragStart = () => {
+    isDragging.current = true;
+  };
+
   const handleDragEnd = (_: any, info: any) => {
     const newPos = { 
       x: position.x + info.offset.x, 
@@ -29,6 +34,10 @@ const TopHeader = memo(({ onMenuToggle, isMenuOpen }: TopHeaderProps) => {
     };
     setPosition(newPos);
     localStorage.setItem("murshid_menu_pos", JSON.stringify(newPos));
+
+    setTimeout(() => {
+      isDragging.current = false;
+    }, 150);
   };
 
   return (
@@ -39,12 +48,19 @@ const TopHeader = memo(({ onMenuToggle, isMenuOpen }: TopHeaderProps) => {
           drag
           dragMomentum={false}
           dragElastic={0.1}
+          onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
           animate={{ x: position.x, y: position.y }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           style={{ touchAction: "none" }}
-          onClick={onMenuToggle}
+          onClick={(e) => {
+            if (isDragging.current) {
+              e.preventDefault();
+              return;
+            }
+            onMenuToggle();
+          }}
           className={cn(
             "fixed top-4 right-4 z-[100] pointer-events-auto cursor-grab active:cursor-grabbing",
             "h-14 w-14 rounded-full flex items-center justify-center transition-colors duration-300 will-change-transform",
