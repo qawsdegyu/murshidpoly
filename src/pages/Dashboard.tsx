@@ -9,10 +9,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import AnnouncementCard from "@/components/AnnouncementCard";
 import QuickLinkCard from "@/components/QuickLinkCard";
 import BauQuickLinks from "@/components/BauQuickLinks";
-import { buildings } from "@/data/mockData";
+import { buildings } from "@/data/buildings";
 import { cn } from "@/lib/utils";
 import { PAGE_IMPORTS, prefetchPage } from "@/lib/prefetch";
-import AdSpace from "@/components/AdSpace";
+
 
 const container: Variants = {
   hidden: {},
@@ -339,7 +339,7 @@ export default function Dashboard() {
             <div className="h-px flex-1 mx-6 md:mx-10 bg-gradient-to-r from-accent/40 to-transparent" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {buildings?.map((b) => (
+            {buildings?.slice(0, 3).map((b) => (
               <m.a
                 key={b.id}
                 href={b.mapUrl}
@@ -352,7 +352,7 @@ export default function Dashboard() {
                 <div className="h-32 md:h-40 w-full relative overflow-hidden">
                   <img
                     src={b.imageUrl}
-                    alt={b.name}
+                    alt={lang === "ar" ? b.nameAr : b.nameEn}
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -368,18 +368,16 @@ export default function Dashboard() {
                       <MapPin className="h-4 w-4" />
                     </div>
                     <h3 className="font-black text-lg md:text-xl leading-tight text-foreground break-words">
-                      {lang === "ar" ? b.nameAr : b.name}
+                      {lang === "ar" ? b.nameAr : b.nameEn}
                     </h3>
                   </div>
                   <p className="text-sm md:text-base text-muted-foreground leading-relaxed flex-1 mb-4 font-bold">
-                    {lang === "ar" ? b.descriptionAr : b.description}
+                    {lang === "ar" ? b.descAr : b.descEn}
                   </p>
                   <div className="flex flex-wrap gap-2 mt-auto">
-                    {(lang === "ar" ? b?.departmentsAr : b?.departments)?.map((dept) => (
-                      <span key={dept} className="px-3 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-xl bg-accent/10 text-accent border border-accent/20">
-                        {dept}
-                      </span>
-                    ))}
+                    <span className="px-3 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-xl bg-accent/10 text-accent border border-accent/20">
+                      {lang === "ar" ? b.tag : b.tagEn}
+                    </span>
                   </div>
                 </div>
               </m.a>
