@@ -191,7 +191,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 py-12 bg-background relative overflow-hidden font-['Cairo'] transition-colors duration-500">
+    <div className="min-h-[100dvh] flex items-center justify-center p-4 py-12 bg-background relative overflow-hidden font-['Cairo'] transition-colors duration-500">
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
            style={{ backgroundImage: 'radial-gradient(hsl(var(--accent)) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
       

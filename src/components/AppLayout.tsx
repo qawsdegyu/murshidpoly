@@ -17,7 +17,7 @@ const AppLayout = memo(({ children }: AppLayoutProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen selection:bg-accent/30 flex flex-col relative" dir={dir}>
+    <div className="min-h-[100dvh] selection:bg-accent/30 flex flex-col relative" dir={dir}>
       <StaticBackground />
       <TopHeader isMenuOpen={isMenuOpen} onMenuToggle={() => setIsMenuOpen(!isMenuOpen)} />
       <Sidebar isOpen={isMenuOpen} onOpenChange={setIsMenuOpen} />
