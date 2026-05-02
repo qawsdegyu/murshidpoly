@@ -489,7 +489,7 @@ const Auth = () => {
                   <CardFooter className="flex flex-col px-8 md:px-12 pb-12 space-y-6">
                     <Button 
                       type="submit" 
-                      className={`w-full h-16 rounded-2xl text-xl font-black transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center bg-secondary text-white shadow-[0_0_30px_hsl(var(--secondary)/0.3)] hover:shadow-[0_0_40px_hsl(var(--secondary)/0.5)]`}
+                      className={`w-full h-16 rounded-2xl text-xl font-black transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center bg-accent text-white shadow-[0_0_40px_hsl(var(--accent)/0.6)] hover:shadow-[0_0_70px_hsl(var(--accent)/0.9)] border-2 border-accent hover:brightness-110`}
                       disabled={loading}
                     >
                       {loading ? (

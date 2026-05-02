@@ -1,6 +1,6 @@
-import { useMemo, useState, memo, useCallback } from "react";
+import { useMemo, useState, memo, useCallback, useDeferredValue } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, Search, GraduationCap } from "lucide-react";
+import { Users, Search, GraduationCap, X } from "lucide-react";
 import { toast } from "sonner";
 import PageHeader from "@/components/PageHeader";
 import DoctorCard from "@/components/DoctorCard";
@@ -15,23 +15,29 @@ const Faculty = memo(function Faculty() {
   const { t, lang } = usePreferences();
   const [query, setQuery] = useState("");
   const [dept, setDept] = useState<string>("all");
+  const [isGrouped, setIsGrouped] = useState(true);
   const [expandedDoctorId, setExpandedDoctorId] = useState<string | null>(null);
+
+  // Defer the filtered list to prevent typing lag
+  const deferredQuery = useDeferredValue(query);
+  const deferredDept = useDeferredValue(dept);
 
   const departmentsList = useMemo(() => {
     const depts = new Set(facultyList?.map(f => f.department) || []);
-    return Array.from(depts);
+    return Array.from(depts).sort();
   }, []);
 
   const filtered = useMemo(() => {
+    const q = deferredQuery.toLowerCase().trim();
     const list = facultyList.filter(f => {
-      const matchesQ = !query ||
-        f.name.toLowerCase().includes(query.toLowerCase()) ||
-        f.department.toLowerCase().includes(query.toLowerCase());
-      const matchesD = dept === "all" || f.department === dept;
+      const matchesQ = !q ||
+        f.name.toLowerCase().includes(q) ||
+        f.department.toLowerCase().includes(q) ||
+        (f.email && f.email.toLowerCase().includes(q));
+      const matchesD = deferredDept === "all" || f.department === deferredDept;
       return matchesQ && matchesD;
     });
 
-    // Deduplicate by name or email
     const seen = new Set();
     return list.filter(f => {
       const key = f.email || f.name;
@@ -39,7 +45,7 @@ const Faculty = memo(function Faculty() {
       seen.add(key);
       return true;
     });
-  }, [query, dept]);
+  }, [deferredQuery, deferredDept]);
 
   const copy = useCallback((text: string) => {
     if (!text) return;
@@ -59,10 +65,10 @@ const Faculty = memo(function Faculty() {
       transition={{ type: "spring", stiffness: 260, damping: 20 }}
       className="max-w-[1440px] mx-auto px-4 md:px-8 pt-28 pb-10"
     >
-      <PageHeader 
-        title={t.faculty.title} 
-        subtitle={lang === "ar" ? "دليل أعضاء الهيئة التدريسية في كلية الهندسة التكنولوجية" : "FET/Polytechnic Faculty Directory"} 
-        icon={<Users className="h-6 w-6" />} 
+      <PageHeader
+        title={t.faculty.title}
+        subtitle={lang === "ar" ? "دليل أعضاء الهيئة التدريسية في كلية الهندسة التكنولوجية" : "FET/Polytechnic Faculty Directory"}
+        icon={<Users className="h-6 w-6" />}
       />
 
       {/* Search + filters */}
@@ -82,8 +88,8 @@ const Faculty = memo(function Faculty() {
             onClick={() => setDept("all")}
             className={cn(
               "px-5 py-2.5 rounded-2xl text-xs md:text-sm font-black transition-all",
-              dept === "all" 
-                ? "bg-accent text-accent-foreground shadow-lg shadow-accent/20" 
+              dept === "all"
+                ? "bg-accent text-accent-foreground shadow-lg shadow-accent/20"
                 : "bg-surface/50 border border-border hover:bg-surface/80"
             )}
           >
@@ -95,8 +101,8 @@ const Faculty = memo(function Faculty() {
               onClick={() => setDept(d)}
               className={cn(
                 "px-5 py-2.5 rounded-2xl text-xs md:text-sm font-black transition-all",
-                dept === d 
-                  ? "bg-accent text-accent-foreground shadow-lg shadow-accent/20" 
+                dept === d
+                  ? "bg-accent text-accent-foreground shadow-lg shadow-accent/20"
                   : "bg-surface/50 border border-border hover:bg-surface/80"
               )}
             >
@@ -108,17 +114,17 @@ const Faculty = memo(function Faculty() {
       </div>
 
       {/* Grid */}
-      <motion.div 
+      <motion.div
         layout
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
       >
         <AnimatePresence mode="popLayout">
           {filtered?.map((f, i) => (
-            <DoctorCard 
-              key={f.id} 
-              faculty={f} 
-              index={i} 
-              lang={lang} 
+            <DoctorCard
+              key={f.id}
+              faculty={f}
+              index={i}
+              lang={lang}
               isExpanded={expandedDoctorId === f.id}
               onToggle={toggleExpand}
               onCopy={copy}

@@ -1,7 +1,7 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
+import {
   BookOpen, Search, Code2, Shield,
   Banknote, Languages, LayoutGrid,
   Wrench, Flag, Lightbulb, Type, GraduationCap, FileText,
@@ -47,11 +47,11 @@ export default function Vault() {
       const hasFiles = resourcesByCourse[c.id] && resourcesByCourse[c.id].length > 0;
       if (!hasFiles) return false;
 
-      const matchesSearch = !q || 
-        c.name.toLowerCase().includes(q.toLowerCase()) || 
-        c.nameAr.includes(q) || 
+      const matchesSearch = !q ||
+        c.name.toLowerCase().includes(q.toLowerCase()) ||
+        c.nameAr.includes(q) ||
         c.code.toLowerCase().includes(q.toLowerCase());
-      
+
       const matchesCategory = activeTab === "all" || c.category === activeTab;
 
       return matchesSearch && matchesCategory;
@@ -80,23 +80,23 @@ export default function Vault() {
   return (
     <div className="relative min-h-screen overflow-y-auto scrollbar-hide pointer-events-auto pb-20 gpu-accelerated" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}>
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 pt-32 md:pt-44 pointer-events-auto transition-all duration-700">
-        <PageHeader 
-          title={t.vault.title} 
-          subtitle={t.vault.subtitle} 
-          icon={<BookOpen className="h-10 w-10 md:h-14 md:w-14 text-accent" />} 
+        <PageHeader
+          title={t.vault.title}
+          subtitle={t.vault.subtitle}
+          icon={<BookOpen className="h-10 w-10 md:h-14 md:w-14 text-accent" />}
           className="mb-10"
         />
-        
+
         <div className="space-y-12">
           {/* ── Contribute Card ── */}
           <div
             className="mb-6 p-4 md:p-8 rounded-2xl md:rounded-[2.5rem] bg-surface/80 border border-border relative overflow-hidden group pointer-events-auto shadow-sm"
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[80px] -mr-32 -mt-32 rounded-full hidden md:block" />
-            
+
             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="flex items-center gap-6">
-                <div 
+                <div
                   className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent shrink-0 hidden md:flex"
                 >
                   <Upload className="w-6 h-6 md:w-8 md:h-8" />
@@ -106,8 +106,8 @@ export default function Vault() {
                     {lang === "ar" ? "شاركنا ملفاتك أو تلاخيصك" : "Share your files or summaries"}
                   </h3>
                   <p className="text-sm md:text-base text-content/60 font-medium max-w-xl">
-                    {lang === "ar" 
-                      ? "ساعد زملائك من خلال مشاركة مصادرك الدراسية في خزانة مرشد." 
+                    {lang === "ar"
+                      ? "ساعد زملائك من خلال مشاركة مصادرك الدراسية في خزانة مرشد."
                       : "Help your colleagues by sharing your study resources in Murshid's Vault."}
                   </p>
                 </div>
@@ -132,11 +132,11 @@ export default function Vault() {
             <div className="absolute -inset-1 bg-gradient-to-r from-accent/0 via-accent/0 to-accent/0 rounded-2xl blur opacity-0 group-focus-within:opacity-20 group-focus-within:from-accent group-focus-within:to-blue-500 transition-all duration-500" />
             <div className="relative">
               <Search className="absolute top-1/2 -translate-y-1/2 ltr:left-6 rtl:right-6 h-6 w-6 text-muted-foreground group-focus-within:text-accent transition-colors" />
-              <Input 
-                value={q} 
-                onChange={e => setQ(e.target.value)} 
-                placeholder={t.vault.search} 
-                className="ltr:pl-16 rtl:pr-16 h-14 md:h-20 glass text-lg md:text-xl rounded-[1.5rem] md:rounded-[2rem] border-white/10 shadow-elegant transition-all focus:ring-0 focus:border-accent/50" 
+              <Input
+                value={q}
+                onChange={e => setQ(e.target.value)}
+                placeholder={t.vault.search}
+                className="ltr:pl-16 rtl:pr-16 h-14 md:h-20 glass text-lg md:text-xl rounded-[1.5rem] md:rounded-[2rem] border-white/10 shadow-elegant transition-all focus:ring-0 focus:border-accent/50"
               />
             </div>
           </div>
@@ -152,11 +152,10 @@ export default function Vault() {
                   onClick={() => setActiveTab(cat.id)}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`flex items-center gap-2.5 px-5 py-3 md:px-6 md:py-4 rounded-xl md:rounded-2xl whitespace-nowrap transition-all border shrink-0 ${
-                    isActive 
-                      ? "bg-primary text-primary-foreground border-transparent shadow-[0_0_25px_hsl(var(--primary)/0.3)] scale-105 z-10" 
-                      : "glass hover:bg-foreground/5 border-border text-muted-foreground"
-                  }`}
+                  className={`flex items-center gap-2.5 px-5 py-3 md:px-6 md:py-4 rounded-xl md:rounded-2xl whitespace-nowrap transition-all border shrink-0 ${isActive
+                    ? "bg-primary text-primary-foreground border-transparent shadow-[0_0_25px_hsl(var(--primary)/0.3)] scale-105 z-10"
+                    : "glass hover:bg-foreground/5 border-border text-muted-foreground"
+                    }`}
                 >
                   <Icon className={`h-4 w-4 md:h-5 md:w-5 ${isActive ? "text-primary-foreground" : "text-accent"}`} />
                   <span className="font-black text-xs md:text-sm tracking-wide">{lang === "ar" ? cat.nameAr : cat.nameEn}</span>
@@ -167,39 +166,39 @@ export default function Vault() {
 
           {/* Course Grid - Responsive Columns */}
           <div className="space-y-16 min-h-[600px] pointer-events-auto">
-              {groupedData.map((group) => (
-                <div key={group.categoryId} className="space-y-8">
-                  {activeTab === "all" && (
-                    <div className="flex items-center gap-4">
-                      <div className="h-10 w-2 rounded-full bg-primary shadow-elegant" />
-                      <h2 className="text-2xl md:text-3xl font-black text-foreground font-['Cairo']">
-                        {group.categoryName}
-                      </h2>
-                    </div>
-                  )}
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-10">
-                    {group.courses.map((c, i) => {
-                      const categoryObj = categories.find(cat => cat.id === (c.category || "math"));
-                      const Icon = categoryObj?.icon || BookOpen;
-                      
-                      return (
-                        <CourseCard
-                          key={c.id}
-                          course={c}
-                          index={i}
-                          icon={<Icon className="h-5 w-5" />}
-                          onClick={() => navigate(`/materials/${c.id}`)}
-                        />
-                      );
-                    })}
+            {groupedData.map((group) => (
+              <div key={group.categoryId} className="space-y-8">
+                {activeTab === "all" && (
+                  <div className="flex items-center gap-4">
+                    <div className="h-10 w-2 rounded-full bg-primary shadow-elegant" />
+                    <h2 className="text-2xl md:text-3xl font-black text-foreground font-['Cairo']">
+                      {group.categoryName}
+                    </h2>
                   </div>
+                )}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-10">
+                  {group.courses.map((c, i) => {
+                    const categoryObj = categories.find(cat => cat.id === (c.category || "math"));
+                    const Icon = categoryObj?.icon || BookOpen;
+
+                    return (
+                      <CourseCard
+                        key={c.id}
+                        course={c}
+                        index={i}
+                        icon={<Icon className="h-5 w-5" />}
+                        onClick={() => navigate(`/materials/${c.id}`)}
+                      />
+                    );
+                  })}
                 </div>
-              ))}
+              </div>
+            ))}
           </div>
 
           {groupedData.length === 0 && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="text-center py-32 pointer-events-auto"
