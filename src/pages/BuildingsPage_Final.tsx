@@ -1,4 +1,5 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, forwardRef } from "react";
+import { createPortal } from "react-dom";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -656,6 +657,7 @@ export default function BuildingsPage() {
   }, [searchQuery]);
 
   return (
+    <>
     <motion.div
       dir={dir}
       initial={{ opacity: 0, x: 20 }}
@@ -715,6 +717,9 @@ export default function BuildingsPage() {
         )}
       </div>
 
+      </div>
+    </motion.div>
+
       {/* Building Detail Modal */}
       <AnimatePresence>
         {selectedBuilding && (
@@ -727,22 +732,23 @@ export default function BuildingsPage() {
           />
         )}
       </AnimatePresence>
-      </div>
-    </motion.div>
+    </>
   );
 }
 
-function BuildingCard({ b, i, ar, onClick }: { b: Building, i: number, ar: boolean, onClick: () => void }) {
-  return (
-    <motion.article
-      layout
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ delay: i * 0.05 }}
-      onClick={onClick}
-      className="group relative flex flex-col rounded-[2.5rem] overflow-hidden border border-neutral-100 dark:border-white/5 bg-white dark:bg-white/[0.03] shadow-sm hover:shadow-xl transition-all cursor-pointer h-full"
-    >
+const BuildingCard = forwardRef<HTMLDivElement, { b: Building, i: number, ar: boolean, onClick: () => void }>(
+  ({ b, i, ar, onClick }, ref) => {
+    return (
+      <motion.article
+        ref={ref}
+        layout
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ delay: i * 0.05 }}
+        onClick={onClick}
+        className="group relative flex flex-col rounded-[2.5rem] overflow-hidden border border-neutral-100 dark:border-white/5 bg-white dark:bg-white/[0.03] shadow-sm hover:shadow-xl transition-all cursor-pointer h-full"
+      >
       <div className="relative h-44 overflow-hidden">
         <img 
           src={b.imageUrl} 
@@ -778,22 +784,22 @@ function BuildingCard({ b, i, ar, onClick }: { b: Building, i: number, ar: boole
       </div>
     </motion.article>
   );
-}
+});
 
 
-function BuildingDetailModal({ 
-  building, 
-  isOpen, 
-  onClose, 
-  ar,
-  searchQuery 
-}: { 
+const BuildingDetailModal = forwardRef<HTMLDivElement, { 
   building: Building, 
   isOpen: boolean, 
   onClose: () => void, 
   ar: boolean,
   searchQuery: string 
-}) {
+}>(({ 
+  building, 
+  isOpen, 
+  onClose, 
+  ar,
+  searchQuery 
+}, ref) => {
   const [activeFloor, setActiveFloor] = useState("0");
   const [openWing, setOpenWing] = useState<string | undefined>("wing-0");
 
@@ -806,6 +812,8 @@ function BuildingDetailModal({
       document.body.style.overflow = "unset";
     };
   }, [isOpen]);
+
+  if (typeof document === "undefined") return null;
 
   // Automatically switch to the floor and wing where the searched item is located
   useEffect(() => {
@@ -840,8 +848,8 @@ function BuildingDetailModal({
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-4">
+  return createPortal(
+    <div ref={ref} className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}>
       <motion.div 
         initial={{ opacity: 0 }} 
         animate={{ opacity: 1 }} 
@@ -851,31 +859,31 @@ function BuildingDetailModal({
       />
       
       <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        initial={{ opacity: 0, scale: 0.95, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        className="relative w-full max-w-4xl h-full sm:h-[85vh] bg-white dark:bg-neutral-950 sm:rounded-[3rem] shadow-2xl overflow-hidden flex flex-col"
+        exit={{ opacity: 0, scale: 0.95, y: 10 }}
+        className="relative w-full max-w-xl max-h-[85dvh] bg-white dark:bg-neutral-950 rounded-3xl shadow-2xl overflow-hidden flex flex-col"
       >
         {/* Sticky Modal Header/Image */}
-        <div className="relative h-48 sm:h-60 shrink-0 sticky top-0 z-20">
+        <div className="relative h-32 sm:h-48 shrink-0 sticky top-0 z-20">
           <img src={building.imageUrl} className="w-full h-full object-cover" alt={building.nameEn} />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
           
           <button 
             onClick={onClose} 
-            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-xl text-white flex items-center justify-center transition-all border border-white/20 z-10 navy-pop"
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-xl text-white flex items-center justify-center transition-all border border-white/20 z-10 navy-pop"
           >
             <X className="w-5 h-5" />
           </button>
 
-          <div className="absolute bottom-6 left-8 right-8">
+          <div className="absolute bottom-4 left-5 right-5 sm:bottom-6 sm:left-8 sm:right-8">
             <div className="flex items-center gap-3 mb-1">
               <Badge className={cn("bg-primary text-white border-none px-2.5 py-0.5 text-[10px] font-bold navy-pop")}>
                 {ar ? building.tag : building.tagEn}
               </Badge>
             </div>
-            <h2 className="text-white text-2xl sm:text-3xl font-black navy-pop">{ar ? building.nameAr : building.nameEn}</h2>
-            <p className="text-white/70 text-[11px] sm:text-xs font-medium mt-3 max-w-2xl line-clamp-2 navy-pop">
+            <h2 className="text-white text-xl sm:text-3xl font-black navy-pop">{ar ? building.nameAr : building.nameEn}</h2>
+            <p className="text-white/70 text-[10px] sm:text-xs font-medium mt-1 sm:mt-3 max-w-2xl line-clamp-2 navy-pop">
               {ar ? building.descAr : building.descEn}
             </p>
           </div>
@@ -959,32 +967,21 @@ function BuildingDetailModal({
             </ScrollArea>
 
             {/* Modal Footer */}
-            <div className="p-5 shrink-0 bg-white dark:bg-neutral-950 border-t border-neutral-100 dark:border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-3 text-neutral-500 dark:text-neutral-400 order-2 sm:order-1">
-                <div className="flex items-center gap-1.5">
-                  <MapIcon className="w-3.5 h-3.5" />
-                  <span className="text-[9px] font-black uppercase tracking-tighter">Main Campus</span>
-                </div>
-                <div className="h-3 w-px bg-neutral-200 dark:bg-white/10" />
-                <div className="flex items-center gap-1.5">
-                  <Info className="w-3.5 h-3.5" />
-                  <span className="text-[9px] font-black uppercase tracking-tighter">Building {building.id}</span>
-                </div>
-              </div>
-
+            <div className="p-4 sm:p-5 shrink-0 bg-white dark:bg-neutral-950 border-t border-neutral-100 dark:border-white/5 flex flex-col items-center justify-center">
               <a 
                 href={building.mapUrl} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-xl bg-primary text-white font-black text-xs shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all order-1 sm:order-2"
+                className="flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-xl bg-primary text-white font-black text-sm shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all"
               >
-                <Navigation className="w-4 h-4" /> 
+                <Navigation className="w-5 h-5" /> 
                 {ar ? "فتح في الخريطة" : "Open in Maps"}
               </a>
             </div>
           </Tabs>
         </div>
       </motion.div>
-    </div>
+    </div>,
+    document.body
   );
-}
+});

@@ -169,8 +169,10 @@ const Auth = () => {
         }
 
         if (data.user) {
-          setShowOtpInput(true);
-          toast.success("تم إرسال رمز التحقق إلى بريدك الإلكتروني.");
+          setIsLogin(true);
+          setPassword("");
+          setConfirmPassword("");
+          toast.success("تم إرسال رابط إلى الجيميل، قم بالدخول إليه وتأكيد الجيميل.", { duration: 6000 });
         }
       }
     } catch (error: any) {

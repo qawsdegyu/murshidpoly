@@ -12,12 +12,11 @@ interface PageTransitionProps {
 const PageTransition = ({ children }: PageTransitionProps) => {
   return (
     <m.div 
-      initial={{ opacity: 0, y: 6 }}
+      initial={{ opacity: 0, y: 4 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -6 }}
       transition={{ 
-        duration: 0.18, 
-        ease: [0.33, 1, 0.68, 1] 
+        duration: 0.15, 
+        ease: "easeOut"
       }}
       className="w-full h-full will-change-[transform,opacity]"
     >

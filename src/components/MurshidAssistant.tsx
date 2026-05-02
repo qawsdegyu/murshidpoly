@@ -1,102 +1,36 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, X, Minus, Send, Bot } from "lucide-react";
+import { Sparkles, X, Minus, Bot, Lock } from "lucide-react";
 import { usePreferences } from "@/contexts/PreferencesContext";
-
-interface Message {
-  id: string;
-  role: "user" | "ai";
-  content: string;
-}
+import { useAuth } from "@/contexts/AuthContext";
 
 const STRINGS = {
   ar: {
     title: "مُساعد مُرشد الذكي",
-    placeholder: "اكتب سؤالك هنا...",
-    welcome: "أهلاً بك يا مهندس! أنا مُرشد، كيف يمكنني مساعدتك في رحلتك في البوليتكنك اليوم؟",
     open: "افتح مساعد مُرشد",
     close: "إغلاق",
     minimize: "تصغير",
-    send: "إرسال",
-    aiName: "مُرشد AI",
-    typing: "يكتب",
   },
   en: {
     title: "Murshid AI Assistant",
-    placeholder: "Type your question...",
-    welcome: "Welcome engineer! I'm Murshid — how can I help you on your Polytechnic journey today?",
     open: "Open Murshid Assistant",
     close: "Close",
     minimize: "Minimize",
-    send: "Send",
-    aiName: "Murshid AI",
-    typing: "typing",
   },
 };
 
-const MOCK_REPLIES_AR = [
-  "سؤال ممتاز! يمكنك مراجعة خزنة المساقات للحصول على ملخصات وأسئلة سابقة لهذا المساق.",
-  "بناءً على خطتك الدراسية في البوليتكنك، أنصحك بالتسجيل لـ 15-18 ساعة هذا الفصل.",
-  "تستطيع حساب معدلك التراكمي بدقة من خلال صفحة 'حاسبة المعدل' في القائمة الجانبية.",
-  "تحقق من قسم 'الترفيه والخدمات' للعثور على أقرب مطعم أو كافيه قرب الكلية في ماركا.",
-];
-const MOCK_REPLIES_EN = [
-  "Great question! Check the Course Vault for summaries and past papers.",
-  "Based on your Polytechnic plan, I'd suggest registering 15–18 credit hours this semester.",
-  "You can compute your CGPA precisely on the GPA Calculator page in the sidebar.",
-  "Check Student Life to find the nearest restaurant or café around the Polytechnic in Marka.",
-];
-
 export default function MurshidAssistant() {
   const { lang, dir } = usePreferences();
+  const { user } = useAuth();
   const s = STRINGS[lang];
   const [open, setOpen] = useState(false);
   const [minimized, setMinimized] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState("");
-  const [thinking, setThinking] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
   
   // Persistence logic for FAB position
   const [position, setPosition] = useState(() => {
     const saved = localStorage.getItem("murshid_ai_pos");
     return saved ? JSON.parse(saved) : { x: 0, y: 0 };
   });
-
-
-
-  // Seed welcome message on first open
-  useEffect(() => {
-    if (open && messages.length === 0) {
-      setMessages([{ id: crypto.randomUUID(), role: "ai", content: s.welcome }]);
-    }
-  }, [open, messages.length, s.welcome]);
-
-  // Auto-scroll
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, [messages, thinking, minimized]);
-
-  const handleSend = () => {
-    const text = input.trim();
-    if (!text || thinking) return;
-    const userMsg: Message = { id: crypto.randomUUID(), role: "user", content: text };
-    setMessages(prev => [...prev, userMsg]);
-    setInput("");
-    setThinking(true);
-    const pool = lang === "ar" ? MOCK_REPLIES_AR : MOCK_REPLIES_EN;
-    const reply = pool[Math.floor(Math.random() * pool.length)];
-    setTimeout(() => {
-      setMessages(prev => [...prev, { id: crypto.randomUUID(), role: "ai", content: reply }]);
-      setThinking(false);
-    }, 1100 + Math.random() * 800);
-  };
-
-  const onKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") handleSend();
-  };
 
   const handleDragEnd = (_: any, info: any) => {
     const screenWidth = window.innerWidth;
@@ -229,87 +163,41 @@ export default function MurshidAssistant() {
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="flex flex-col"
+                  className="flex flex-col h-[350px] bg-background/40"
                 >
-                  {/* Messages */}
-                  <div
-                    ref={scrollRef}
-                    className="h-[300px] overflow-y-auto px-3 py-3 space-y-3 bg-background/40"
-                  >
-                    {messages.map((m) => (
-                      <motion.div
-                        key={m.id}
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className={`flex gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}
-                      >
-                        {m.role === "ai" && (
-                          <div className="h-7 w-7 shrink-0 rounded-full bg-primary flex items-center justify-center ring-1 ring-accent/50">
-                            <Bot className="h-3.5 w-3.5 text-primary-foreground" />
-                          </div>
-                        )}
-                        <div
-                          className={
-                            m.role === "ai"
-                              ? "max-w-[78%] rounded-2xl rounded-tr-sm px-3 py-2 text-xs leading-relaxed bg-primary/90 text-primary-foreground border border-accent/30 shadow-sm"
-                              : "max-w-[78%] rounded-2xl rounded-tl-sm px-3 py-2 text-xs leading-relaxed bg-transparent text-foreground/90 border border-border"
-                          }
-                        >
-                          {m.role === "ai" && (
-                            <div className="text-[10px] font-semibold text-primary-foreground/80 mb-1">
-                              {s.aiName}
-                            </div>
-                          )}
-                          {m.content}
-                        </div>
-                      </motion.div>
-                    ))}
-
-                    {thinking && (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="flex gap-2 justify-start"
-                      >
-                        <div className="h-7 w-7 shrink-0 rounded-full bg-primary flex items-center justify-center ring-1 ring-accent/50">
-                          <Bot className="h-3.5 w-3.5 text-primary-foreground" />
-                        </div>
-                        <div className="rounded-2xl rounded-tr-sm px-3 py-2 bg-primary/90 border border-accent/30">
-                          <div className="flex items-center gap-1">
-                            {[0, 1, 2].map(i => (
-                              <motion.span
-                                key={i}
-                                className="h-1.5 w-1.5 rounded-full bg-accent"
-                                animate={{ opacity: [0.3, 1, 0.3], y: [0, -2, 0] }}
-                                transition={{ duration: 1, repeat: Infinity, delay: i * 0.15 }}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </div>
-
-                  {/* Input */}
-                  <div className="flex items-center gap-2 p-3 border-t border-accent/20 bg-card/60">
-                    <input
-                      value={input}
-                      onChange={e => setInput(e.target.value)}
-                      onKeyDown={onKey}
-                      placeholder={s.placeholder}
-                      dir={dir}
-                      className="flex-1 h-9 rounded-full bg-background/60 border border-border px-3 text-xs text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                    />
-                    <button
-                      onClick={handleSend}
-                      disabled={!input.trim() || thinking}
-                      aria-label={s.send}
-                      className="h-9 w-9 shrink-0 rounded-full bg-accent text-accent-foreground flex items-center justify-center hover:shadow-[0_0_16px_hsl(var(--accent)/0.6)] transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <Send className={`h-4 w-4 ${dir === "rtl" ? "-scale-x-100" : ""}`} />
-                    </button>
-                  </div>
+                  {user ? (
+                     <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+                       <motion.div 
+                         animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
+                         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                       >
+                         <Bot className="h-20 w-20 text-accent mb-6 opacity-80 drop-shadow-[0_0_15px_hsl(var(--accent)/0.3)]" />
+                       </motion.div>
+                       <h4 className="text-2xl font-black text-foreground mb-3">{lang === 'ar' ? "قريباً جداً!" : "Coming Soon!"}</h4>
+                       <p className="text-sm text-muted-foreground font-bold leading-relaxed">
+                         {lang === 'ar' 
+                           ? "نعمل حالياً على تدريب مُرشد ليكون المساعد الذكي الأفضل لطلاب الهندسة. ترقبوا الإطلاق قريباً!" 
+                           : "We are currently training Murshid to be the best AI assistant for engineering students. Stay tuned!"}
+                       </p>
+                     </div>
+                  ) : (
+                     <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+                       <Lock className="h-16 w-16 text-muted-foreground mb-5 opacity-40" />
+                       <h4 className="text-xl font-black text-foreground mb-3">{lang === 'ar' ? "وصول مقيد" : "Access Restricted"}</h4>
+                       <p className="text-sm text-muted-foreground font-bold mb-8 leading-relaxed">
+                         {lang === 'ar' 
+                           ? "يرجى تسجيل الدخول للوصول إلى المساعد الذكي ورؤية التحديثات القادمة." 
+                           : "Please log in to access the AI assistant and see upcoming updates."}
+                       </p>
+                       <a 
+                         href="/auth" 
+                         onClick={() => setOpen(false)}
+                         className="bg-primary text-primary-foreground px-8 py-3 rounded-2xl font-black shadow-[0_0_20px_hsl(var(--primary)/0.3)] hover:scale-105 active:scale-95 transition-all text-sm w-full"
+                       >
+                         {lang === 'ar' ? "تسجيل الدخول" : "Sign In"}
+                       </a>
+                     </div>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>

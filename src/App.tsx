@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation, Link } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,7 +10,7 @@ import AppLayout from "@/components/AppLayout";
 import ScrollRestoration from "@/components/ScrollRestoration";
 import GlobalErrorBoundary from "@/components/GlobalErrorBoundary";
 import BrandedLoader from "@/components/BrandedLoader";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import PageTransition from "@/components/PageTransition";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
@@ -49,9 +49,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
       <h2 className="text-2xl font-black text-foreground">{lang === 'ar' ? 'وصول مقيد' : 'Access Restricted'}</h2>
       <p className="text-muted-foreground font-bold">{lang === 'ar' ? 'يرجى تسجيل الدخول للوصول إلى هذه الميزة' : 'Please sign in to access this feature.'}</p>
-      <a href="/auth" className="bg-secondary text-white px-8 py-3 rounded-2xl hover:scale-105 transition-all font-black shadow-lg shadow-secondary/20">
+      <Link to="/auth" className="bg-secondary text-white px-8 py-3 rounded-2xl hover:scale-105 transition-all font-black shadow-lg shadow-secondary/20">
         {lang === 'ar' ? 'تسجيل الدخول' : 'Sign In'}
-      </a>
+      </Link>
     </motion.div>;
   }
 
@@ -68,7 +68,6 @@ const AppRoutes = () => {
   return (
     <AppLayout>
       <Suspense fallback={null}>
-        <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<PageTransition><Dashboard /></PageTransition>} />
             <Route path="/auth" element={<PageTransition><Auth /></PageTransition>} />
@@ -88,7 +87,6 @@ const AppRoutes = () => {
             <Route path="/announcements/founders" element={<PageTransition><AnnouncementDetail /></PageTransition>} />
             <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
           </Routes>
-        </AnimatePresence>
       </Suspense>
     </AppLayout>
 
