@@ -12,7 +12,7 @@ const ROLES = [
 ];
 
 type AdminAccount = { user_id: string; email: string; role: string; permissions: string[]; is_active: boolean; created_at: string };
-const PERMISSIONS = [{ key: 'resources', label: 'الملفات والمصادر' }, { key: 'announcements', label: 'الإعلانات' }, { key: 'marketplace', label: 'التجار والسوق' }, { key: 'professors', label: 'الدكاترة' }, { key: 'buildings', label: 'المباني' }, { key: 'courses', label: 'المواد الدراسية' }, { key: 'alert_access', label: 'اشتراكات التنبيهات' }, { key: 'chatbot_knowledge', label: 'مصادر المساعد الذكي' }, { key: 'site_settings', label: 'محتوى وروابط الموقع' }, { key: 'contact_messages', label: 'رسائل التواصل' }, { key: 'restaurants', label: 'المطاعم والاستراحات' }];
+const PERMISSIONS = [{ key: 'resources', label: 'الملفات والمصادر' }, { key: 'announcements', label: 'الإعلانات' }, { key: 'marketplace', label: 'التجار والسوق' }, { key: 'professors', label: 'الدكاترة' }, { key: 'buildings', label: 'المباني' }, { key: 'courses', label: 'المواد الدراسية' }, { key: 'alert_access', label: 'اشتراكات التنبيهات' }, { key: 'chatbot_knowledge', label: 'مصادر المساعد الذكي' }, { key: 'site_settings', label: 'محتوى وروابط الموقع' }, { key: 'contact_messages', label: 'رسائل التواصل' }, { key: 'restaurants', label: 'المطاعم والاستراحات' }, { key: 'rideshare', label: 'مرشد رايد' }, { key: 'roommate', label: 'مرشد سكن' }];
 
 export default function AdminAccountsManager({ currentEmail }: { currentEmail?: string | null }) {
   const isOwner = currentEmail?.toLowerCase() === OWNER_EMAIL;
