@@ -1,0 +1,36 @@
+{
+  "courses": [
+    { "id": "ce_struct1", "code": "CE301", "name": "Structural Analysis (1)", "nameAr": "تحليل إنشائي (1)", "hours": 3, "department": "Civil Engineering", "category": "civil" },
+    { "id": "ce_soil", "code": "CE302", "name": "Soil Mechanics", "nameAr": "ميكانيكا التربة", "hours": 3, "department": "Civil Engineering", "category": "civil" },
+    { "id": "ce_soil_lab", "code": "CE303", "name": "Soil Mechanics Lab", "nameAr": "مختبر ميكانيكا التربة", "hours": 1, "department": "Civil Engineering", "category": "civil" },
+    { "id": "che_balance", "code": "CHE201", "name": "Material & Energy Balances", "nameAr": "موازنات المادة والطاقة", "hours": 3, "department": "Chemical Engineering", "category": "chemical" },
+    { "id": "che_react1", "code": "CHE301", "name": "Chemical Reaction Engineering (1)", "nameAr": "هندسة التفاعلات الكيميائية (1)", "hours": 3, "department": "Chemical Engineering", "category": "chemical" },
+    { "id": "che_unit_lab", "code": "CHE302", "name": "Unit Operations Lab", "nameAr": "مختبر العمليات الموحدة", "hours": 1, "department": "Chemical Engineering", "category": "chemical" },
+    { "id": "ren_solar", "code": "REN401", "name": "Solar Energy Systems", "nameAr": "أنظمة الطاقة الشمسية", "hours": 3, "department": "Renewable Energy", "category": "mechanical" },
+    { "id": "ren_thermo2", "code": "REN202", "name": "Thermodynamics (2)", "nameAr": "ديناميكا حرارية (2)", "hours": 3, "department": "Renewable Energy", "category": "mechanical" },
+    { "id": "ren_pv_lab", "code": "REN402", "name": "Photovoltaic Energy Lab", "nameAr": "مختبر الطاقة الكهروضوئية", "hours": 1, "department": "Renewable Energy", "category": "mechanical" },
+    { "id": "ee_circuits1", "code": "EE201", "name": "Electric Circuits (1)", "nameAr": "الدوائر الكهربائية (1)", "hours": 3, "department": "Electrical Engineering", "category": "electrical" },
+    { "id": "ee_signals", "code": "EE301", "name": "Signals & Systems", "nameAr": "إشارات وأنظمة", "hours": 3, "department": "Electrical Engineering", "category": "electrical" },
+    { "id": "ee_elec_lab1", "code": "EE302", "name": "Electronics Lab (1)", "nameAr": "مختبر الإلكترونيات (1)", "hours": 1, "department": "Electrical Engineering", "category": "electrical" },
+    { "id": "gen_econ", "code": "GEN101", "name": "Engineering Economy", "nameAr": "اقتصاد هندسي", "hours": 3, "department": "Common", "category": "common" },
+    { "id": "gen_eng", "code": "GEN102", "name": "Applied English", "nameAr": "لغة إنجليزية تطبيقية", "hours": 3, "department": "Common", "category": "common" },
+    { "id": "gen_nat", "code": "GEN103", "name": "National Education", "nameAr": "التربية الوطنية", "hours": 3, "department": "Common", "category": "common" }
+  ],
+  "sections": [
+    { "id": "s1", "courseId": "ce_struct1", "instructorId": "د. أحمد العبادي", "days": [0, 2, 4], "startTime": "08:30", "endTime": "10:00", "room": "301هن" },
+    { "id": "s2", "courseId": "ce_soil", "instructorId": "د. سارة الحسين", "days": [1, 3], "startTime": "11:30", "endTime": "13:00", "room": "204هن" },
+    { "id": "s3", "courseId": "ce_soil_lab", "instructorId": "م. رامي خالد", "days": [1], "startTime": "13:00", "endTime": "16:00", "room": "مختبر المدني (1)" },
+    { "id": "s4", "courseId": "che_balance", "instructorId": "د. ليلى القاسم", "days": [0, 2, 4], "startTime": "10:00", "endTime": "11:30", "room": "102كيم" },
+    { "id": "s5", "courseId": "che_react1", "instructorId": "د. محمد الزعبي", "days": [1, 3], "startTime": "13:00", "endTime": "14:30", "room": "105كيم" },
+    { "id": "s6", "courseId": "che_unit_lab", "instructorId": "م. هبة مراد", "days": [4], "startTime": "08:30", "endTime": "11:30", "room": "مختبر الكيماوي الرئيسي" },
+    { "id": "s7", "courseId": "ren_solar", "instructorId": "د. صالح العودات", "days": [1, 3], "startTime": "08:30", "endTime": "10:00", "room": "209هن" },
+    { "id": "s8", "courseId": "ren_thermo2", "instructorId": "د. مرال الشريدة", "days": [0, 2, 4], "startTime": "11:30", "endTime": "13:00", "room": "205هن" },
+    { "id": "s9", "courseId": "ren_pv_lab", "instructorId": "م. علي الخوالدة", "days": [2], "startTime": "13:00", "endTime": "16:00", "room": "مختبر الطاقة المتجددة" },
+    { "id": "s10", "courseId": "ee_circuits1", "instructorId": "د. عمر الزعبي", "days": [1, 3], "startTime": "10:00", "endTime": "11:30", "room": "306هن" },
+    { "id": "s11", "courseId": "ee_signals", "instructorId": "د. يوسف بني حمد", "days": [0, 2, 4], "startTime": "08:30", "endTime": "10:00", "room": "308هن" },
+    { "id": "s12", "courseId": "ee_elec_lab1", "instructorId": "م. حابس الخوالدة", "days": [3], "startTime": "13:00", "endTime": "16:00", "room": "مختبر الإلكترونيات (2)" },
+    { "id": "s13", "courseId": "gen_econ", "instructorId": "د. سامر المصري", "days": [0, 2], "startTime": "14:30", "endTime": "16:00", "room": "مدرج الكلية الرئيسي" },
+    { "id": "s14", "courseId": "gen_eng", "instructorId": "د. ريما جابر", "days": [1, 3], "startTime": "11:30", "endTime": "13:00", "room": "101 لغات" },
+    { "id": "s15", "courseId": "gen_nat", "instructorId": "د. خالد بني مصطفى", "days": [0, 2], "startTime": "16:00", "endTime": "17:30", "room": "قاعة الشهيد" }
+  ]
+}

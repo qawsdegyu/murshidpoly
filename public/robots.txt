@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hadeed.shop/sitemap.xml
+
+# منع أرشفة الـ API
+Disallow: /api/

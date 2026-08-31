@@ -1,0 +1,1050 @@
+﻿            sections: opt,
+            totalHours: opt.reduce((sum, s) => {
+              const c = findCourseByIdOrCode(s.courseId);
+              return sum + (c?.hours || 0);
+            }, 0),
+            aiTitle: isAr ? `Ø®ÙŠØ§Ø± ${idx + 1}` : `Option ${idx + 1}`,
+            aiDescription: isAr ? "ØªÙ… ØªÙˆÙ„ÙŠØ¯ Ù‡Ø°Ø§ Ø§Ù„Ø¬Ø¯ÙˆÙ„ Ù…Ø­Ù„ÙŠØ§Ù‹ Ø¨Ù†Ø¬Ø§Ø­." : "Successfully generated this schedule locally.",
+            tag: "balanced",
+            tagColor: "from-indigo-500 to-blue-500",
+            tagEmoji: "âš–ï¸",
+            studyDays: new Set(opt.flatMap(s => s.days)).size,
+            avgStartHour: 9.5,
+            personality: isAr ? `Ø§Ù„Ø®ÙŠØ§Ø± Ø§Ù„Ù…ØªØ§Ø­ ${idx + 1}` : `Available Option ${idx + 1}`,
+          })));
+          setCurrentOptionIndex(0);
+          toast.success(isAr ? "ØªÙ… ØªÙˆÙ„ÙŠØ¯ Ø§Ù„Ø¬Ø¯Ø§ÙˆÙ„" : "Schedules generated");
+        }
+      }
+    } catch (err) {
+      console.error("Generation error:", err);
+      toast.error(isAr ? "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø§Ù„ØªÙˆÙ„ÙŠØ¯" : "Generation error");
+    } finally {
+      setIsGenerating(false);
+      setGenerationStep('idle');
+    }
+  };
+
+  const handleScreenshot = async () => {
+    if (!scheduleRef.current) return;
+
+    try {
+      toast.info(isAr ? "Ø¬Ø§Ø±ÙŠ ØªØ¬Ù‡ÙŠØ² Ø§Ù„ØµÙˆØ±Ø©..." : "Preparing image...");
+
+      const canvas = await html2canvas(scheduleRef.current, {
+        backgroundColor: "#050505",
+        scale: 2, // Higher quality
+        logging: false,
+        useCORS: true,
+        onclone: (clonedDoc: Document) => {
+          // No modifications needed on clone
+        }
+      });
+
+      const dataUrl = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.download = `Murshid-Schedule-${new Date().getTime()}.png`;
+      link.href = dataUrl;
+      link.click();
+
+      toast.success(isAr ? "ØªÙ… Ø­ÙØ¸ Ù„Ù‚Ø·Ø© Ø§Ù„Ø´Ø§Ø´Ø© Ø¨Ù†Ø¬Ø§Ø­!" : "Screenshot saved successfully!");
+    } catch (error) {
+      console.error("Screenshot error:", error);
+      toast.error(isAr ? "ÙØ´Ù„ Ø§Ù„ØªÙ‚Ø§Ø· Ø§Ù„ØµÙˆØ±Ø©" : "Failed to take screenshot");
+    }
+  };
+
+  const handleDownload = () => {
+    if (scheduleViews.tableItems.length === 0) {
+      toast.error(isAr ? "Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø¬Ø¯ÙˆÙ„ Ù„ØªØµØ¯ÙŠØ±Ù‡" : "No schedule to export");
+      return;
+    }
+
+    const itemsToSave = scheduleViews.tableItems.map((item: any) => ({
+      id: Math.random().toString(36).substr(2, 9),
+      courseName: item.courseName || '',
+      courseNameAr: item.courseNameAr || '',
+      instructor: item.instructor || '',
+      instructorAr: item.instructorAr || '',
+      room: item.room || '',
+      startTime: item.startTime || '',
+      endTime: item.endTime || '',
+      days: item.days || []
+    }));
+
+    localStorage.setItem('my_schedule_data', JSON.stringify(itemsToSave));
+    localStorage.setItem('my_schedule_last_updated', new Date().toISOString());
+
+    // Cloud Sync
+    if (user) {
+      toast.loading(isAr ? "Ø¬Ø§Ø±ÙŠ Ø­ÙØ¸ ÙˆØªØµØ¯ÙŠØ± Ø¬Ø¯ÙˆÙ„Ùƒ..." : "Saving and exporting your schedule...", { id: "save-schedule" });
+      runSupabaseWithRetry(async () => await supabase.from('user_schedules').upsert({
+        user_id: user.id,
+        student_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'Unknown',
+        student_email: user.email,
+        schedule_data: itemsToSave,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'user_id' }), 3, 1000, isAr).then(({ error }) => {
+        toast.dismiss("save-schedule");
+        if (!error) {
+          setShowSuccessOverlay(true);
+        } else {
+          console.error("Cloud sync error:", error);
+          toast.error(isAr
+            ? `ÙØ´Ù„Øª Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø© Ø§Ù„Ø³Ø­Ø§Ø¨ÙŠØ© Ø¨Ø¹Ø¯ Ù…Ø­Ø§ÙˆÙ„Ø§Øª Ù…ØªØ¹Ø¯Ø¯Ø©: ${error.message}`
+            : `Cloud sync failed after multiple retries: ${error.message}`
+          );
+        }
+      });
+    } else {
+      setShowSuccessOverlay(true);
+    }
+  };
+
+  const scheduleViews = useMemo(() => {
+    const option = generatedSchedules[currentOptionIndex];
+    if (!option) return { gridItems: [], tableItems: [] };
+
+    const gridItems: any[] = [];
+    const tableItems: any[] = [];
+
+    const dayMap: Record<number, string> = {
+      0: "sunday",
+      1: "monday",
+      2: "tuesday",
+      3: "wednesday",
+      4: "thursday"
+    };
+    const dayNamesAr = ["Ø§Ù„Ø£Ø­Ø¯", "Ø§Ù„Ø§Ø«Ù†ÙŠÙ†", "Ø§Ù„Ø«Ù„Ø§Ø«Ø§Ø¡", "Ø§Ù„Ø£Ø±Ø¨Ø¹Ø§Ø¡", "Ø§Ù„Ø®Ù…ÙŠØ³"];
+    const dayNamesEn = ["Sun", "Mon", "Tue", "Wed", "Thu"];
+
+    option.sections.forEach(s => {
+      const course = findCourseByIdOrCode(s.courseId);
+      const instr = facultyList.find(f => f.id === s.instructorId);
+
+      const daysStrAr = (s.days || []).map(d => dayNamesAr[d]).join(" - ");
+      const daysStrEn = (s.days || []).map(d => dayNamesEn[d]).join(" - ");
+
+      tableItems.push({
+        ...s,
+        courseName: course?.name,
+        courseNameAr: course?.nameAr,
+        instructor: s.instructorName || instr?.name, // Use database instructor name if available
+        instructorAr: s.instructorName || instr?.nameAr,
+        daysStrAr,
+        daysStrEn,
+      });
+
+      (s.days || []).forEach(d => {
+        gridItems.push({
+          ...s,
+          courseName: course?.name,
+          courseNameAr: course?.nameAr,
+          instructor: s.instructorName || instr?.name,
+          instructorAr: s.instructorName || instr?.nameAr,
+          startHour: parseInt(s.startTime.split(':')[0]),
+          endHour: parseInt(s.endTime.split(':')[0]),
+          day: dayMap[d]
+        });
+      });
+    });
+
+    return { gridItems, tableItems };
+  }, [generatedSchedules, currentOptionIndex, dbCourses, dbSections]);
+
+  const totalHours = activePlan.reduce((sum, c) => sum + c.hours, 0);
+
+  // Real-time Form Validation
+  const validationErrors = useMemo(() => {
+    const errors: string[] = [];
+    if (activePlan.length === 0) {
+      errors.push(isAr ? "Ø§Ù„Ø±Ø¬Ø§Ø¡ Ø§Ø®ØªÙŠØ§Ø± Ù…Ø§Ø¯Ø© ÙˆØ§Ø­Ø¯Ø© Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„ Ù„Ø¨Ø¯Ø¡ Ø§Ù„ØªÙˆÙ„ÙŠØ¯." : "Please select at least one course.");
+    }
+    if (totalHours > maxHours) {
+      errors.push(isAr
+        ? `Ù„Ù‚Ø¯ ØªØ¬Ø§ÙˆØ²Øª Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ù‚ØµÙ‰ Ù„Ù„Ø³Ø§Ø¹Ø§Øª Ø§Ù„Ù…Ø³Ù…ÙˆØ­ Ø¨Ù‡Ø§ (${maxHours} Ø³Ø§Ø¹Ø©).`
+        : `You have exceeded the maximum allowed hours (${maxHours}h).`
+      );
+    }
+    if (totalHours > targetHours) {
+      errors.push(isAr
+        ? `Ù„Ù‚Ø¯ ØªØ¬Ø§ÙˆØ²Øª Ø§Ù„Ø³Ø§Ø¹Ø§Øª Ø§Ù„Ù…Ø³ØªÙ‡Ø¯ÙØ© (${targetHours} Ø³Ø§Ø¹Ø©). ÙŠØ±Ø¬Ù‰ ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ø³Ø§Ø¹Ø§Øª Ø£Ùˆ ØªÙ‚Ù„ÙŠÙ„ Ø§Ù„Ù…ÙˆØ§Ø¯.`
+        : `You have exceeded the target hours (${targetHours}h). Please adjust the target hours or reduce courses.`
+      );
+    }
+    if (totalHours < 1 && activePlan.length > 0) {
+      errors.push(isAr
+        ? "Ø§Ù„Ø­Ø¯ Ø§Ù„Ø£Ø¯Ù†Ù‰ Ù„Ù„Ø³Ø§Ø¹Ø§Øª ÙÙŠ Ø§Ù„Ø¬Ø¯ÙˆÙ„ Ù‡Ùˆ Ø³Ø§Ø¹Ø© ÙˆØ§Ø­Ø¯Ø© Ø£ÙƒØ§Ø¯ÙŠÙ…ÙŠØ©."
+        : "Minimum registration is 1 academic hour."
+      );
+    }
+    return errors;
+  }, [activePlan, totalHours, maxHours, targetHours, isAr]);
+
+  const filteredSearch = useMemo(() => {
+    if (!searchQuery) return [];
+    const q = searchQuery.toLowerCase();
+    
+    return baseCourses.filter(c => {
+      const nameAr = String(c?.nameAr || "").toLowerCase();
+      const nameEn = String(c?.name || "").toLowerCase();
+      const code = String(c?.code || "").toLowerCase();
+      
+      const matchesSearch = nameAr.includes(q) || nameEn.includes(q) || code.includes(q);
+      const notInPlan = !activePlan.some(ap => ap.id === c.id);
+      
+      return matchesSearch && notInPlan;
+    });
+  }, [searchQuery, activePlan, baseCourses]);
+
+  // UI Constants
+  const BASE_ROW_HEIGHT = isMobile ? 42 : 75;
+  const ROW_HEIGHT = BASE_ROW_HEIGHT * gridScale;
+  const GRID_HEIGHT = (TIME_SLOTS.length + 1) * ROW_HEIGHT;
+
+  const getCompatibilityLabel = (option: ScheduleOption) => {
+    if (!option) return "";
+    const daysCount = new Set(option.sections.flatMap(s => s.days)).size;
+    const firstTime = option.sections.map(s => parseInt(s.startTime.split(':')[0])).sort((a, b) => a - b)[0];
+
+    if (daysCount <= 3) return isAr ? `Ù…Ø¶ØºÙˆØ·: ${daysCount} Ø£ÙŠØ§Ù… Ø¯ÙˆØ§Ù…` : `Intensive: ${daysCount} Days`;
+    if (firstTime >= 10) return isAr ? "Ù…Ø±ÙŠØ­: Ø¨Ø¯Ø§ÙŠØ© Ù…ØªØ£Ø®Ø±Ø©" : "Relaxed: Late Start";
+    return isAr ? "Ù…ØªÙˆØ§Ø²Ù†: ØªÙˆØ²ÙŠØ¹ Ù…Ø«Ø§Ù„ÙŠ" : "Balanced: Perfect Spread";
+  };
+
+  if (loading || !user) {
+    return <SchedulePlannerSkeleton />;
+  }
+
+  return (
+    <div className="container mx-auto px-4 pt-2 md:pt-6 pb-6 max-w-[1700px]">
+      <PageHeader
+        title={isAr ? "Ù…Ø®Ø·Ø· Ø§Ù„Ø¬Ø¯ÙˆÙ„Ø© Ø§Ù„Ø°ÙƒÙŠ" : "Smart Schedule Planner"}
+        subtitle={isAr ? "ØµÙ…Ù… Ø¬Ø¯ÙˆÙ„Ùƒ Ø§Ù„Ø¯Ø±Ø§Ø³ÙŠ Ø¨Ù†Ù‚Ø±Ø© ÙˆØ§Ø­Ø¯Ø© Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø°ÙƒØ§Ø¡ Ø§Ù„Ø§ØµØ·Ù†Ø§Ø¹ÙŠ Ø¨Ù†Ø§Ø¡Ù‹ Ø¹Ù„Ù‰ Ø§Ù„Ø®Ø·Ø© Ø§Ù„Ù…Ø¹ØªÙ…Ø¯Ø©." : "Design your semester schedule in one click with AI based on your approved roadmap."}
+        icon={<Calendar className="w-8 h-8" />}
+      />
+
+
+      {/* NEW: Selected Courses & Controls Stack */}
+      <div className="mt-2 space-y-4">
+        {/* 1. Selected Courses Strip */}
+        <div className="rounded-2xl bg-[#0f1115] border border-white/5 shadow-xl w-full flex flex-col">
+          {/* Mobile Toggle Header */}
+          <button 
+            onClick={() => setIsMobileCoursesOpen(!isMobileCoursesOpen)}
+            className="w-full flex items-center justify-between sm:hidden p-3"
+          >
+             <span className="text-sm font-black text-white flex items-center gap-2">
+               {isAr ? "Ø§Ù„Ù…ÙˆØ§Ø¯ Ø§Ù„Ù…Ø³Ø¬Ù„Ø©" : "Selected Courses"} ({activePlan.length})
+             </span>
+             <ChevronDown className={cn("w-4 h-4 text-white/50 transition-transform", isMobileCoursesOpen && "rotate-180")} />
+          </button>
+          
+          <div className={cn("flex-col sm:flex-row items-center gap-2 sm:gap-4 p-2 sm:p-4 min-h-[5rem] sm:min-h-[6rem] overflow-hidden", !isMobileCoursesOpen ? "hidden sm:flex" : "flex")}>
+            <div className="hidden sm:flex flex-col items-center sm:items-start justify-center min-w-fit px-2 border-b sm:border-b-0 sm:border-l border-white/5 rtl:border-l-0 rtl:border-r sm:rtl:border-r pb-2 sm:pb-0 mb-1 sm:mb-0">
+              <span className="text-xs sm:text-sm font-black text-white px-2">{isAr ? "Ø§Ù„Ù…ÙˆØ§Ø¯ Ø§Ù„Ù…Ø³Ø¬Ù„Ø©" : "Selected Courses"} ({activePlan.length})</span>
+            </div>
+
+            <div className="flex-1 min-w-0 w-full overflow-x-auto custom-scrollbar flex gap-2 pb-2 sm:pb-0 items-stretch px-2" dir={isAr ? "rtl" : "ltr"}>
+              {activePlan.map((course, idx) => {
+                const colors = ["bg-purple-500/10 text-purple-400 border-purple-500/20", "bg-blue-500/10 text-blue-400 border-blue-500/20", "bg-amber-500/10 text-amber-400 border-amber-500/20", "bg-emerald-500/10 text-emerald-400 border-emerald-500/20", "bg-rose-500/10 text-rose-400 border-rose-500/20"];
+                const color = colors[idx % colors.length];
+                return (
+                  <div key={course.id} className={`flex flex-col items-start rtl:items-end px-2 py-1.5 sm:px-3 sm:py-2 rounded-xl border w-[110px] sm:w-[150px] shrink-0 relative group ${color}`}>
+                    <button onClick={() => toggleCourse(course)} className="absolute top-1 right-1 rtl:right-auto rtl:left-1 opacity-50 hover:opacity-100 hover:text-white transition-all bg-black/20 hover:bg-red-500/50 p-0.5 sm:p-1 rounded-md z-10">
+                      <X className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                    </button>
+                    <span className="text-[9px] sm:text-[11px] font-black whitespace-normal line-clamp-2 sm:line-clamp-3 leading-tight text-right w-[85%] mb-1">{isAr ? course.nameAr : course.name}</span>
+                    <div className="mt-auto pt-1 flex flex-col w-full">
+                      <span className="text-[8px] sm:text-[10px] opacity-70 text-right w-full">{course.hours} {isAr ? "Ø³Ø§Ø¹Ø§Øª" : "hours"}</span>
+                      <span className="text-[7px] sm:text-[9px] opacity-50 tracking-wider uppercase text-right w-full line-clamp-1">{course.code}</span>
+                    </div>
+                  </div>
+                );
+              })}
+              {activePlan.length === 0 && (
+                <div className="text-muted-foreground/50 text-xs font-bold py-2 px-4 italic mx-auto w-full text-center">
+                  {isAr ? "Ù„Ù… ÙŠØªÙ… Ø§Ø®ØªÙŠØ§Ø± Ø£ÙŠ Ù…ÙˆØ§Ø¯ Ø¨Ø¹Ø¯..." : "No courses selected yet..."}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* 2. Add Courses Button */}
+        <button onClick={() => setIsSelectionReviewOpen(true)} className="w-full text-sm sm:text-base text-[#5bb286] bg-[#5bb286]/10 hover:bg-[#5bb286]/20 py-3 sm:py-4 rounded-xl transition-colors flex items-center justify-center gap-2 font-black border border-[#5bb286]/20">
+          <Plus className="w-5 h-5" />
+          {isAr ? "Ø¥Ø¶Ø§ÙØ© Ù…ÙˆØ§Ø¯ ÙŠØ¯ÙˆÙŠØ§" : "Add Courses Manually"}
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-2 items-start">
+
+        {/* Control Sidebar */}
+        <div className="lg:col-span-3 xl:col-span-3 space-y-3 sm:space-y-5 lg:order-1">
+          <div className={cn(
+            "p-4 sm:p-6 rounded-3xl sm:rounded-[2rem] bg-card/75 backdrop-blur-xl border border-border/60 shadow-elegant relative transition-all duration-200",
+            isDaysDropdownOpen ? "z-30" : "z-10"
+          )}>
+            {/* Mobile Toggle Header */}
+            <button 
+              onClick={() => setIsMobileSettingsOpen(!isMobileSettingsOpen)}
+              className="w-full flex items-center justify-between sm:hidden pb-1"
+            >
+               <span className="text-sm font-black text-foreground flex items-center gap-2">
+                 <Brain className="w-4 h-4 text-accent" />
+                 {isAr ? "Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„ØªÙÙƒÙŠØ±" : "AI Settings"}
+               </span>
+               <ChevronDown className={cn("w-4 h-4 text-muted-foreground transition-transform", isMobileSettingsOpen && "rotate-180")} />
+            </button>
+            <div className="hidden sm:flex items-center gap-2 pb-4 mb-4 border-b border-border/10">
+                 <Brain className="w-5 h-5 text-accent" />
+                 <span className="text-base font-black text-foreground">{isAr ? "Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„ØªÙÙƒÙŠØ±" : "AI Settings"}</span>
+            </div>
+
+            <div className={cn("space-y-3 sm:space-y-5 pt-3 sm:pt-0 border-t border-border/10 sm:border-0", !isMobileSettingsOpen && "hidden sm:block")}>
+              {/* AI Strategy Selector & Generate Button - At Top */}
+              {validationErrors.length > 0 && activePlan.length > 0 && (
+                <div className="space-y-2 pb-3 sm:pb-5 border-b border-border/10">
+                  {/* Real-time Form Validation Warnings */}
+                  <div className="space-y-1.5 mb-1.5 animate-in fade-in slide-in-from-top-1 duration-200">
+                    {validationErrors.map((err, i) => (
+                      <div key={i} className="p-2.5 bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] sm:text-xs font-black rounded-lg flex items-start gap-1.5">
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0 text-red-500 mt-0.5" />
+                        <span>{err}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-xs sm:text-sm font-black text-muted-foreground uppercase block px-1">{isAr ? "Ø§Ù„ØªØ®ØµØµ Ø§Ù„Ù…Ø¹ØªÙ…Ø¯" : "Selected Major"}</label>
+                  <div className="w-full bg-accent/5 border border-accent/20 rounded-xl px-4 py-2.5 sm:px-5 sm:py-4 flex items-center justify-between group">
+                    <span className="text-sm sm:text-base font-black text-accent">
+                      {majors.find(m => m.id === selectedMajor)?.[isAr ? 'nameAr' : 'name'] || selectedMajor}
+                    </span>
+                    <button
+                      onClick={() => navigate('/settings')}
+                      className="text-[11px] sm:text-xs font-black text-muted-foreground hover:text-accent underline transition-colors"
+                      aria-label={isAr ? "ØªØºÙŠÙŠØ± Ø§Ù„ØªØ®ØµØµ Ù…Ù† Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø­Ø³Ø§Ø¨Ùƒ" : "Change major from your settings"}
+                    >
+                      {isAr ? "ØªØºÙŠÙŠØ±" : "Change"}
+                    </button>
+                  </div>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground font-bold px-1 italic">
+                    {isAr ? "* ÙŠØ¹ØªÙ…Ø¯ Ø¹Ù„Ù‰ Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø­Ø³Ø§Ø¨Ùƒ" : "* Based on your profile settings"}
+                  </p>
+                </div>
+
+                <div className="space-y-4 pt-3 border-t border-border/10">
+                  <div className="flex justify-between items-center px-1">
+                    <span className="text-sm sm:text-base font-black text-foreground">{isAr ? "Ø§Ù„Ø³Ø§Ø¹Ø§Øª Ø§Ù„Ù…Ø³ØªÙ‡Ø¯ÙØ©" : "Target Hours"}</span>
+                    <span className="text-xl font-black text-accent">{targetHours}h</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="1"
+                    max={maxHours}
+                    step="1"
+                    value={targetHours}
+                    onChange={(e) => setTargetHours(Number(e.target.value))}
+                    className="w-full accent-accent h-2 bg-border/20 rounded-full cursor-pointer"
+                    aria-label={isAr ? "Ø´Ø±ÙŠØ· ØªÙ…Ø±ÙŠØ± Ø§Ù„Ø³Ø§Ø¹Ø§Øª Ø§Ù„Ø¯Ø±Ø§Ø³ÙŠØ© Ø§Ù„Ù…Ø³ØªÙ‡Ø¯ÙØ© Ù„ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ù…ÙˆØ§Ø¯" : "Target academic hours registration slider"}
+                  />
+                </div>
+
+                <div className="pt-3 border-t border-border/10 flex items-center justify-between px-1">
+                  <div className={cn("flex flex-col", isAr ? "text-right" : "text-left")}>
+                    <span className="text-sm font-black text-foreground">{isAr ? "ØªØ¶Ù…ÙŠÙ† Ø§Ù„Ø´Ø¹Ø¨ Ø§Ù„Ù…ØºÙ„Ù‚Ø©" : "Include Closed Sections"}</span>
+                    <span className="text-[10px] sm:text-[11px] text-muted-foreground font-bold leading-normal">
+                      {isAr ? "ØªÙˆÙ„ÙŠØ¯ Ø®ÙŠØ§Ø±Ø§Øª Ù…Ù† Ø§Ù„Ø´Ø¹Ø¨ Ø§Ù„Ù…ØºÙ„Ù‚Ø© ÙˆØ§Ù„Ù…ÙØªÙˆØ­Ø© Ù…Ø¹Ø§Ù‹" : "Generate options using both open & closed sections"}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setIncludeClosedSections(!includeClosedSections)}
+                    className={cn(
+                      "w-11 h-6 rounded-full transition-colors duration-300 focus:outline-none shrink-0 flex items-center p-0.5 cursor-pointer",
+                      includeClosedSections ? "bg-[#5bb286]" : "bg-border/40"
+                    )}
+                    role="switch"
+                    aria-checked={includeClosedSections}
+                    aria-label={isAr ? "ØªØ¶Ù…ÙŠÙ† Ø§Ù„Ø´Ø¹Ø¨ Ø§Ù„Ù…ØºÙ„Ù‚Ø© ÙÙŠ ØªÙˆÙ„ÙŠØ¯ Ø§Ù„Ø¬Ø¯Ø§ÙˆÙ„" : "Include closed sections in generation"}
+                  >
+                    <div
+                      className={cn(
+                        "w-5 h-5 rounded-full bg-white shadow-md transition-transform duration-300 transform",
+                        includeClosedSections ? (isAr ? "-translate-x-5" : "translate-x-5") : "translate-x-0"
+                      )}
+                    />
+                  </button>
+                </div>
+
+                <div className="space-y-3 pt-3 border-t border-border/10">
+                  <div className={cn("flex flex-col px-1", isAr ? "text-right" : "text-left")}>
+                    <span className="text-sm font-black text-foreground">{isAr ? "Ø£ÙŠØ§Ù… Ø§Ù„Ø¯ÙˆØ§Ù… Ø§Ù„Ù…ÙØ¶Ù„Ø©" : "Preferred Study Days"}</span>
+                    <span className="text-[10px] sm:text-[11px] text-muted-foreground font-bold leading-normal">
+                      {isAr ? "Ø§Ø®ØªØ± Ø£ÙŠØ§Ù…Ø§Ù‹ Ù…Ø­Ø¯Ø¯Ø© Ù„Ù„Ø¯ÙˆØ§Ù… Ø£Ùˆ Ø§Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø§Ø®ØªØµØ§Ø±Ø§Øª Ø§Ù„Ø³Ø±ÙŠØ¹Ø©" : "Select specific study days or use quick presets"}
+                    </span>
+                  </div>
+
+                  {/* Trigger Dropdown Button (The "Answer") */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setIsDaysDropdownOpen(!isDaysDropdownOpen)}
+                      className="w-full bg-accent/5 border border-accent/20 hover:border-accent/40 rounded-xl px-4 py-3 flex items-center justify-between group transition-all duration-200 cursor-pointer text-right"
+                      dir={isAr ? "rtl" : "ltr"}
+                      aria-expanded={isDaysDropdownOpen}
+                      aria-label={isAr ? "Ø§Ø®ØªÙŠØ§Ø± Ø£ÙŠØ§Ù… Ø§Ù„Ø¯ÙˆØ§Ù… Ø§Ù„Ù…ÙØ¶Ù„Ø©" : "Select preferred study days"}
+                    >
+                      <span className="text-sm font-black text-accent/90">
+                        {isCustomMode && (isAr ? "Ø£ÙŠØ§Ù… Ù…Ø®ØµØµØ©..." : "Custom Days...")}
+                        {!isCustomMode && activePreset === 'all' && (isAr ? "ÙƒÙ„ Ø§Ù„Ø£ÙŠØ§Ù…" : "All Days")}
+                        {!isCustomMode && activePreset === 'sth' && (isAr ? "Ø£Ø­Ø¯ / Ø«Ù„Ø§Ø«Ø§Ø¡ / Ø®Ù…ÙŠØ³" : "Sun / Tue / Thu")}
+                        {!isCustomMode && activePreset === 'mw' && (isAr ? "Ø§Ø«Ù†ÙŠÙ† / Ø£Ø±Ø¨Ø¹Ø§Ø¡" : "Mon / Wed")}
+                        {!isCustomMode && activePreset === 'summer' && (isAr ? "Ø£Ø­Ø¯ - Ø£Ø±Ø¨Ø¹Ø§Ø¡ (Ø§Ù„ØµÙŠÙÙŠ)" : "Sun - Wed (Summer)")}
+                      </span>
+                      <ChevronDown
+                        className={cn(
+                          "w-4 h-4 text-muted-foreground group-hover:text-accent transition-transform duration-300 shrink-0",
+                          isDaysDropdownOpen && "rotate-180 text-accent"
+                        )}
+                      />
+                    </button>
+
+                    {/* Collapsible Dropdown List */}
+                    <AnimatePresence>
+                      {isDaysDropdownOpen && (
+                        <>
+                          {/* Backdrop overlay to close the dropdown when clicking outside */}
+                          <div 
+                            className="fixed inset-0 z-10" 
+                            onClick={() => setIsDaysDropdownOpen(false)} 
+                          />
+                          <motion.div
+                            initial={{ opacity: 0, y: -8, scale: 0.98 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -8, scale: 0.98 }}
+                            transition={{ duration: 0.15, ease: "easeOut" }}
+                            className="absolute left-0 right-0 mt-1.5 p-1.5 bg-[#09030a] border border-[#e63e6d]/30 rounded-2xl shadow-2xl z-20 flex flex-col gap-0.5"
+                            dir={isAr ? "rtl" : "ltr"}
+                          >
+                            {[
+                              { id: 'all', labelAr: "ÙƒÙ„ Ø§Ù„Ø£ÙŠØ§Ù…", labelEn: "All Days", descAr: "Ø£Ø­Ø¯ØŒ Ø§Ø«Ù†ÙŠÙ†ØŒ Ø«Ù„Ø§Ø«Ø§Ø¡ØŒ Ø£Ø±Ø¨Ø¹Ø§Ø¡ØŒ Ø®Ù…ÙŠØ³", descEn: "Sun, Mon, Tue, Wed, Thu" },
+                              { id: 'sth', labelAr: "Ø£Ø­Ø¯ / Ø«Ù„Ø§Ø«Ø§Ø¡ / Ø®Ù…ÙŠØ³", labelEn: "Sun / Tue / Thu", descAr: "Ù…Ø­Ø§Ø¶Ø±Ø§Øª Ø§Ù„Ø£Ø­Ø¯ ÙˆØ§Ù„Ø«Ù„Ø§Ø«Ø§Ø¡ ÙˆØ§Ù„Ø®Ù…ÙŠØ³", descEn: "Sunday, Tuesday, Thursday slots" },
+                              { id: 'mw', labelAr: "Ø§Ø«Ù†ÙŠÙ† / Ø£Ø±Ø¨Ø¹Ø§Ø¡", labelEn: "Mon / Wed", descAr: "Ù…Ø­Ø§Ø¶Ø±Ø§Øª Ø§Ù„Ø§Ø«Ù†ÙŠÙ† ÙˆØ§Ù„Ø£Ø±Ø¨Ø¹Ø§Ø¡", descEn: "Monday, Wednesday slots" },
+                              { id: 'summer', labelAr: "Ø£Ø­Ø¯ - Ø£Ø±Ø¨Ø¹Ø§Ø¡ (Ø§Ù„ØµÙŠÙÙŠ)", labelEn: "Sun - Wed (Summer)", descAr: "Ø£ÙŠØ§Ù… Ø§Ù„ÙØµÙ„ Ø§Ù„ØµÙŠÙÙŠ Ø§Ù„Ù…Ø¹ØªÙ…Ø¯Ø©", descEn: "Summer semester standard days" },
+                              { id: 'custom', labelAr: "Ø£ÙŠØ§Ù… Ù…Ø®ØµØµØ©...", labelEn: "Custom Days...", descAr: "ØªØ­Ø¯ÙŠØ¯ Ø£ÙŠØ§Ù… Ø§Ù„Ø¯ÙˆØ§Ù… ÙŠØ¯ÙˆÙŠØ§Ù‹ Ø¨Ø§Ù„ØªÙØµÙŠÙ„", descEn: "Select specific custom weekdays" }
+                            ].map((opt) => {
+                              const isActive = opt.id === 'custom' ? isCustomMode : (!isCustomMode && activePreset === opt.id);
+                              return (
+                                <button
+                                  key={opt.id}
+                                  onClick={() => {
+                                    applyPreset(opt.id as any);
+                                    setIsDaysDropdownOpen(false);
+                                  }}
+                                  className={cn(
+                                    "w-full text-right px-3 py-2 rounded-xl transition-all duration-150 flex flex-col gap-0.5 cursor-pointer",
+                                    isActive
+                                      ? "bg-[#5bb286]/15 text-[#5bb286] font-black"
+                                      : "hover:bg-white/5 text-foreground/80 hover:text-white"
+                                  )}
+                                  style={{ textAlign: isAr ? 'right' : 'left' }}
+                                >
+                                  <div className="flex justify-between items-center w-full">
+                                    <span className={cn(
+                                      "text-xs sm:text-sm font-black leading-snug",
+                                      isActive ? "text-[#5bb286]" : "text-white"
+                                    )}>
+                                      {isAr ? opt.labelAr : opt.labelEn}
+                                    </span>
+                                    {isActive && <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#5bb286] shrink-0" />}
+                                  </div>
+                                  <span className={cn(
+                                    "text-[10px] sm:text-[11px] font-bold leading-snug",
+                                    isActive ? "text-[#5bb286]/80" : "text-muted-foreground/70"
+                                  )}>
+                                    {isAr ? opt.descAr : opt.descEn}
+                                  </span>
+                                </button>
+                              );
+                            })}
+                          </motion.div>
+                        </>
+                      )}
+                    </AnimatePresence>
+
+                    {/* Collapsible Individual Day Squares */}
+                    <AnimatePresence>
+                      {isCustomMode && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                          animate={{ opacity: 1, height: "auto", marginTop: 8 }}
+                          exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                          transition={{ duration: 0.25, ease: "easeInOut" }}
+                          className="overflow-hidden"
+                        >
+                          <div className="grid grid-cols-5 gap-2 p-1.5 bg-accent/5 border border-accent/20 rounded-xl" dir={isAr ? "rtl" : "ltr"}>
+                            {[
+                              { id: 0, labelAr: "Ø§Ù„Ø£Ø­Ø¯", labelEn: "Sun" },
+                              { id: 1, labelAr: "Ø§Ù„Ø§Ø«Ù†ÙŠÙ†", labelEn: "Mon" },
+                              { id: 2, labelAr: "Ø§Ù„Ø«Ù„Ø§Ø«Ø§Ø¡", labelEn: "Tue" },
+                              { id: 3, labelAr: "Ø§Ù„Ø£Ø±Ø¨Ø¹Ø§Ø¡", labelEn: "Wed" },
+                              { id: 4, labelAr: "Ø§Ù„Ø®Ù…ÙŠØ³", labelEn: "Thu" }
+                            ].map((day) => {
+                              const isSelected = selectedDays.includes(day.id);
+                              return (
+                                <button
+                                  key={day.id}
+                                  type="button"
+                                  onClick={() => toggleDay(day.id)}
+                                  className={cn(
+                                    "flex flex-col items-center justify-center py-2 px-1 rounded-lg transition-all duration-200 cursor-pointer border text-center",
+                                    isSelected
+                                      ? "bg-[#e63e6d]/15 border-[#e63e6d]/40 text-[#e63e6d] font-black shadow-[0_0_8px_rgba(230,62,109,0.15)]"
+                                      : "bg-white/5 border-white/5 text-foreground/60 hover:text-white hover:bg-white/10 hover:border-white/10"
+                                  )}
+                                >
+                                  <span className="text-[10px] sm:text-xs font-black">
+                                    {isAr ? day.labelAr : day.labelEn}
+                                  </span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="w-full">
+            <button
+              onClick={handleGenerate}
+              disabled={isGenerating || isDataLoading || (validationErrors.length > 0 && activePlan.length > 0)}
+              className="bg-[#5bb286] hover:bg-[#4ea077] text-white rounded-xl sm:rounded-2xl py-2.5 sm:py-3.5 flex items-center justify-center gap-1.5 font-black text-sm sm:text-base shadow-md hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 w-full border border-[#4ea077]/20"
+              aria-label={isAr ? "ØªÙˆÙ„ÙŠØ¯ Ø§Ù„Ø®ÙŠØ§Ø±Ø§Øª Ø§Ù„Ù…Ù‚ØªØ±Ø­Ø© Ù„Ù„Ø¬Ø¯ÙˆÙ„" : "Generate suggested schedule options"}
+            >
+              {isGenerating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
+              <span>{isAr ? "ØªÙˆÙ„ÙŠØ¯ Ø§Ù„Ø¬Ø¯Ø§ÙˆÙ„" : "Generate Schedules"}</span>
+            </button>
+          </div>
+
+        </div>
+
+        {/* Main Schedule Grid */}
+        <div className="lg:col-span-9 xl:col-span-9 space-y-4 lg:order-2">
+
+
+
+          {generatedSchedules[currentOptionIndex] && findConflicts(generatedSchedules[currentOptionIndex].sections).length > 0 && (
+            <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
+              <AlertCircle className="w-5 h-5 text-red-500" />
+              <div className="flex flex-col">
+                <span className="text-sm font-black text-red-500">{isAr ? "ØªÙ†Ø¨ÙŠÙ‡: ØªØ¶Ø§Ø±Ø¨ ÙÙŠ Ø§Ù„Ù…ÙˆØ§Ø¹ÙŠØ¯" : "Conflict Detected"}</span>
+                <p className="text-xs font-bold text-red-500/70">
+                  {isAr
+                    ? `Ù‡Ù†Ø§Ùƒ ØªØ¹Ø§Ø±Ø¶ Ø¨ÙŠÙ†: ${findConflicts(generatedSchedules[currentOptionIndex].sections).map(c =>
+                      `${findCourseByIdOrCode(c.s1.courseId)?.nameAr} Ùˆ ${findCourseByIdOrCode(c.s2.courseId)?.nameAr}`
+                    ).join(" | ")}`
+                    : "Some courses overlap in time."}
+                </p>
+              </div>
+            </div>
+          )}
+
+
+{/* Missing Sections / Preferred Days Conflict / Time Conflict Warnings â€” handles all gracefully and explains the real reason to the student */}
+
+          {/* â”€â”€ STANDALONE Day-Conflict Warning (shows even when generation fails) â”€â”€ */}
+          {dayConflictedCourses.length > 0 && (
+            <div className="p-4 bg-rose-500/10 border border-rose-500/30 rounded-2xl flex items-start gap-3 animate-in fade-in slide-in-from-top-2 mb-2">
+              <Calendar className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+              <div className="flex flex-col gap-2 w-full" style={{ textAlign: isAr ? 'right' : 'left' }}>
+                <span className="text-sm font-black text-rose-400">
+                  {isAr
+                    ? "âš ï¸ Ù‡Ø°Ù‡ Ø§Ù„Ù…ÙˆØ§Ø¯ ØºÙŠØ± Ù…ØªØ§Ø­Ø© ÙÙŠ Ø£ÙŠØ§Ù…Ùƒ Ø§Ù„Ù…Ø®ØªØ§Ø±Ø©"
+                    : "âš ï¸ These courses aren't available on your selected days"}
+                </span>
+                <p className="text-xs font-bold text-rose-400/80 leading-relaxed">
+                  {isAr
+                    ? "Ø§Ù„Ø´Ø¹Ø¨ Ø§Ù„Ù…ØªØ§Ø­Ø© Ù„Ù‡Ø°Ù‡ Ø§Ù„Ù…ÙˆØ§Ø¯ ØªÙ‚Ø¹ ÙÙŠ Ø£ÙŠØ§Ù… Ø®Ø§Ø±Ø¬ Ù†Ø·Ø§Ù‚ Ø§Ø®ØªÙŠØ§Ø±Ùƒ. Ø¥Ù„ÙŠÙƒ Ø§Ù„Ø£ÙŠØ§Ù… ÙˆØ§Ù„Ø£ÙˆÙ‚Ø§Øª Ø§Ù„Ù…ØªØ§Ø­Ø©:"
+                    : "Available sections fall outside your selected days. Here are the available days and times:"}
+                </p>
+                <div className="flex flex-col gap-3 mt-1">
+                  {dayConflictedCourses.map((c: any) => {
+                    const dayNamesAr: Record<number, string> = {
+                      0: "Ø§Ù„Ø£Ø­Ø¯", 1: "Ø§Ù„Ø§Ø«Ù†ÙŠÙ†", 2: "Ø§Ù„Ø«Ù„Ø§Ø«Ø§Ø¡", 3: "Ø§Ù„Ø£Ø±Ø¨Ø¹Ø§Ø¡", 4: "Ø§Ù„Ø®Ù…ÙŠØ³", 5: "Ø§Ù„Ø¬Ù…Ø¹Ø©", 6: "Ø§Ù„Ø³Ø¨Øª"
+                    };
+                    const dayNamesEn: Record<number, string> = {
+                      0: "Sun", 1: "Mon", 2: "Tue", 3: "Wed", 4: "Thu", 5: "Fri", 6: "Sat"
+                    };
+                    const timeDaysMap = new Map<string, Set<number>>();
+                    c.courseSections.forEach((s: any) => {
+                      if (!s.days || !s.startTime || !s.endTime) return;
+                      const timeKey = `${s.startTime} - ${s.endTime}`;
+                      if (!timeDaysMap.has(timeKey)) {
+                        timeDaysMap.set(timeKey, new Set<number>());
+                      }
+                      s.days.forEach((d: number) => {
+                        timeDaysMap.get(timeKey)!.add(d);
+                      });
+                    });
+                    const sortedTimeSlots = Array.from(timeDaysMap.keys()).sort((a, b) => {
+                      const startA = a.split(" - ")[0];
+                      const startB = b.split(" - ")[0];
+                      return startA.localeCompare(startB);
+                    });
+                    return (
+                      <div key={c.id} className="bg-rose-500/5 border border-rose-500/10 rounded-xl p-3 flex flex-col gap-1.5" style={{ textAlign: isAr ? 'right' : 'left' }}>
+                        {sortedTimeSlots.map(timeKey => {
+                          const days = Array.from(timeDaysMap.get(timeKey)!).sort((a, b) => a - b);
+                          const daysStr = days.map(d => isAr ? dayNamesAr[d] : dayNamesEn[d]).join('/');
+                          const lineStr = isAr
+                            ? `[${c.nameAr || c.name}] ÙŠÙˆÙ… (${daysStr}) Ø¨Ø§Ù„ÙˆÙ‚Øª [${timeKey}]`
+                            : `[${c.name || c.nameAr}] on (${daysStr}) at [${timeKey}]`;
+                          return (
+                            <div key={timeKey} className="text-xs sm:text-sm font-bold text-rose-300/90 leading-relaxed text-right" dir={isAr ? "rtl" : "ltr"}>
+                              {lineStr}
+                              {c.code && (
+                                <span className="text-[9px] font-bold text-rose-400/50 bg-rose-500/10 px-1 py-0.5 rounded ml-1.5 mr-1.5">
+                                  {c.code}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
+                </div>
+                <p className="text-[10px] sm:text-[11px] text-rose-400/50 font-bold mt-1">
+                  {isAr
+                    ? "ðŸ’¡ Ø§Ø®ØªØ± \"Ø£ÙŠØ§Ù… Ù…Ø®ØµØµØ©...\" ÙˆÙØ¹Ù‘Ù„ Ø§Ù„Ø£ÙŠØ§Ù… Ø§Ù„Ù…Ù†Ø§Ø³Ø¨Ø© Ù„Ø¥Ø¶Ø§ÙØ© Ù‡Ø°Ù‡ Ø§Ù„Ù…ÙˆØ§Ø¯ Ù„Ø¬Ø¯ÙˆÙ„Ùƒ."
+                    : "ðŸ’¡ Choose \"Custom Days...\" and enable the matching days to include these courses."}
+                </p>
+              </div>
+            </div>
+          )}
+          {(() => {
+            const currentOpt = generatedSchedules[currentOptionIndex] as any;
+            const unmatched: any[] = currentOpt?.unmatchedCourses ?? [];
+            if (unmatched.length === 0) return null;
+
+            const trulyMissing: any[] = [];
+            const dayConflicted: any[] = [];
+            const timeConflicted: any[] = [];
+
+            unmatched.forEach((c: any) => {
+              const courseSections = dbSections.filter(s =>
+                s.courseId === c.id ||
+                s.courseId === c.code ||
+                (c.code && s.courseId &&
+                  c.code.replace(/[\s-]/g, '').toUpperCase() === s.courseId.replace(/[\s-]/g, '').toUpperCase())
+              );
+
+              if (courseSections.length === 0) {
+                trulyMissing.push(c);
+              } else {
+                // Group course sections by unique section
+                const groups = new Map<string, any[]>();
+                courseSections.forEach(s => {
+                  const key = s.sectionNo ? `${s.courseId}_${s.sectionNo}` : s.id;
+                  if (!groups.has(key)) groups.set(key, []);
+                  groups.get(key)!.push(s);
+                });
+
+                // A section is valid under the current day selection if ALL its slots are on allowed days
+                let hasAnySectionOnAllowedDays = false;
+                groups.forEach((slots) => {
+                  const allSlotsValid = slots.every(s => 
+                    s.days && s.days.length > 0 && s.days.every(d => selectedDays.includes(d))
+                  );
+                  if (allSlotsValid) {
+                    hasAnySectionOnAllowedDays = true;
+                  }
+                });
+
+                if (hasAnySectionOnAllowedDays) {
+                  timeConflicted.push(c);
+                } else {
+                  dayConflicted.push({
+                    ...c,
+                    courseSections
+                  });
+                }
+              }
+            });
+
+            // Smart conflict resolver helper to show exactly which course overlaps
+            const getConflictReason = (course: any, currentSections: any[]) => {
+              const courseSections = dbSections.filter(s =>
+                s.courseId === course.id ||
+                s.courseId === course.code ||
+                (course.code && s.courseId &&
+                  course.code.replace(/[\s-]/g, '').toUpperCase() === s.courseId.replace(/[\s-]/g, '').toUpperCase())
+              );
+
+              if (courseSections.length === 0) return "";
+
+              const conflicts: string[] = [];
+              const dayNamesAr: Record<number, string> = {
+                0: "Ø§Ù„Ø£Ø­Ø¯",
+                1: "Ø§Ù„Ø§Ø«Ù†ÙŠÙ†",
+                2: "Ø§Ù„Ø«Ù„Ø§Ø«Ø§Ø¡",
+                3: "Ø§Ù„Ø£Ø±Ø¨Ø¹Ø§Ø¡",
+                4: "Ø§Ù„Ø®Ù…ÙŠØ³"
+              };
+              const dayNamesEn: Record<number, string> = {
+                0: "Sun",
+                1: "Mon",
+                2: "Tue",
+                3: "Wed",
+                4: "Thu"
+              };
+
+              courseSections.forEach(s => {
+                currentSections.forEach(activeSec => {
+                  const commonDays = s.days.filter(d => activeSec.days.includes(d));
+                  if (commonDays.length > 0) {
+                    const start1 = s.startTime.split(":").map(Number).reduce((h, m) => h * 60 + m);
+                    const end1 = s.endTime.split(":").map(Number).reduce((h, m) => h * 60 + m);
+                    const start2 = activeSec.startTime.split(":").map(Number).reduce((h, m) => h * 60 + m);
+                    const end2 = activeSec.endTime.split(":").map(Number).reduce((h, m) => h * 60 + m);
+
+                    if (start1 < end2 && start2 < end1) {
+                      const activeCourse = dbCourses.find(dc => dc.id === activeSec.courseId || dc.code === activeSec.courseId);
+                      const activeName = activeCourse ? (isAr ? activeCourse.nameAr : activeCourse.name) : activeSec.courseId;
+                      const daysStr = commonDays.map(d => isAr ? dayNamesAr[d] : dayNamesEn[d]).join("/");
+                      
+                      const sectionNoStr = s.sectionNo || (s.id.includes('_') ? s.id.split('_')[1] : '1');
+                      const conflictStr = isAr 
+                        ? `Ø´Ø¹Ø¨Ø© ${sectionNoStr} ØªØªØ¹Ø§Ø±Ø¶ Ù…Ø¹ [${activeName}] ÙŠÙˆÙ… (${daysStr}) Ø¨Ø§Ù„ÙˆÙ‚Øª [${s.startTime} - ${s.endTime}]`
+                        : `Section ${sectionNoStr} conflicts with [${activeName}] on (${daysStr}) at [${s.startTime} - ${s.endTime}]`;
+
+                      if (!conflicts.includes(conflictStr)) {
+                        conflicts.push(conflictStr);
+                      }
+                    }
+                  }
+                });
+              });
+
+              return conflicts.join(" ØŒ Ùˆ ");
+            };
+
+            return (
+              <div className="flex flex-col gap-3">
+                {dayConflicted.length > 0 && (
+                  <div className="p-4 bg-rose-500/10 border border-rose-500/30 rounded-2xl flex items-start gap-3 animate-in fade-in slide-in-from-top-2">
+                    <Calendar className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+                    <div className="flex flex-col gap-2 w-full text-right" style={{ textAlign: isAr ? 'right' : 'left' }}>
+                      <span className="text-sm font-black text-rose-400">
+                        {isAr
+                          ? "âš ï¸ Ù‡Ø°Ù‡ Ø§Ù„Ù…ÙˆØ§Ø¯ ØºÙŠØ± Ù…ØªØ§Ø­Ø© ÙÙŠ Ø£ÙŠØ§Ù…Ùƒ Ø§Ù„Ù…Ø®ØªØ§Ø±Ø©"
+                          : "âš ï¸ These courses aren't available on your selected days"}
+                      </span>
+                      <p className="text-xs font-bold text-rose-400/80 leading-relaxed">
+                        {isAr
+                          ? "Ø§Ù„Ø´Ø¹Ø¨ Ø§Ù„Ù…ØªØ§Ø­Ø© Ù„Ù‡Ø°Ù‡ Ø§Ù„Ù…ÙˆØ§Ø¯ ØªÙ‚Ø¹ ÙÙŠ Ø£ÙŠØ§Ù… Ø®Ø§Ø±Ø¬ Ù†Ø·Ø§Ù‚ Ø§Ø®ØªÙŠØ§Ø±Ùƒ. Ø¥Ù„ÙŠÙƒ Ø§Ù„Ø£ÙŠØ§Ù… ÙˆØ§Ù„Ø£ÙˆÙ‚Ø§Øª Ø§Ù„Ù…ØªØ§Ø­Ø© Ù„ÙƒÙ„ Ù…Ø§Ø¯Ø©:"
+                          : "Available sections for these courses fall on days outside your selection. Here are the available days and times:"}
+                      </p>
+
+                      <div className="flex flex-col gap-3 mt-1">
+                        {dayConflicted.map((c: any) => {
+                          const dayNamesAr: Record<number, string> = {
+                            0: "Ø§Ù„Ø£Ø­Ø¯", 1: "Ø§Ù„Ø§Ø«Ù†ÙŠÙ†", 2: "Ø§Ù„Ø«Ù„Ø§Ø«Ø§Ø¡", 3: "Ø§Ù„Ø£Ø±Ø¨Ø¹Ø§Ø¡", 4: "Ø§Ù„Ø®Ù…ÙŠØ³", 5: "Ø§Ù„Ø¬Ù…Ø¹Ø©", 6: "Ø§Ù„Ø³Ø¨Øª"
+                          };
+                          const dayNamesEn: Record<number, string> = {
+                            0: "Sun", 1: "Mon", 2: "Tue", 3: "Wed", 4: "Thu", 5: "Fri", 6: "Sat"
+                          };
+                          const timeDaysMap = new Map<string, Set<number>>();
+                          c.courseSections.forEach((s: any) => {
+                            if (!s.days || !s.startTime || !s.endTime) return;
+                            const timeKey = `${s.startTime} - ${s.endTime}`;
+                            if (!timeDaysMap.has(timeKey)) {
+                              timeDaysMap.set(timeKey, new Set<number>());
+                            }
+                            s.days.forEach((d: number) => {
+                              timeDaysMap.get(timeKey)!.add(d);
+                            });
+                          });
+                          const sortedTimeSlots = Array.from(timeDaysMap.keys()).sort((a, b) => {
+                            const startA = a.split(" - ")[0];
+                            const startB = b.split(" - ")[0];
+                            return startA.localeCompare(startB);
+                          });
+                          return (
+                            <div key={c.id} className="bg-rose-500/5 border border-rose-500/10 rounded-xl p-3 flex flex-col gap-1.5" style={{ textAlign: isAr ? 'right' : 'left' }}>
+                              {sortedTimeSlots.map(timeKey => {
+                                const days = Array.from(timeDaysMap.get(timeKey)!).sort((a, b) => a - b);
+                                const daysStr = days.map(d => isAr ? dayNamesAr[d] : dayNamesEn[d]).join('/');
+                                const lineStr = isAr
+                                  ? `[${c.nameAr || c.name}] ÙŠÙˆÙ… (${daysStr}) Ø¨Ø§Ù„ÙˆÙ‚Øª [${timeKey}]`
+                                  : `[${c.name || c.nameAr}] on (${daysStr}) at [${timeKey}]`;
+                                return (
+                                  <div key={timeKey} className="text-xs sm:text-sm font-bold text-rose-300/90 leading-relaxed text-right" dir={isAr ? "rtl" : "ltr"}>
+                                    {lineStr}
+                                    {c.code && (
+                                      <span className="text-[9px] font-bold text-rose-400/50 bg-rose-500/10 px-1 py-0.5 rounded ml-1.5 mr-1.5">
+                                        {c.code}
+                                      </span>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      <p className="text-[10px] sm:text-[11px] text-rose-400/50 font-bold mt-1">
+                        {isAr
+                          ? "ðŸ’¡ Ù†ØµÙŠØ­Ø©: Ø§Ø®ØªØ± \"Ø£ÙŠØ§Ù… Ù…Ø®ØµØµØ©...\" ÙˆÙØ¹Ù‘Ù„ Ø§Ù„Ø£ÙŠØ§Ù… Ø§Ù„Ù…Ù†Ø§Ø³Ø¨Ø© Ù„Ø¥Ø¶Ø§ÙØ© Ù‡Ø°Ù‡ Ø§Ù„Ù…ÙˆØ§Ø¯ Ù„Ø¬Ø¯ÙˆÙ„Ùƒ."
+                          : "ðŸ’¡ Tip: Choose \"Custom Days...\" and enable the matching days to include these courses."}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+
+                {timeConflicted.length > 0 && (
+                  <div className="p-4 bg-rose-500/10 border border-rose-500/30 rounded-2xl flex items-start gap-3 animate-in fade-in slide-in-from-top-2">
+                    <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+                    <div className="flex flex-col gap-1 w-full text-right" style={{ textAlign: isAr ? 'right' : 'left' }}>
+                      <span className="text-sm font-black text-rose-400">
+                        {isAr
+                          ? "âš ï¸ ØªØ¹Ø§Ø±Ø¶ ÙÙŠ Ø£ÙˆÙ‚Ø§Øª Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø§Øª (Time Overlap)"
+                          : "âš ï¸ Schedule Time Overlap"}
+                      </span>
+                      <p className="text-xs font-bold text-rose-400/80 leading-relaxed">
+                        {isAr
+                          ? `Ø§Ù„Ù…ÙˆØ§Ø¯ Ø§Ù„ØªØ§Ù„ÙŠØ© Ù…ØªÙˆÙØ±Ø© ÙÙŠ Ù‚Ø§Ø¹Ø¯Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª ÙˆÙ„ÙƒÙ† ØªØ¹Ø°Ø± Ø¥Ø¯Ø±Ø§Ø¬Ù‡Ø§ Ø¨Ø§Ù„Ø¬Ø¯ÙˆÙ„ Ù„ÙˆØ¬ÙˆØ¯ ØªØ¹Ø§Ø±Ø¶ ÙÙŠ Ø£ÙˆÙ‚Ø§ØªÙ‡Ø§ Ù…Ø¹ Ù…ÙˆØ§Ø¯ Ø£Ø®Ø±Ù‰ Ø¨Ø§Ù„Ø¬Ø¯ÙˆÙ„ Ø§Ù„Ø­Ø§Ù„ÙŠ:`
+                          : `The following courses are available in the database but could not be scheduled due to time conflicts with other courses in your current selection:`}
+                      </p>
+                      <ul className="list-disc list-inside text-[11px] font-bold text-rose-400/85 space-y-1.5 mt-1.5 mb-1.5 pr-2 rtl:pr-2 leading-relaxed">
+                        {timeConflicted.map((c: any) => {
+                          const reason = getConflictReason(c, currentOpt?.sections ?? []);
+                          return (
+                            <li key={c.id}>
+                              <span className="text-white font-black underline decoration-rose-400/30 ml-1">{isAr ? c.nameAr : c.name}</span>
+                              {reason ? ` âž” ${reason}` : ""}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                      <p className="text-[11px] text-rose-400/50 font-bold">
+                        {isAr
+                          ? "* Ù†ØµÙŠØ­Ø©: Ø¬Ø±Ù‘Ø¨ ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù…ÙˆØ§Ø¯ Ø§Ù„Ù…Ø®ØªØ§Ø±Ø© Ø£Ùˆ ØªØºÙŠÙŠØ± Ø®ÙŠØ§Ø±Ø§Øª Ø§Ù„Ø¬Ø¯ÙˆÙ„ (Ù…Ø«Ù„Ø§Ù‹ Ø§Ù„Ù†ÙˆÙ…Ø¬ÙŠØŒ Ø§Ù„ÙØ¬Ø±ÙŠ) Ù„ØªØ¬Ù†Ø¨ Ø§Ù„ØªØ¹Ø§Ø±Ø¶."
+                          : "* Tip: Try choosing different courses or toggling schedule layouts (e.g. Early, Late) to resolve the overlap."}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {trulyMissing.length > 0 && (
+                  <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl flex items-start gap-3 animate-in fade-in slide-in-from-top-2">
+                    <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                    <div className="flex flex-col gap-1">
+                      <span className="text-sm font-black text-amber-400">
+                        {isAr
+                          ? "âš ï¸ Ù…ÙˆØ§Ø¯ Ù„Ø§ ØªÙˆØ¬Ø¯ Ù„Ù‡Ø§ Ø´Ø¹Ø¨ ÙÙŠ Ù‚Ø§Ø¹Ø¯Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª"
+                          : "âš ï¸ Courses with no sections in database"}
+                      </span>
+                      <p className="text-xs font-bold text-amber-400/70 leading-relaxed">
+                        {isAr
+                          ? `Ø§Ù„Ù…ÙˆØ§Ø¯ Ø§Ù„ØªØ§Ù„ÙŠØ© Ù„Ø§ ØªØªÙˆÙØ± Ù„Ù‡Ø§ Ø´Ø¹Ø¨ Ù…Ø³Ø¬Ù„Ø© Ø­Ø§Ù„ÙŠØ§Ù‹: ${trulyMissing.map((c: any) => c.nameAr || c.name).join(" ØŒ ")}`
+                          : `The following courses have no registered sections yet: ${trulyMissing.map((c: any) => c.name || c.nameAr).join(", ")}`}
+                      </p>
+                      <p className="text-[11px] text-amber-400/50 font-bold">
+                        {isAr
+                          ? "* ÙŠÙØ±Ø¬Ù‰ Ù…Ø±Ø§Ø¬Ø¹Ø© Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ù‚Ø¨ÙˆÙ„ ÙˆØ§Ù„ØªØ³Ø¬ÙŠÙ„ Ø£Ùˆ Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø± Ø­ØªÙ‰ ÙŠØªÙ… Ø¥Ø¯Ø®Ø§Ù„ Ø§Ù„Ø´Ø¹Ø¨."
+                          : "* Please contact administration or wait until sections are registered."}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+
+
+          {/* Mobile Optimized Control Bar */}
+          <div className="flex flex-row items-center justify-between p-2 sm:p-5 gap-2 bg-card/75 backdrop-blur-xl border border-border/60 rounded-[1rem] sm:rounded-[2rem] shadow-elegant mb-4 sm:mb-6 overflow-x-auto custom-scrollbar">
+            
+            {/* 1. Navigation (1/1) - Right Side in RTL */}
+            <div className="flex items-center gap-0.5 sm:gap-1.5 bg-background/50 border border-accent/20 rounded-lg sm:rounded-xl p-0.5 sm:p-1 shrink-0" dir="ltr">
+              <button
+                onClick={() => setCurrentOptionIndex(prev => Math.max(0, prev - 1))}
+                className="p-1 sm:p-1.5 rounded-md hover:bg-surface transition-all disabled:opacity-20 text-accent"
+                disabled={currentOptionIndex === 0}
+              >
+                <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6" />
+              </button>
+              <span className="text-xs sm:text-lg font-black min-w-[3ch] sm:min-w-[4ch] text-center text-foreground">
+                {currentOptionIndex + 1}/{Math.max(1, generatedSchedules.length)}
+              </span>
+              <button
+                onClick={() => setCurrentOptionIndex(prev => Math.min(generatedSchedules.length - 1, prev + 1))}
+                className="p-1 sm:p-1.5 rounded-md hover:bg-surface transition-all disabled:opacity-20 text-accent"
+                disabled={currentOptionIndex >= generatedSchedules.length - 1}
+              >
+                <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6" />
+              </button>
+            </div>
+
+            {/* AI Title - Hidden on mobile */}
+            {generatedSchedules[currentOptionIndex]?.aiTitle && (
+              <div className="hidden sm:flex flex-col border-x border-border/10 px-4 mx-2">
+                <span className="text-xs font-black uppercase text-primary leading-none mb-1.5">{generatedSchedules[currentOptionIndex].aiTitle}</span>
+                <p className="text-[11px] font-bold text-muted-foreground italic max-w-[500px] leading-relaxed">
+                  "{generatedSchedules[currentOptionIndex].aiDescription}"
+                </p>
+              </div>
+            )}
+
+            {/* 2. Hours - Center */}
+            <div className="flex flex-1 items-center justify-center gap-1 sm:flex-col mx-1 sm:mx-2 border-x border-border/10 px-2 sm:px-4">
+              <span className="hidden sm:inline text-xs font-black uppercase text-muted-foreground">{isAr ? "Ø§Ù„Ø³Ø§Ø¹Ø§Øª:" : "HOURS:"}</span>
+              <span className="text-sm sm:text-3xl font-black text-accent leading-none">
+                <span className="sm:hidden text-[9px] text-muted-foreground ml-1 rtl:ml-0 rtl:mr-1">{isAr ? "Ø³Ø§Ø¹Ø©:" : "H:"}</span>
+                {generatedSchedules[currentOptionIndex]?.totalHours || 0}
+              </span>
+            </div>
+
+            {/* 3. Actions & Camera - Left Side in RTL */}
+            <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+              
+              {/* View Toggle - Hidden on mobile entirely */}
+              <div className="hidden sm:flex items-center gap-1 p-0.5 bg-background/50 rounded-lg border border-border/20">
+                <button onClick={() => setViewMode("grid")} className={cn("p-1.5 rounded-md transition-all", viewMode === "grid" ? "bg-accent text-accent-foreground shadow-sm" : "text-muted-foreground hover:bg-surface")}><LayoutGrid className="w-5 h-5" /></button>
+                <button onClick={() => setViewMode("table")} className={cn("p-1.5 rounded-md transition-all", viewMode === "table" ? "bg-accent text-accent-foreground shadow-sm" : "text-muted-foreground hover:bg-surface")}><Table2 className="w-5 h-5" /></button>
+              </div>
+
+              {/* Camera - Now a square */}
+              <button
+                onClick={handleScreenshot}
+                className="flex items-center justify-center w-8 h-8 sm:w-12 sm:h-12 bg-accent/10 text-accent rounded-lg sm:rounded-xl hover:bg-accent hover:text-accent-foreground transition-all shadow-md active:scale-95 shrink-0"
+              >
+                <Camera className="w-4 h-4 sm:w-6 sm:h-6" />
+              </button>
+
+              {/* Export Button */}
+              <button
+                onClick={handleDownload}
+                className="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-1.5 sm:py-2.5 bg-foreground text-background rounded-full text-[10px] sm:text-sm font-black hover:opacity-90 transition-all shadow-md active:scale-95 shrink-0"
+              >
+                <Download className="w-3 h-3 sm:w-5 sm:h-5 shrink-0" />
+                <span>{isAr ? "ØªØµØ¯ÙŠØ± Ø¥Ù„Ù‰ Ø¬Ø¯ÙˆÙ„ÙŠ" : "Export"}</span>
+              </button>
+            </div>
+          </div>
+
+          <div ref={scheduleRef} className="bg-card/75 backdrop-blur-xl border border-border/60 rounded-[2.5rem] shadow-elegant overflow-hidden relative">
+
+            <div className="overflow-auto max-h-[1600px] custom-scrollbar relative z-10">
+              {generatedSchedules.length > 0 ? (
+                viewMode === "table" ? (
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={`table-${currentOptionIndex}`}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      className="p-1 sm:p-4 md:p-6"
+                    >
+                      {/* Compatibility Tag for Table View */}
+                      <div className="flex items-center gap-2 mb-3 sm:mb-4 px-2 py-1 sm:px-3 sm:py-1.5 bg-accent/10 border border-accent/20 rounded-xl w-fit text-[10px] sm:text-xs">
+                        <Sparkles className="w-3 h-3 text-accent animate-pulse" />
+                        <span className="text-xs font-black text-accent uppercase tracking-wider">
+                          {getCompatibilityLabel(generatedSchedules[currentOptionIndex])}
+                        </span>
+                      </div>
+                      <div className="bg-[#f9f3d5] rounded-lg border-2 border-[#b0b0b0] shadow-md text-black font-sans relative overflow-hidden rtl:text-right max-w-full">
+                        {/* Paper Header */}
+                        <div className="bg-[#f9f3d5] p-2 sm:p-4 border-b-2 border-[#c0c0c0] flex justify-between items-center">
+                          <div className="w-16 sm:w-24 flex justify-start">
+                            <img src="/rs.png" alt="Hadeed Logo" className="h-6 sm:h-10 w-auto object-contain" />
+                          </div>
+                          <div className="text-center">
+                            <h2 className="text-xs sm:text-lg font-bold mb-0.5 tracking-wider text-[#222]">{isAr ? "Ù…ÙˆØ§Ø¹ÙŠØ¯ Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø§Øª" : "Class Schedule"}</h2>
+                            <div className="w-12 sm:w-24 h-0.5 bg-[#888] mx-auto mt-0.5 sm:mt-1"></div>
+                            <div className="w-8 sm:w-16 h-0.5 bg-[#888] mx-auto mt-0.5"></div>
+                          </div>
+                          <div className="text-[7px] sm:text-[10px] font-bold font-mono text-[#444] pt-0 sm:pt-1 whitespace-nowrap" dir="ltr">
+                            {new Date().toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(',', '')}
+                          </div>
+                        </div>
+
+                        {/* Table Area */}
+                        <div className="overflow-x-auto bg-[#f9f3d5] custom-scrollbar">
+                          <table className="w-full min-w-[320px] border-collapse text-[9px] sm:text-xs font-bold text-[#333]">
+                            <thead>
+                              <tr className="bg-[#d9d9d9]">
+                                <th className="border-t-0 border-b-2 border-r-2 border-l-0 last:border-r-0 rtl:border-l-2 rtl:border-r-0 rtl:last:border-l-0 border-[#a0a0a0] py-1 px-1 sm:py-2 sm:px-3 w-1/4 text-center text-[9px] sm:text-[11px] font-black">{isAr ? "Ø§Ø³Ù… Ø§Ù„Ù…Ø§Ø¯Ø©" : "Course Name"}</th>
+                                <th className="border-t-0 border-b-2 border-r-2 border-l-0 last:border-r-0 rtl:border-l-2 rtl:border-r-0 rtl:last:border-l-0 border-[#a0a0a0] py-1 px-1 sm:py-2 sm:px-3 w-1/3 text-center text-[9px] sm:text-[11px] font-black">{isAr ? "Ù…ÙˆØ¹Ø¯ Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø©" : "Lecture Time"}</th>
+                                <th className="border-t-0 border-b-2 border-r-2 border-l-0 last:border-r-0 rtl:border-l-2 rtl:border-r-0 rtl:last:border-l-0 border-[#a0a0a0] py-1 px-1 sm:py-2 sm:px-3 w-1/5 text-center text-[9px] sm:text-[11px] font-black">{isAr ? "Ø§Ù„Ù‚Ø§Ø¹Ø©" : "Room"}</th>
+                                <th className="border-t-0 border-b-2 border-r-0 border-l-0 border-[#a0a0a0] py-1 px-1 sm:py-2 sm:px-3 text-center text-[9px] sm:text-[11px] font-black">{isAr ? "Ø§Ù„Ù…Ø¯Ø±Ø³" : "Instructor"}</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {(() => {
+                                // Group flat tableItems by courseId or courseNameAr so multi-meeting slots show in a single row
+                                const grouped = new Map<string, any[]>();
+                                scheduleViews.tableItems.forEach((item: any) => {
+                                  const key = item.courseId || item.courseNameAr;
+                                  if (!grouped.has(key)) {
+                                    grouped.set(key, []);
+                                  }
+                                  grouped.get(key)!.push(item);
+                                });
+
+                                return Array.from(grouped.values()).map((itemsList, idx) => {
+                                  const firstItem = itemsList[0];
+                                  return (
+                                    <tr key={idx} className="hover:bg-[#f0e8c0] transition-colors border-b border-[#c0c0c0] last:border-b-0">
+                                      {/* Course Name */}
+                                      <td className="border-r rtl:border-l rtl:border-r-0 border-[#c0c0c0] py-1.5 px-1 sm:py-2 sm:px-2 text-center align-middle text-[8px] sm:text-[10px] leading-tight">
+                                        <div className="flex flex-col items-center justify-center gap-0.5">
+                                          <span>{isAr ? firstItem.courseNameAr : firstItem.courseName}</span>
+                                          {isSectionClosed(firstItem) ? (
+                                            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-red-500/15 text-red-700 text-[7px] sm:text-[8px] font-black border border-red-500/30">
+                                              {isAr ? "Ø´Ø¹Ø¨Ø© Ù…ØºÙ„Ù‚Ø©" : "Closed"}
+                                            </span>
+                                          ) : (
+                                            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 text-[7px] sm:text-[8px] font-black border border-emerald-500/30">
+                                              {isAr ? "Ù…ÙØªÙˆØ­Ø©" : "Open"}
+                                            </span>
+                                          )}
+                                        </div>
+                                      </td>
+
+                                      {/* Lecture Time */}
+                                      <td className="border-r rtl:border-l rtl:border-r-0 border-[#c0c0c0] p-0 text-center leading-relaxed align-middle">
+                                        <div className="flex flex-col h-full justify-stretch">
+                                          {itemsList.map((item, sIdx) => (
+                                            <div key={sIdx} className="border-b border-[#d0c690]/40 last:border-b-0 py-1 flex-1 flex flex-col justify-center min-h-[32px] sm:min-h-[40px]">
+                                              <div className="mb-0.5 text-[7px] sm:text-[9px]">{isAr ? item.daysStrAr : item.daysStrEn}</div>
+                                              <div className="text-[7px] sm:text-[9px] text-[#555] font-mono">{item.startTime} - {item.endTime}</div>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </td>
+
+                                      {/* Room */}
+                                      <td className="border-r rtl:border-l rtl:border-r-0 border-[#c0c0c0] p-0 text-center font-mono align-middle">
+                                        <div className="flex flex-col h-full justify-stretch">
+                                          {itemsList.map((item, sIdx) => (
+                                            <div key={sIdx} className="border-b border-[#d0c690]/40 last:border-b-0 py-1 flex-1 flex items-center justify-center min-h-[32px] sm:min-h-[40px] text-[7px] sm:text-[9px]">
+                                              {item.room}
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </td>
+

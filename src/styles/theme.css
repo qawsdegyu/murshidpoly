@@ -1,0 +1,74 @@
+/* ═══════════════════════════════════════════════════════════════════
+   src/styles/theme.css
+   BAU Engineering Hub — Theme Overrides & Utility Classes
+   hadeed.shop © 2026
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Light Section Alternation ──────────────────────────────────── */
+.section-primary   { background-color: #FFFFFF; }
+.section-secondary { background-color: #F8F8F8; }
+.section-promo     { background-color: #FBEAF0; border-top: 1px solid #FCE7EF; border-bottom: 1px solid #FCE7EF; }
+
+/* ── Hero section (always dark regardless of theme) ─────────────── */
+.hero-dark {
+  background-color: #000000;
+  color: #FFFFFF;
+}
+
+/* ── Navbar (always black) ──────────────────────────────────────── */
+.nav-root {
+  background-color: #000000;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ── Footer (always black) ──────────────────────────────────────── */
+.footer-root {
+  background-color: #000000;
+  color: #FFFFFF;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ── Pink accent utilities ──────────────────────────────────────── */
+.text-pink-main   { color: #E63E6D; }
+.text-pink-hover  { color: #E63E6D; }
+.text-pink-hover:hover { color: #C0265A; }
+.bg-pink-badge    { background-color: #FCE7EF; color: #8A1A40; }
+.bg-pink-solid    { background-color: #E63E6D; color: #FFFFFF; }
+.bg-pink-hover    { background-color: #FBEAF0; }
+.border-pink      { border-color: #E63E6D; }
+.border-pink-light { border-color: #FCE7EF; }
+
+/* ── Focus ring (pink) ──────────────────────────────────────────── */
+.focus-pink:focus-visible {
+  outline: 2px solid rgba(230,62,109,0.3);
+  outline-offset: 2px;
+}
+
+/* ── Light theme card override ──────────────────────────────────── */
+[data-theme='light'] .auto-card {
+  background: #FFFFFF;
+  border: 0.5px solid #EBEBEB;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+/* ── Dark theme card override ───────────────────────────────────── */
+[data-theme='dark'] .auto-card {
+  background: #2E2E2E;
+  border: 1px solid #404040;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+/* ── Muted text colors ──────────────────────────────────────────── */
+[data-theme='light'] .text-muted-auto { color: #7A7A7A; }
+[data-theme='dark']  .text-muted-auto { color: #AAAAAA; }
+
+/* ── Border colors ──────────────────────────────────────────────── */
+[data-theme='light'] .border-auto { border-color: #EBEBEB; }
+[data-theme='dark']  .border-auto { border-color: #404040; }
+
+/* ── Responsive typography ──────────────────────────────────────── */
+html { font-size: 16px; line-height: 1.6; }
+@media (max-width: 600px)  { html { font-size: 15px; } }
+@media (min-width: 1280px) { html { font-size: 16px; } }

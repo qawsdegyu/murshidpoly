@@ -1,0 +1,17 @@
+ALTER TABLE public.contact_messages ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'new';
+ALTER TABLE public.contact_messages ADD COLUMN IF NOT EXISTS admin_note TEXT;
+ALTER TABLE public.contact_messages ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW();
+ALTER TABLE public.contact_messages ADD COLUMN IF NOT EXISTS handled_by UUID REFERENCES auth.users(id);
+ALTER TABLE public.contact_messages ADD COLUMN IF NOT EXISTS handled_at TIMESTAMPTZ;
+ALTER TABLE public.contact_messages DROP CONSTRAINT IF EXISTS contact_messages_status_check;
+ALTER TABLE public.contact_messages ADD CONSTRAINT contact_messages_status_check CHECK (status IN ('new','in_progress','resolved','archived'));
+ALTER TABLE public.contact_messages ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS contact_messages_public_insert ON public.contact_messages;
+CREATE POLICY contact_messages_public_insert ON public.contact_messages FOR INSERT WITH CHECK (length(trim(full_name)) BETWEEN 2 AND 120 AND length(trim(email)) BETWEEN 5 AND 320 AND length(trim(subject)) BETWEEN 2 AND 200 AND length(trim(message)) BETWEEN 2 AND 10000);
+DROP POLICY IF EXISTS contact_messages_admin_select ON public.contact_messages;
+CREATE POLICY contact_messages_admin_select ON public.contact_messages FOR SELECT TO authenticated USING (public.is_admin());
+DROP POLICY IF EXISTS contact_messages_admin_update ON public.contact_messages;
+CREATE POLICY contact_messages_admin_update ON public.contact_messages FOR UPDATE TO authenticated USING (public.is_admin()) WITH CHECK (public.is_admin());
+DROP POLICY IF EXISTS contact_messages_admin_delete ON public.contact_messages;
+CREATE POLICY contact_messages_admin_delete ON public.contact_messages FOR DELETE TO authenticated USING (public.is_admin());
+CREATE INDEX IF NOT EXISTS contact_messages_status_created_idx ON public.contact_messages(status, created_at DESC);

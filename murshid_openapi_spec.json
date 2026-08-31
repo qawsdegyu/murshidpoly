@@ -1,0 +1,211 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Hadeed / Murshid Supabase REST API",
+    "description": "Auto-generated OpenAPI specification for Murshid Engineering Hub Supabase backend endpoints including tables and RPC functions.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://www.hadeed.shop/rest/v1",
+      "description": "Production Supabase REST Gateway"
+    }
+  ],
+  "paths": {
+    "/rpc/auto_confirm_test_user": {
+      "post": {
+        "summary": "Auto-confirm test email accounts",
+        "description": "PostgreSQL security definer function to instantly confirm automated test accounts during signups.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "automated-test-flow@test.com"
+                  }
+                },
+                "required": ["user_email"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Test account confirmed successfully."
+          },
+          "400": {
+            "description": "Invalid email or database error."
+          }
+        }
+      }
+    },
+    "/courses": {
+      "get": {
+        "summary": "Get engineering courses list",
+        "description": "Retrieves the full list of engineering academic courses from the database.",
+        "parameters": [
+          {
+            "name": "select",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "*"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of courses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Course"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sections": {
+      "get": {
+        "summary": "Get course sections list",
+        "description": "Retrieves the class sections and time schedules for courses.",
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of sections.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Section"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/maintenance_mode": {
+      "get": {
+        "summary": "Check Maintenance Mode state",
+        "description": "Queries the database to check if global maintenance mode is enabled.",
+        "responses": {
+          "200": {
+            "description": "Successful retrieval.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MaintenanceMode"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Upsert Maintenance Mode state",
+        "description": "Updates or inserts the global maintenance state (Admin only).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaintenanceMode"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully upserted."
+          }
+        }
+      }
+    },
+    "/user_schedules": {
+      "post": {
+        "summary": "Upsert student schedule",
+        "description": "Saves or updates a generated class schedule for the student.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": { "type": "string" },
+                  "schedule_data": { "type": "object" },
+                  "created_at": { "type": "string", "format": "date-time" }
+                },
+                "required": ["user_id", "schedule_data"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Schedule upserted successfully."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Course": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "code": { "type": "string" },
+          "name_ar": { "type": "string" },
+          "name_en": { "type": "string" },
+          "credits": { "type": "integer" }
+        }
+      },
+      "Section": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "course_id": { "type": "string" },
+          "section_number": { "type": "string" },
+          "days": { "type": "string" },
+          "time_start": { "type": "string" },
+          "time_end": { "type": "string" },
+          "instructor": { "type": "string" }
+        }
+      },
+      "MaintenanceMode": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "global" },
+          "is_active": { "type": "boolean" },
+          "updated_at": { "type": "string", "format": "date-time" }
+        },
+        "required": ["id", "is_active"]
+      }
+    }
+  }
+}
