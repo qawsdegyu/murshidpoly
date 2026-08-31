@@ -33,6 +33,21 @@ const Sidebar = memo(({ isOpen, onOpenChange }: SidebarProps) => {
   const activeRef = useRef<HTMLAnchorElement>(null);
   const isRoot = location.pathname === "/";
   const [isAdmin, setIsAdmin] = useState(false);
+  const [disabledPages, setDisabledPages] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function fetchMaintenance() {
+      try {
+        const { data, error } = await supabase.from('maintenance_mode').select('page_id').eq('is_active', true);
+        if (!error && data) {
+          setDisabledPages(data.map(d => d.page_id));
+        }
+      } catch (err) {
+        console.error("Error fetching maintenance status", err);
+      }
+    }
+    fetchMaintenance();
+  }, []);
 
   useEffect(() => {
     async function checkAdmin() {
@@ -122,7 +137,7 @@ const Sidebar = memo(({ isOpen, onOpenChange }: SidebarProps) => {
     { to: "/campus-map", icon: MapPin, label: t.nav.campusMap, prefetch: PAGE_IMPORTS.BuildingsPage },
     { to: "/marketplace", icon: ShoppingBag, label: t.nav.marketplace, prefetch: PAGE_IMPORTS.Marketplace },
     { to: "/recreation", icon: Sparkles, label: t.nav.recreation, prefetch: PAGE_IMPORTS.Recreation },
-  ];
+  ].filter(it => !it.to || !disabledPages.includes(it.to.replace("/", "")));
 
   const isActive = (to: string, end?: boolean) =>
     end ? location.pathname === to : location.pathname.startsWith(to);

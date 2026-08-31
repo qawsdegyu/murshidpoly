@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CheckCircle, XCircle, Trash2, RefreshCw, Car, Clock, MapPin, Users, Phone } from "lucide-react";
+import { CheckCircle, XCircle, Trash2, RefreshCw, Car, Clock, MapPin, Users, Phone, Power } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
@@ -24,8 +24,26 @@ export default function RideShareManager() {
   const [rides, setRides] = useState<Ride[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "pending" | "approved" | "rejected">("pending");
+  const [isPageEnabled, setIsPageEnabled] = useState(true);
 
-  useEffect(() => { fetchRides(); }, []);
+  useEffect(() => { fetchRides(); fetchPageState(); }, []);
+
+  async function fetchPageState() {
+    const { data } = await supabase.from('maintenance_mode').select('is_active').eq('page_id', 'rideshare').maybeSingle();
+    setIsPageEnabled(!data?.is_active);
+  }
+
+  async function togglePageStatus() {
+    const newStatus = !isPageEnabled;
+    const { error } = await supabase.from('maintenance_mode').upsert({
+      page_id: 'rideshare', is_active: !newStatus, updated_at: new Date().toISOString()
+    });
+    if (error) toast.error("فشل تحديث الحالة");
+    else {
+      setIsPageEnabled(newStatus);
+      toast.success(newStatus ? "تم تفعيل الصفحة للطلاب" : "تم إخفاء الصفحة عن الطلاب");
+    }
+  }
 
   async function fetchRides() {
     setLoading(true);
@@ -71,6 +89,17 @@ export default function RideShareManager() {
         </div>
         <button onClick={fetchRides} className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface border border-border/50 text-xs font-black hover:border-primary/30 transition-all">
           <RefreshCw className="w-3.5 h-3.5" />تحديث
+        </button>
+      </div>
+
+      <div className="flex flex-col sm:flex-row items-center justify-between bg-surface border border-border/50 p-4 rounded-2xl gap-4">
+        <div>
+          <h4 className="font-black text-lg">حالة صفحة مرشد توصيل</h4>
+          <p className="text-xs text-muted-foreground font-bold">عند الإيقاف، ستختفي الصفحة من القائمة الجانبية للطلاب.</p>
+        </div>
+        <button onClick={togglePageStatus} className={cn("px-4 py-3 rounded-xl text-xs font-black transition-all flex items-center gap-2 text-white shrink-0", isPageEnabled ? "bg-red-500 hover:bg-red-600 shadow-lg shadow-red-500/20" : "bg-emerald-500 hover:bg-emerald-600 shadow-lg shadow-emerald-500/20")}>
+          <Power className="w-4 h-4 shrink-0" />
+          {isPageEnabled ? "إيقاف وإخفاء الصفحة" : "تفعيل وإظهار الصفحة"}
         </button>
       </div>
 
