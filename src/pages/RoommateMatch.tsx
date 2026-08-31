@@ -26,14 +26,14 @@ interface Profile {
   created_at: string;
 }
 
-const ROOMS_OPTIONS_AR = ["ستوديو", "غرفة واحدة", "غرفتين", "3 غرف فأكثر"];
-const ROOMS_OPTIONS_EN = ["Studio", "1 Bedroom", "2 Bedrooms", "3+ Bedrooms"];
-const LIVING_ROOMS_AR = ["بدون صالة", "صالة واحدة", "صالتين فأكثر"];
-const LIVING_ROOMS_EN = ["No living room", "1 Living room", "2+ Living rooms"];
-const FURNISHED_AR = ["مفروش بالكامل", "نصف مفروش", "غير مفروش"];
-const FURNISHED_EN = ["Fully furnished", "Semi-furnished", "Unfurnished"];
-const GENDER_AR = ["سكن شباب", "سكن بنات", "عائلات"];
-const GENDER_EN = ["Male Housing", "Female Housing", "Families"];
+const SLEEP_TIME_AR = ["نوم مبكر", "نوم متأخر", "عشوائي"];
+const SLEEP_TIME_EN = ["Early bird", "Night owl", "Flexible"];
+const STUDY_STYLE_AR = ["هدوء تام", "موسيقى/صوت", "دراسة جماعية"];
+const STUDY_STYLE_EN = ["Quiet", "With noise/music", "Group study"];
+const SMOKING_AR = ["مدخن", "غير مدخن", "لا يهم"];
+const SMOKING_EN = ["Smoker", "Non-smoker", "Doesn't matter"];
+const GENDER_AR = ["مطلوب شباب", "مطلوب بنات"];
+const GENDER_EN = ["Male roommate", "Female roommate"];
 
 const defaultForm = {
   name: "", phone: "", major: "غير محدد", academic_year: "1",
@@ -98,9 +98,9 @@ export default function RoommateMatch() {
       <span className="text-xs font-black text-muted-foreground mb-1.5 block">{label} *</span>
       <select value={value} onChange={e => onChange(e.target.value)}
         className="w-full bg-surface border border-border/50 rounded-xl px-4 py-2.5 text-sm font-bold focus:outline-none focus:border-[#14B8A6] transition-colors">
-        <option value="">{ar ? "اختر..." : "Select..."}</option>
+        <option value="" className="bg-[#0D0D0D] text-white">{ar ? "اختر..." : "Select..."}</option>
         {(ar ? optionsAr : optionsEn).map((opt: string, i: number) => (
-          <option key={opt} value={ar ? optionsAr[i] : optionsEn[i]}>{opt}</option>
+          <option key={opt} value={ar ? optionsAr[i] : optionsEn[i]} className="bg-[#0D0D0D] text-white">{opt}</option>
         ))}
       </select>
     </label>
@@ -126,7 +126,7 @@ export default function RoommateMatch() {
           </div>
         </div>
         <p className="text-sm text-muted-foreground leading-relaxed mt-3 bg-violet-500/5 border border-violet-500/20 rounded-2xl p-4 font-bold">
-          🏠 {ar ? "ابحث عن سكن مناسب لك أو أعلن عن شقة متاحة بسهولة!" : "Find a suitable housing or announce an available apartment easily!"}
+          🏠 {ar ? "ابحث عن شريك السكن المثالي أو أعلن عن توفر مكان في سكنك!" : "Find the perfect roommate or announce an available spot in your housing!"}
         </p>
       </div>
 
@@ -148,7 +148,7 @@ export default function RoommateMatch() {
         <button onClick={() => setShowForm(true)}
           className="w-full mb-6 flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-gradient-to-r from-violet-600 to-purple-500 text-white font-black text-sm hover:opacity-90 transition-all shadow-lg">
           <Plus className="w-5 h-5" />
-          {ar ? "أضف إعلان سكن" : "Add Housing Ad"}
+          {ar ? "أضف إعلان شريك سكن" : "Add Roommate Ad"}
         </button>
       )}
 
@@ -166,7 +166,7 @@ export default function RoommateMatch() {
         <m.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
           className="mb-6 bg-card border border-border/50 rounded-3xl p-5 shadow-xl">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-lg font-black">{ar ? "تفاصيل إعلان السكن" : "Housing Ad Details"}</h2>
+            <h2 className="text-lg font-black">{ar ? "تفاصيل البحث عن شريك سكن" : "Roommate Search Details"}</h2>
             <button onClick={() => setShowForm(false)} className="w-8 h-8 rounded-xl bg-surface border border-border/50 flex items-center justify-center text-muted-foreground">
               <XCircle className="w-4 h-4" />
             </button>
@@ -191,14 +191,14 @@ export default function RoommateMatch() {
                 <span className="text-xs font-black text-muted-foreground mb-1.5 block">{ar ? "موقع السكن (المدينة/المنطقة) *" : "Location *"}</span>
                 <input required value={form.location_pref} onChange={e => setForm(p => ({ ...p, location_pref: e.target.value }))}
                   className="w-full bg-surface border border-border/50 rounded-xl px-4 py-2.5 text-sm font-bold focus:outline-none focus:border-violet-400 transition-colors"
-                  placeholder={ar ? "مثال: عمان، شفا بدران" : "e.g. Amman, Shafa Badran"} />
+                  placeholder={ar ? "مثال: عمان، شفا بدران أو بجانب البوابة الشمالية" : "e.g. Amman, Shafa Badran"} />
               </label>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Field label={ar ? "عدد الغرف" : "Rooms"} value={form.sleep_time} onChange={(v: string) => setForm(p => ({ ...p, sleep_time: v }))} optionsAr={ROOMS_OPTIONS_AR} optionsEn={ROOMS_OPTIONS_EN} />
-              <Field label={ar ? "عدد الصالات" : "Living Rooms"} value={form.study_style} onChange={(v: string) => setForm(p => ({ ...p, study_style: v }))} optionsAr={LIVING_ROOMS_AR} optionsEn={LIVING_ROOMS_EN} />
-              <Field label={ar ? "حالة الفرش" : "Furnished"} value={form.smoking} onChange={(v: string) => setForm(p => ({ ...p, smoking: v }))} optionsAr={FURNISHED_AR} optionsEn={FURNISHED_EN} />
-              <Field label={ar ? "نوع السكن" : "Housing Type"} value={form.gender} onChange={(v: string) => setForm(p => ({ ...p, gender: v }))} optionsAr={GENDER_AR} optionsEn={GENDER_EN} />
+              <Field label={ar ? "الجنس المطلوب" : "Required Gender"} value={form.gender} onChange={(v: string) => setForm(p => ({ ...p, gender: v }))} optionsAr={GENDER_AR} optionsEn={GENDER_EN} />
+              <Field label={ar ? "طبيعة النوم" : "Sleep Schedule"} value={form.sleep_time} onChange={(v: string) => setForm(p => ({ ...p, sleep_time: v }))} optionsAr={SLEEP_TIME_AR} optionsEn={SLEEP_TIME_EN} />
+              <Field label={ar ? "جو الدراسة" : "Study Environment"} value={form.study_style} onChange={(v: string) => setForm(p => ({ ...p, study_style: v }))} optionsAr={STUDY_STYLE_AR} optionsEn={STUDY_STYLE_EN} />
+              <Field label={ar ? "التدخين" : "Smoking"} value={form.smoking} onChange={(v: string) => setForm(p => ({ ...p, smoking: v }))} optionsAr={SMOKING_AR} optionsEn={SMOKING_EN} />
             </div>
             <div className="grid grid-cols-1 gap-4">
               <label className="block">
@@ -237,14 +237,14 @@ export default function RoommateMatch() {
       {activeTab === "browse" && (
         <div className="flex flex-wrap gap-2 mb-5">
           {[
-            { key: "gender", ar: "نوع السكن", en: "Housing Type", options: ar ? GENDER_AR : GENDER_EN },
-            { key: "smoking", ar: "حالة الفرش", en: "Furnished", options: ar ? FURNISHED_AR : FURNISHED_EN },
+            { key: "gender", ar: "الجنس", en: "Gender", options: ar ? GENDER_AR : GENDER_EN },
+            { key: "smoking", ar: "التدخين", en: "Smoking", options: ar ? SMOKING_AR : SMOKING_EN },
           ].map(f => (
             <select key={f.key} value={(filters as any)[f.key]}
               onChange={e => setFilters(p => ({ ...p, [f.key]: e.target.value }))}
               className="bg-card border border-border/50 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none focus:border-violet-400 transition-colors">
-              <option value="">{ar ? f.ar : f.en}: {ar ? "الكل" : "All"}</option>
-              {f.options.map(o => <option key={o} value={o}>{o}</option>)}
+              <option value="" className="bg-[#0D0D0D] text-white">{ar ? f.ar : f.en}: {ar ? "الكل" : "All"}</option>
+              {f.options.map(o => <option key={o} value={o} className="bg-[#0D0D0D] text-white">{o}</option>)}
             </select>
           ))}
         </div>

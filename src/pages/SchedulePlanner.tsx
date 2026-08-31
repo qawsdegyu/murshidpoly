@@ -111,7 +111,7 @@ export default function SchedulePlanner() {
               <div className="space-y-1">
                 <label className="text-[9px] font-black uppercase text-muted-foreground opacity-60">{isAr ? "التخصص" : "Major"}</label>
                 <select value={selectedMajor} onChange={(e) => setSelectedMajor(e.target.value)} className="w-full bg-background/50 border border-border rounded-xl px-2 py-2 text-[10px] font-bold outline-none appearance-none">
-                  {majors.map(m => <option key={m.id} value={m.id}>{isAr ? m.nameAr : m.name}</option>)}
+                  {majors.map(m => <option key={m.id} value={m.id} className="bg-[#0D0D0D] text-white">{isAr ? m.nameAr : m.name}</option>)}
                 </select>
               </div>
 
@@ -120,7 +120,7 @@ export default function SchedulePlanner() {
                   <label className="text-[9px] font-black uppercase text-muted-foreground opacity-60">{isAr ? "السنة/الفصل" : "Y/S"}</label>
                   <div className="flex gap-1">
                     <select value={selectedYear} onChange={(e) => setSelectedYear(Number(e.target.value))} className="flex-1 bg-background/50 border border-border rounded-lg px-1 py-1.5 text-[10px] font-bold outline-none">
-                      {[1,2,3,4,5].map(y => <option key={y} value={y}>{y}</option>)}
+                      {[1,2,3,4,5].map(y => <option key={y} value={y} className="bg-[#0D0D0D] text-white">{y}</option>)}
                     </select>
                     <select
                       value={semesterType === "summer" ? 3 : selectedSemester}
@@ -131,9 +131,9 @@ export default function SchedulePlanner() {
                       }}
                       className="flex-1 bg-background/50 border border-border rounded-lg px-1 py-1.5 text-[10px] font-bold outline-none"
                     >
-                      <option value={1}>1</option>
-                      <option value={2}>2</option>
-                      <option value={3}>S</option>
+                      <option value={1} className="bg-[#0D0D0D] text-white">1</option>
+                      <option value={2} className="bg-[#0D0D0D] text-white">2</option>
+                      <option value={3} className="bg-[#0D0D0D] text-white">S</option>
                     </select>
                   </div>
                 </div>

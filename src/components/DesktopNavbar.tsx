@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { User, Settings, Headset, Bell, ChevronDown, LogOut, ShieldAlert } from "lucide-react";
@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { isUserAdmin } from "@/lib/admin";
 import NotificationsCenter from "@/components/NotificationsCenter";
+import { supabase } from "@/lib/supabase";
 
 const NavLink = ({ to, children, isActive }: { to: string, children: React.ReactNode, isActive?: boolean }) => {
   return (
@@ -37,6 +38,21 @@ const DesktopNavbar = memo(() => {
   const navigate = useNavigate();
   const isAdmin = isUserAdmin(user?.email);
   const { t, dir } = usePreferences();
+  const [disabledPages, setDisabledPages] = useState<string[]>([]);
+
+  React.useEffect(() => {
+    async function fetchMaintenance() {
+      try {
+        const { data, error } = await supabase.from('maintenance_mode').select('page_id').eq('is_active', true);
+        if (!error && data) {
+          setDisabledPages(data.map(d => d.page_id));
+        }
+      } catch (err) {
+        console.error("Error fetching maintenance status", err);
+      }
+    }
+    fetchMaintenance();
+  }, []);
 
   // Determine active states and labels
   const isVaultActive = path.startsWith('/vault');
@@ -96,11 +112,11 @@ const DesktopNavbar = memo(() => {
           
           <div className="absolute top-full left-1/2 -translate-x-1/2 pt-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
             <div className="bg-background border border-white/10 rounded-2xl shadow-xl w-[220px] p-2 flex flex-col gap-1 text-right" dir={dir}>
-              <DropdownLink to="/instructors" title={t.nav.faculty} isActive={isInstructors} />
-              <DropdownLink to="/rideshare" title={t.nav.rideshare} isActive={isRideShare} />
-              <DropdownLink to="/roommate" title={t.nav.roommate} isActive={isRoommateMatch} />
-              <DropdownLink to="/gpa" title={t.nav.gpa} isActive={isGpa} />
-              <DropdownLink to="/majors" title={t.nav.majors} isActive={isMajors} />
+              {!disabledPages.includes('instructors') && <DropdownLink to="/instructors" title={t.nav.faculty} isActive={isInstructors} />}
+              {!disabledPages.includes('rideshare') && <DropdownLink to="/rideshare" title={t.nav.rideshare} isActive={isRideShare} />}
+              {!disabledPages.includes('roommate') && <DropdownLink to="/roommate" title={t.nav.roommate} isActive={isRoommateMatch} />}
+              {!disabledPages.includes('gpa') && <DropdownLink to="/gpa" title={t.nav.gpa} isActive={isGpa} />}
+              {!disabledPages.includes('majors') && <DropdownLink to="/majors" title={t.nav.majors} isActive={isMajors} />}
             </div>
           </div>
         </div>
