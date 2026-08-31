@@ -32,7 +32,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           model: MODEL,
           temperature: 0,
           messages: [{ role: 'user', content: [
-            { type: 'text', text: 'استخرج صفوف جدول المواد أو الامتحانات من الصورة. أعد JSON فقط بهذا الشكل: {"exams":[{"course":"اسم المادة","date":"YYYY-MM-DD أو فارغ","start_time":"HH:MM أو null","end_time":"HH:MM أو null","room":"القاعة أو null","notes":"ملاحظات أو null","title":"عنوان مختصر","chapters":6}]}. لا تخمّن القيم غير المقروءة. استخدم null أو نصًا فارغًا عند عدم الوضوح. إذا كانت الصورة جدول شعب دراسي، حوّل كل صف مادة إلى عنصر مع course وtitle وnotes، واترك date فارغًا.' },
+            { type: 'text', text: 'استخرج جميع البيانات من الصورة (التاريخ، أوقات البدء والانتهاء، القاعة، واسم المادة). أعد JSON فقط بهذا الشكل:\n{"exams":[{"course":"اسم المادة كاملة","date":"YYYY-MM-DD (يجب أن يكون التاريخ بهذا التنسيق حصراً، استنتج السنة الحالية إذا لم تكن موجودة)","start_time":"وقت البدء (مثال: 10:20)","end_time":"وقت الانتهاء (مثال: 11:00)","room":"رقم القاعة (مثال: 1726)","notes":"أي ملاحظات","title":"عنوان مختصر","chapters":6}]}\nتأكد من فصل أوقات البدء والانتهاء عن رقم القاعة. استخرج اسم المادة والتاريخ بدقة، ولا تترك التاريخ فارغاً إذا كان موجوداً في الصورة.' },
             { type: 'image_url', image_url: { url: imageDataUrl, detail: 'high' } },
           ] }],
         }),
