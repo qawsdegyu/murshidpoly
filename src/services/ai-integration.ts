@@ -397,7 +397,7 @@ Suggest as many best diverse options as possible as per the intent (up to 12). R
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "google/gemini-1.5-flash",
+        model: "openai/gpt-4o-mini",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt }

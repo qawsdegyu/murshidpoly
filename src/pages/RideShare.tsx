@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { m } from "framer-motion";
-import { Car, MapPin, Clock, Users, Plus, CheckCircle, XCircle, AlertCircle, Phone, Calendar, ChevronDown, ChevronUp, ArrowLeft } from "lucide-react";
+import { Car, MapPin, Clock, Users, Plus, CheckCircle, XCircle, AlertCircle, Phone, Calendar, ChevronDown, ChevronUp, ArrowLeft, Search } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { supabase } from "@/lib/supabase";
@@ -43,7 +43,7 @@ const defaultRide: NewRide = {
   driver_name: "",
   phone: "",
   from_location: "",
-  to_location: "الجامعة التقنية الحسينية",
+  to_location: "",
   departure_time: "07:30",
   available_seats: 3,
   price_per_seat: 1,
@@ -64,6 +64,7 @@ export default function RideShare() {
   const [myRides, setMyRides] = useState<Ride[]>([]);
   const [activeTab, setActiveTab] = useState<"browse" | "my">("browse");
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchRides();
@@ -239,16 +240,28 @@ export default function RideShare() {
               </label>
             </div>
 
-            <label className="block">
-              <span className="text-xs font-black text-muted-foreground mb-1.5 block">نقطة الانطلاق *</span>
-              <input
-                required
-                value={form.from_location}
-                onChange={e => setForm(p => ({ ...p, from_location: e.target.value }))}
-                className="w-full bg-surface border border-border/50 rounded-xl px-4 py-2.5 text-sm font-bold focus:outline-none focus:border-[#14B8A6] transition-colors"
-                placeholder="مثال: شارع المدينة، الزرقاء"
-              />
-            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <label className="block">
+                <span className="text-xs font-black text-muted-foreground mb-1.5 block">نقطة الانطلاق *</span>
+                <input
+                  required
+                  value={form.from_location}
+                  onChange={e => setForm(p => ({ ...p, from_location: e.target.value }))}
+                  className="w-full bg-surface border border-border/50 rounded-xl px-4 py-2.5 text-sm font-bold focus:outline-none focus:border-[#14B8A6] transition-colors"
+                  placeholder="مثال: شارع المدينة، الزرقاء"
+                />
+              </label>
+              <label className="block">
+                <span className="text-xs font-black text-muted-foreground mb-1.5 block">نقطة الوصول *</span>
+                <input
+                  required
+                  value={form.to_location}
+                  onChange={e => setForm(p => ({ ...p, to_location: e.target.value }))}
+                  className="w-full bg-surface border border-border/50 rounded-xl px-4 py-2.5 text-sm font-bold focus:outline-none focus:border-[#14B8A6] transition-colors"
+                  placeholder="مثال: عمان، دوار الداخلية"
+                />
+              </label>
+            </div>
 
             <div className="grid grid-cols-2 gap-4">
               <label className="block">
@@ -341,18 +354,31 @@ export default function RideShare() {
       {/* Browse Rides */}
       {activeTab === "browse" && (
         <div className="space-y-4">
+          <div className="relative mb-6">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="ابحث عن رحلة (مثال: عمان، الزرقاء...)"
+              className="w-full bg-surface border border-border/50 rounded-2xl pl-4 pr-12 py-3.5 text-sm font-bold focus:outline-none focus:border-[#14B8A6] transition-colors shadow-sm"
+            />
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+              <Search className="w-5 h-5 text-[#14B8A6]" />
+            </div>
+          </div>
+
           {isLoading ? (
             [1, 2, 3].map(i => (
               <div key={i} className="h-32 rounded-3xl bg-card border border-border/50 animate-pulse" />
             ))
-          ) : rides.length === 0 ? (
+          ) : rides.filter(r => r.from_location.includes(searchTerm) || r.to_location.includes(searchTerm)).length === 0 ? (
             <div className="text-center py-20">
               <Car className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
               <p className="text-lg font-black text-muted-foreground">لا توجد رحلات متاحة حالياً</p>
               <p className="text-sm text-muted-foreground/70 font-bold mt-1">كن أول من يعلن عن رحلته!</p>
             </div>
           ) : (
-            rides.map(ride => (
+            rides.filter(r => r.from_location.includes(searchTerm) || r.to_location.includes(searchTerm)).map(ride => (
               <m.div
                 key={ride.id}
                 initial={{ opacity: 0, y: 8 }}

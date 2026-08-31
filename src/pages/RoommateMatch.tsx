@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { m } from "framer-motion";
-import { Home, Moon, BookOpen, Cigarette, GraduationCap, Plus, XCircle, CheckCircle, AlertCircle, Phone, ArrowLeft, ChevronDown, ChevronUp } from "lucide-react";
+import { Home, Bed, Sofa, Package, Plus, XCircle, CheckCircle, AlertCircle, Phone, ArrowLeft, ChevronDown, ChevronUp, Search, MapPin } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { supabase } from "@/lib/supabase";
@@ -26,19 +26,17 @@ interface Profile {
   created_at: string;
 }
 
-const SLEEP_OPTIONS_AR = ["مبكر (قبل 11)", "متأخر (بعد 12)", "مرن"];
-const SLEEP_OPTIONS_EN = ["Early (before 11 PM)", "Late (after midnight)", "Flexible"];
-const STUDY_OPTIONS_AR = ["في الغرفة", "في المكتبة", "مرن"];
-const STUDY_OPTIONS_EN = ["In the room", "In the library", "Flexible"];
-const SMOKING_AR = ["غير مدخن", "مدخن", "لا يهم"];
-const SMOKING_EN = ["Non-smoker", "Smoker", "Doesn't matter"];
-const GENDER_AR = ["ذكر", "أنثى"];
-const GENDER_EN = ["Male", "Female"];
-const LOCATION_AR = ["داخل الحرم", "قريب من الجامعة", "أي مكان"];
-const LOCATION_EN = ["On campus", "Near university", "Anywhere"];
+const ROOMS_OPTIONS_AR = ["ستوديو", "غرفة واحدة", "غرفتين", "3 غرف فأكثر"];
+const ROOMS_OPTIONS_EN = ["Studio", "1 Bedroom", "2 Bedrooms", "3+ Bedrooms"];
+const LIVING_ROOMS_AR = ["بدون صالة", "صالة واحدة", "صالتين فأكثر"];
+const LIVING_ROOMS_EN = ["No living room", "1 Living room", "2+ Living rooms"];
+const FURNISHED_AR = ["مفروش بالكامل", "نصف مفروش", "غير مفروش"];
+const FURNISHED_EN = ["Fully furnished", "Semi-furnished", "Unfurnished"];
+const GENDER_AR = ["سكن شباب", "سكن بنات", "عائلات"];
+const GENDER_EN = ["Male Housing", "Female Housing", "Families"];
 
 const defaultForm = {
-  name: "", phone: "", major: "", academic_year: "1",
+  name: "", phone: "", major: "غير محدد", academic_year: "1",
   sleep_time: "", study_style: "", smoking: "", gender: "",
   location_pref: "", budget: "", notes: "",
 };
@@ -56,7 +54,8 @@ export default function RoommateMatch() {
   const [myProfile, setMyProfile] = useState<Profile | null>(null);
   const [activeTab, setActiveTab] = useState<"browse" | "my">("browse");
   const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [filters, setFilters] = useState({ gender: "", smoking: "", location_pref: "" });
+  const [filters, setFilters] = useState({ gender: "", smoking: "" });
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => { fetchProfiles(); }, [user]);
 
@@ -90,7 +89,7 @@ export default function RoommateMatch() {
   const filtered = profiles.filter(p => {
     if (filters.gender && p.gender !== filters.gender) return false;
     if (filters.smoking && p.smoking !== filters.smoking) return false;
-    if (filters.location_pref && p.location_pref !== filters.location_pref) return false;
+    if (searchTerm && !p.location_pref.includes(searchTerm) && !p.notes?.includes(searchTerm)) return false;
     return true;
   });
 
@@ -123,11 +122,11 @@ export default function RoommateMatch() {
           </div>
           <div>
             <h1 className="text-2xl md:text-3xl font-black">{ar ? "مرشد سكني" : "Murshid Housing"}</h1>
-            <p className="text-sm text-muted-foreground font-bold">{ar ? "ابحث عن رفيق السكن المثالي" : "Find your ideal roommate"}</p>
+            <p className="text-sm text-muted-foreground font-bold">{ar ? "إعلانات السكن والبحث عن شقق" : "Housing ads and apartment search"}</p>
           </div>
         </div>
         <p className="text-sm text-muted-foreground leading-relaxed mt-3 bg-violet-500/5 border border-violet-500/20 rounded-2xl p-4 font-bold">
-          🏠 {ar ? "أضف ملفك الشخصي وتعرف على طلاب يشاركونك نفس العادات والتخصص!" : "Add your profile and meet students who share your habits and major!"}
+          🏠 {ar ? "ابحث عن سكن مناسب لك أو أعلن عن شقة متاحة بسهولة!" : "Find a suitable housing or announce an available apartment easily!"}
         </p>
       </div>
 
@@ -139,7 +138,7 @@ export default function RoommateMatch() {
             className={cn("flex-1 py-2.5 rounded-xl font-black text-sm transition-all",
               activeTab === tab ? "bg-violet-500 text-white shadow-lg shadow-violet-500/20" : "bg-card border border-border/50 text-muted-foreground hover:border-violet-500/30"
             )}>
-            {tab === "browse" ? (ar ? "استعرض الطلاب" : "Browse Students") : (ar ? "ملفي" : "My Profile")}
+            {tab === "browse" ? (ar ? "استعرض الإعلانات" : "Browse Ads") : (ar ? "إعلاني" : "My Ad")}
           </button>
         ))}
       </div>
@@ -149,7 +148,7 @@ export default function RoommateMatch() {
         <button onClick={() => setShowForm(true)}
           className="w-full mb-6 flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-gradient-to-r from-violet-600 to-purple-500 text-white font-black text-sm hover:opacity-90 transition-all shadow-lg">
           <Plus className="w-5 h-5" />
-          {ar ? "أضف ملفك الشخصي" : "Add Your Profile"}
+          {ar ? "أضف إعلان سكن" : "Add Housing Ad"}
         </button>
       )}
 
@@ -167,7 +166,7 @@ export default function RoommateMatch() {
         <m.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
           className="mb-6 bg-card border border-border/50 rounded-3xl p-5 shadow-xl">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-lg font-black">{ar ? "ملفك الشخصي للسكن" : "Your Housing Profile"}</h2>
+            <h2 className="text-lg font-black">{ar ? "تفاصيل إعلان السكن" : "Housing Ad Details"}</h2>
             <button onClick={() => setShowForm(false)} className="w-8 h-8 rounded-xl bg-surface border border-border/50 flex items-center justify-center text-muted-foreground">
               <XCircle className="w-4 h-4" />
             </button>
@@ -175,7 +174,7 @@ export default function RoommateMatch() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <label className="block">
-                <span className="text-xs font-black text-muted-foreground mb-1.5 block">{ar ? "اسمك *" : "Your Name *"}</span>
+                <span className="text-xs font-black text-muted-foreground mb-1.5 block">{ar ? "اسم المُعلن *" : "Advertiser Name *"}</span>
                 <input required value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
                   className="w-full bg-surface border border-border/50 rounded-xl px-4 py-2.5 text-sm font-bold focus:outline-none focus:border-violet-400 transition-colors"
                   placeholder={ar ? "مثال: محمد أحمد" : "e.g. Mohammad Ahmad"} />
@@ -187,31 +186,23 @@ export default function RoommateMatch() {
                   placeholder="07XXXXXXXX" />
               </label>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               <label className="block">
-                <span className="text-xs font-black text-muted-foreground mb-1.5 block">{ar ? "التخصص *" : "Major *"}</span>
-                <input required value={form.major} onChange={e => setForm(p => ({ ...p, major: e.target.value }))}
+                <span className="text-xs font-black text-muted-foreground mb-1.5 block">{ar ? "موقع السكن (المدينة/المنطقة) *" : "Location *"}</span>
+                <input required value={form.location_pref} onChange={e => setForm(p => ({ ...p, location_pref: e.target.value }))}
                   className="w-full bg-surface border border-border/50 rounded-xl px-4 py-2.5 text-sm font-bold focus:outline-none focus:border-violet-400 transition-colors"
-                  placeholder={ar ? "مثال: هندسة حاسوب" : "e.g. Computer Engineering"} />
-              </label>
-              <label className="block">
-                <span className="text-xs font-black text-muted-foreground mb-1.5 block">{ar ? "السنة الدراسية *" : "Academic Year *"}</span>
-                <select value={form.academic_year} onChange={e => setForm(p => ({ ...p, academic_year: e.target.value }))}
-                  className="w-full bg-surface border border-border/50 rounded-xl px-4 py-2.5 text-sm font-bold focus:outline-none focus:border-violet-400 transition-colors">
-                  {["1","2","3","4"].map(y => <option key={y} value={y}>{ar ? `السنة ${y}` : `Year ${y}`}</option>)}
-                </select>
+                  placeholder={ar ? "مثال: عمان، شفا بدران" : "e.g. Amman, Shafa Badran"} />
               </label>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Field label={ar ? "وقت النوم" : "Sleep Time"} value={form.sleep_time} onChange={(v: string) => setForm(p => ({ ...p, sleep_time: v }))} optionsAr={SLEEP_OPTIONS_AR} optionsEn={SLEEP_OPTIONS_EN} />
-              <Field label={ar ? "أسلوب الدراسة" : "Study Style"} value={form.study_style} onChange={(v: string) => setForm(p => ({ ...p, study_style: v }))} optionsAr={STUDY_OPTIONS_AR} optionsEn={STUDY_OPTIONS_EN} />
-              <Field label={ar ? "التدخين" : "Smoking"} value={form.smoking} onChange={(v: string) => setForm(p => ({ ...p, smoking: v }))} optionsAr={SMOKING_AR} optionsEn={SMOKING_EN} />
-              <Field label={ar ? "الجنس" : "Gender"} value={form.gender} onChange={(v: string) => setForm(p => ({ ...p, gender: v }))} optionsAr={GENDER_AR} optionsEn={GENDER_EN} />
+              <Field label={ar ? "عدد الغرف" : "Rooms"} value={form.sleep_time} onChange={(v: string) => setForm(p => ({ ...p, sleep_time: v }))} optionsAr={ROOMS_OPTIONS_AR} optionsEn={ROOMS_OPTIONS_EN} />
+              <Field label={ar ? "عدد الصالات" : "Living Rooms"} value={form.study_style} onChange={(v: string) => setForm(p => ({ ...p, study_style: v }))} optionsAr={LIVING_ROOMS_AR} optionsEn={LIVING_ROOMS_EN} />
+              <Field label={ar ? "حالة الفرش" : "Furnished"} value={form.smoking} onChange={(v: string) => setForm(p => ({ ...p, smoking: v }))} optionsAr={FURNISHED_AR} optionsEn={FURNISHED_EN} />
+              <Field label={ar ? "نوع السكن" : "Housing Type"} value={form.gender} onChange={(v: string) => setForm(p => ({ ...p, gender: v }))} optionsAr={GENDER_AR} optionsEn={GENDER_EN} />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Field label={ar ? "موقع السكن المفضل" : "Preferred Location"} value={form.location_pref} onChange={(v: string) => setForm(p => ({ ...p, location_pref: v }))} optionsAr={LOCATION_AR} optionsEn={LOCATION_EN} />
+            <div className="grid grid-cols-1 gap-4">
               <label className="block">
-                <span className="text-xs font-black text-muted-foreground mb-1.5 block">{ar ? "الميزانية الشهرية (د.أ)" : "Monthly Budget (JOD)"}</span>
+                <span className="text-xs font-black text-muted-foreground mb-1.5 block">{ar ? "الإيجار الشهري (د.أ)" : "Monthly Rent (JOD)"}</span>
                 <input type="number" min={0} value={form.budget} onChange={e => setForm(p => ({ ...p, budget: e.target.value }))}
                   className="w-full bg-surface border border-border/50 rounded-xl px-4 py-2.5 text-sm font-bold focus:outline-none focus:border-violet-400 transition-colors"
                   placeholder={ar ? "مثال: 150" : "e.g. 150"} />
@@ -246,9 +237,8 @@ export default function RoommateMatch() {
       {activeTab === "browse" && (
         <div className="flex flex-wrap gap-2 mb-5">
           {[
-            { key: "gender", ar: "الجنس", en: "Gender", options: ar ? GENDER_AR : GENDER_EN },
-            { key: "smoking", ar: "التدخين", en: "Smoking", options: ar ? SMOKING_AR : SMOKING_EN },
-            { key: "location_pref", ar: "الموقع", en: "Location", options: ar ? LOCATION_AR : LOCATION_EN },
+            { key: "gender", ar: "نوع السكن", en: "Housing Type", options: ar ? GENDER_AR : GENDER_EN },
+            { key: "smoking", ar: "حالة الفرش", en: "Furnished", options: ar ? FURNISHED_AR : FURNISHED_EN },
           ].map(f => (
             <select key={f.key} value={(filters as any)[f.key]}
               onChange={e => setFilters(p => ({ ...p, [f.key]: e.target.value }))}
@@ -263,11 +253,24 @@ export default function RoommateMatch() {
       {/* Browse */}
       {activeTab === "browse" && (
         <div className="space-y-4">
+          <div className="relative mb-6">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder={ar ? "ابحث عن منطقة (مثال: عمان...)" : "Search location (e.g. Amman...)"}
+              className="w-full bg-surface border border-border/50 rounded-2xl pl-4 pr-12 py-3.5 text-sm font-bold focus:outline-none focus:border-violet-400 transition-colors shadow-sm"
+            />
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+              <Search className="w-5 h-5 text-violet-400" />
+            </div>
+          </div>
+
           {isLoading ? [1,2,3].map(i => <div key={i} className="h-36 rounded-3xl bg-card border border-border/50 animate-pulse" />)
           : filtered.length === 0 ? (
             <div className="text-center py-20">
               <Home className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
-              <p className="text-lg font-black text-muted-foreground">{ar ? "لا يوجد طلاب حالياً" : "No students yet"}</p>
+              <p className="text-lg font-black text-muted-foreground">{ar ? "لا يوجد إعلانات حالياً" : "No ads yet"}</p>
             </div>
           ) : filtered.map(p => (
             <m.div key={p.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
@@ -280,16 +283,16 @@ export default function RoommateMatch() {
                     </div>
                     <div>
                       <p className="font-black">{p.name}</p>
-                      <p className="text-xs text-muted-foreground font-bold">{p.major} — {ar ? `السنة ${p.academic_year}` : `Year ${p.academic_year}`}</p>
+                      <p className="text-xs text-muted-foreground font-bold flex items-center gap-1 mt-1"><MapPin className="w-3 h-3"/> {p.location_pref}</p>
                     </div>
                   </div>
                   <span className="text-xs font-black text-violet-400 bg-violet-500/10 px-2 py-1 rounded-lg shrink-0">{p.gender}</span>
                 </div>
                 <div className="grid grid-cols-3 gap-2 mb-3">
                   {[
-                    { icon: Moon, value: p.sleep_time },
-                    { icon: BookOpen, value: p.study_style },
-                    { icon: Cigarette, value: p.smoking },
+                    { icon: Bed, value: p.sleep_time },
+                    { icon: Sofa, value: p.study_style },
+                    { icon: Package, value: p.smoking },
                   ].map(({ icon: Icon, value }, i) => (
                     <div key={i} className="flex items-center gap-1.5 bg-surface border border-border/40 rounded-xl px-2 py-1.5">
                       <Icon className="w-3 h-3 text-violet-400 shrink-0" />
@@ -298,8 +301,8 @@ export default function RoommateMatch() {
                   ))}
                 </div>
                 <div className="flex items-center justify-between text-xs font-bold text-muted-foreground">
-                  <span>📍 {p.location_pref}</span>
-                  {p.budget && <span>💰 {p.budget} {ar ? "د.أ" : "JOD"}</span>}
+                  <span />
+                  {p.budget && <span className="text-[#14B8A6] font-black text-sm">{p.budget} {ar ? "د.أ شهرياً" : "JOD / mo"}</span>}
                 </div>
                 <button onClick={() => setExpandedId(expandedId === p.id ? null : p.id)}
                   className="w-full mt-3 flex items-center justify-center gap-1 text-xs font-bold text-muted-foreground hover:text-violet-400 transition-colors">
@@ -339,12 +342,12 @@ export default function RoommateMatch() {
                 <p className="font-black text-lg">{myProfile.name}</p>
                 {statusBadge(myProfile.status)}
               </div>
-              <p className="text-sm font-bold text-muted-foreground">{myProfile.major} — {ar ? `السنة ${myProfile.academic_year}` : `Year ${myProfile.academic_year}`}</p>
-              <div className="grid grid-cols-2 gap-2 text-xs font-bold">
-                <span className="bg-surface rounded-xl px-3 py-2">🌙 {myProfile.sleep_time}</span>
-                <span className="bg-surface rounded-xl px-3 py-2">📚 {myProfile.study_style}</span>
-                <span className="bg-surface rounded-xl px-3 py-2">🚬 {myProfile.smoking}</span>
-                <span className="bg-surface rounded-xl px-3 py-2">📍 {myProfile.location_pref}</span>
+              <p className="text-sm font-bold text-muted-foreground flex items-center gap-1"><MapPin className="w-4 h-4"/> {myProfile.location_pref}</p>
+              <div className="grid grid-cols-2 gap-2 text-xs font-bold mt-2">
+                <span className="bg-surface rounded-xl px-3 py-2 flex items-center gap-2"><Bed className="w-4 h-4 text-violet-400"/> {myProfile.sleep_time}</span>
+                <span className="bg-surface rounded-xl px-3 py-2 flex items-center gap-2"><Sofa className="w-4 h-4 text-violet-400"/> {myProfile.study_style}</span>
+                <span className="bg-surface rounded-xl px-3 py-2 flex items-center gap-2"><Package className="w-4 h-4 text-violet-400"/> {myProfile.smoking}</span>
+                <span className="bg-surface rounded-xl px-3 py-2 flex items-center gap-2 text-[#14B8A6]">{myProfile.budget ? `${myProfile.budget} د.أ` : "غير محدد"}</span>
               </div>
               <button onClick={() => { setForm({ name: myProfile.name, phone: myProfile.phone, major: myProfile.major, academic_year: myProfile.academic_year, sleep_time: myProfile.sleep_time, study_style: myProfile.study_style, smoking: myProfile.smoking, gender: myProfile.gender, location_pref: myProfile.location_pref, budget: myProfile.budget, notes: myProfile.notes ?? "" }); setActiveTab("browse"); setShowForm(true); }}
                 className="w-full py-2.5 rounded-2xl bg-violet-500/10 border border-violet-500/20 text-violet-400 font-black text-sm hover:bg-violet-500/20 transition-all">
