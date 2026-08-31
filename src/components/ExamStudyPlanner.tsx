@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { CalendarDays, Clock3, FileImage, Loader2, Plus, Sparkles, Trash2 } from "lucide-react";
+import { CalendarDays, Clock3, FileImage, Loader2, Plus, Sparkles, Trash2, BookOpen, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -179,6 +179,24 @@ export default function ExamStudyPlanner() {
   const dayNames = isAr ? ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"] : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const timerLabel = `${String(Math.floor(timerSeconds / 60)).padStart(2, "0")}:${String(timerSeconds % 60).padStart(2, "0")}`;
 
+  const groupedPlan = useMemo(() => {
+    const groups: Record<string, StudyBlock[]> = {};
+    plan.forEach(block => {
+      if (!groups[block.date]) groups[block.date] = [];
+      groups[block.date].push(block);
+    });
+    return Object.keys(groups).sort().map(date => ({ date, blocks: groups[date] }));
+  }, [plan]);
+
+  const formatDateLabel = (dateStr: string) => {
+    try {
+      const d = new Date(dateStr);
+      return new Intl.DateTimeFormat(isAr ? 'ar-JO' : 'en-US', { weekday: 'long', month: 'short', day: 'numeric' }).format(d);
+    } catch {
+      return dateStr;
+    }
+  };
+
   return (
     <section className="mt-10 rounded-[2rem] border border-accent/20 bg-surface/50 p-5 md:p-7 shadow-xl shadow-accent/5">
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
@@ -215,7 +233,76 @@ export default function ExamStudyPlanner() {
         </div>
       </div>
 
-      {plan.length > 0 && <div className="mt-7 border-t border-border/50 pt-5"><h3 className="mb-3 font-black">{isAr ? "الخطة اليومية" : "Daily plan"}</h3><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{plan.map((block, index) => <div key={`${block.date}-${block.course}-${index}`} className={cn("rounded-2xl border p-4", block.kind === "review" ? "border-amber-400/30 bg-amber-400/5" : "border-accent/20 bg-accent/5")}><div className="flex items-center justify-between gap-3 text-[10px] font-black text-muted-foreground"><span>{block.date}</span><span>{block.hours} {isAr ? "ساعة" : "h"}</span></div><p className="mt-2 text-sm font-black">{block.course}</p><p className="mt-1 text-xs font-bold text-muted-foreground">{block.label}</p></div>)}</div></div>}
+      {plan.length > 0 && (
+        <div className="mt-10 border-t border-border/50 pt-8">
+          <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-xl font-black">{isAr ? "خطتك الدراسية المفصلة" : "Your Detailed Study Plan"}</h3>
+              <p className="mt-1 text-sm font-bold text-muted-foreground">{isAr ? "المهام موزعة حسب الأيام لتغطية كافة المواد قبل الامتحانات." : "Tasks are distributed across days to cover all subjects before exams."}</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 rounded-xl bg-accent/10 px-3 py-1.5 text-xs font-black text-accent"><BookOpen className="h-4 w-4" /> {plan.length} {isAr ? "جلسات دراسية" : "Study sessions"}</div>
+            </div>
+          </div>
+          
+          <div className="relative space-y-6 before:absolute before:inset-y-0 before:left-4 rtl:before:left-auto rtl:before:right-4 before:w-0.5 before:bg-gradient-to-b before:from-accent before:to-transparent before:opacity-20 md:before:left-8 rtl:md:before:right-8">
+            {groupedPlan.map((group) => (
+              <div key={group.date} className="relative pl-10 rtl:pl-0 rtl:pr-10 md:pl-20 rtl:md:pr-20">
+                <div className="absolute left-2.5 top-0 h-3.5 w-3.5 rounded-full border-2 border-surface bg-accent shadow-[0_0_10px_rgba(20,184,166,0.5)] rtl:left-auto rtl:right-2.5 md:left-6 rtl:md:right-6 md:h-4 md:w-4" />
+                
+                <div className="mb-4 flex items-baseline gap-3">
+                  <h4 className="text-lg font-black text-foreground">{formatDateLabel(group.date)}</h4>
+                  <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">{group.date}</span>
+                </div>
+                
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {group.blocks.map((block, index) => (
+                    <div 
+                      key={`${block.date}-${block.course}-${index}`} 
+                      className={cn(
+                        "group relative overflow-hidden rounded-2xl border p-5 transition-all hover:-translate-y-1 hover:shadow-xl",
+                        block.kind === "review" 
+                          ? "border-amber-400/30 bg-gradient-to-br from-amber-400/5 to-amber-500/10 hover:border-amber-400/60 hover:shadow-amber-500/10" 
+                          : "border-accent/20 bg-gradient-to-br from-accent/5 to-emerald-500/10 hover:border-accent/50 hover:shadow-accent/10"
+                      )}
+                    >
+                      <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-white/5 blur-xl transition-transform group-hover:scale-150" />
+                      
+                      <div className="flex items-center justify-between gap-3 text-[11px] font-black uppercase tracking-wider text-muted-foreground">
+                        <span className={cn("inline-flex items-center gap-1.5 rounded-full px-2.5 py-1", block.kind === "review" ? "bg-amber-400/15 text-amber-500" : "bg-accent/15 text-accent")}>
+                          {block.kind === "review" ? <AlertCircle className="h-3.5 w-3.5" /> : <Clock3 className="h-3.5 w-3.5" />}
+                          {block.kind === "review" ? (isAr ? "مراجعة نهائية" : "Final Review") : (isAr ? "جلسة مذاكرة" : "Study Session")}
+                        </span>
+                        <span className="flex items-center gap-1 bg-surface px-2.5 py-1 rounded-full shadow-sm">
+                          {block.hours} {isAr ? "ساعة" : "h"}
+                        </span>
+                      </div>
+                      
+                      <p className="mt-4 text-base font-black leading-tight text-foreground">{block.course}</p>
+                      
+                      <div className="mt-4 flex items-center justify-between border-t border-border/40 pt-3">
+                        <p className="text-xs font-bold text-muted-foreground">{block.label}</p>
+                        <button 
+                          type="button" 
+                          onClick={() => {
+                            setTimerMode("study");
+                            setTimerSeconds(block.hours * 3600);
+                            setTimerRunning(true);
+                            window.scrollTo({ top: 200, behavior: "smooth" });
+                          }}
+                          className="opacity-0 transition-opacity group-hover:opacity-100 text-xs font-black text-foreground hover:text-accent"
+                        >
+                          {isAr ? "بدء المؤقت" : "Start timer"}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 }

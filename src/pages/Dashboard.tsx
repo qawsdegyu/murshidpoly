@@ -44,6 +44,21 @@ export default function Dashboard() {
   const [buildingsTotal, setBuildingsTotal] = useState<number | string>("12+");
   const [todayClasses, setTodayClasses] = useState<any[]>([]);
   const [isWeekend, setIsWeekend] = useState(false);
+  const [disabledPages, setDisabledPages] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function fetchMaintenance() {
+      try {
+        const { data, error } = await supabase.from('maintenance_mode').select('page_id').eq('is_active', true);
+        if (!error && data) {
+          setDisabledPages(data.map(d => d.page_id));
+        }
+      } catch (err) {
+        console.error("Error fetching maintenance status", err);
+      }
+    }
+    fetchMaintenance();
+  }, []);
 
   useEffect(() => {
     if (announcementsList.length <= 1) {
@@ -433,19 +448,21 @@ export default function Dashboard() {
           ))}
         </m.section>
 
-        <FeatureGate feature="ai_assistant">
-          <m.section variants={item}>
-            <Link to="/assistant" className="group relative block overflow-hidden rounded-[2rem] border border-cyan-400/20 bg-gradient-to-r from-slate-950 via-slate-900 to-cyan-950/80 p-5 text-white shadow-xl transition-all hover:-translate-y-1 hover:border-cyan-300/50 md:p-7">
-              <div className="absolute -left-10 -top-10 h-36 w-36 rounded-full bg-cyan-400/15 blur-3xl" />
-              <div className="relative z-10 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-cyan-300/15 ring-1 ring-cyan-300/30"><Bot className="h-7 w-7 text-cyan-200" /></div>
-                  <div><p className="text-xs font-black uppercase tracking-widest text-cyan-200">{lang === "ar" ? "خدمة طلابية جديدة" : "New student service"}</p><h2 className="mt-1 text-xl font-black md:text-2xl">{lang === "ar" ? "مساعد مُرشد الذكي" : "Murshid AI Assistant"}</h2><p className="mt-1 text-xs font-bold text-slate-300 md:text-sm">{lang === "ar" ? "اسأل عن المواد والخطط والأنظمة من المصادر المعتمدة" : "Ask about courses, plans, and policies from approved sources"}</p></div>
-                </div><ArrowRight className="h-6 w-6 text-cyan-200 transition-transform group-hover:-translate-x-1" />
-              </div>
-            </Link>
-          </m.section>
-        </FeatureGate>
+        {!disabledPages.includes("assistant") && (
+          <FeatureGate feature="ai_assistant">
+            <m.section variants={item}>
+              <Link to="/assistant" className="group relative block overflow-hidden rounded-[2rem] border border-cyan-400/20 bg-gradient-to-r from-slate-950 via-slate-900 to-cyan-950/80 p-5 text-white shadow-xl transition-all hover:-translate-y-1 hover:border-cyan-300/50 md:p-7">
+                <div className="absolute -left-10 -top-10 h-36 w-36 rounded-full bg-cyan-400/15 blur-3xl" />
+                <div className="relative z-10 flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-cyan-300/15 ring-1 ring-cyan-300/30"><Bot className="h-7 w-7 text-cyan-200" /></div>
+                    <div><p className="text-xs font-black uppercase tracking-widest text-cyan-200">{lang === "ar" ? "خدمة طلابية جديدة" : "New student service"}</p><h2 className="mt-1 text-xl font-black md:text-2xl">{lang === "ar" ? "مساعد مُرشد الذكي" : "Murshid AI Assistant"}</h2><p className="mt-1 text-xs font-bold text-slate-300 md:text-sm">{lang === "ar" ? "اسأل عن المواد والخطط والأنظمة من المصادر المعتمدة" : "Ask about courses, plans, and policies from approved sources"}</p></div>
+                  </div><ArrowRight className="h-6 w-6 text-cyan-200 transition-transform group-hover:-translate-x-1" />
+                </div>
+              </Link>
+            </m.section>
+          </FeatureGate>
+        )}
 
 
         {/* Removed Quick Actions Section */}
