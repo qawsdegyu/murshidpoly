@@ -17,18 +17,42 @@ export default function ExamStudyPlanner() {
   const { user } = useAuth();
   const isAr = lang === "ar";
   const [imagePreview, setImagePreview] = useState("");
-  const [exams, setExams] = useState<StudyExam[]>([]);
-  const [dailyHours, setDailyHours] = useState(4);
-  const [startTime, setStartTime] = useState("05:00");
-  const [studyMinutes, setStudyMinutes] = useState(25);
-  const [breakMinutes, setBreakMinutes] = useState(5);
-  const [studyDays, setStudyDays] = useState<number[]>([0, 1, 2, 3, 4, 5, 6]);
+  const [exams, setExams] = useState<StudyExam[]>(() => {
+    try { const saved = localStorage.getItem("murshid_planner_exams"); return saved ? JSON.parse(saved) : []; } catch { return []; }
+  });
+  const [dailyHours, setDailyHours] = useState(() => {
+    try { const saved = localStorage.getItem("murshid_planner_dailyHours"); return saved ? JSON.parse(saved) : 4; } catch { return 4; }
+  });
+  const [startTime, setStartTime] = useState(() => {
+    try { const saved = localStorage.getItem("murshid_planner_startTime"); return saved || "05:00"; } catch { return "05:00"; }
+  });
+  const [studyMinutes, setStudyMinutes] = useState(() => {
+    try { const saved = localStorage.getItem("murshid_planner_studyMinutes"); return saved ? JSON.parse(saved) : 25; } catch { return 25; }
+  });
+  const [breakMinutes, setBreakMinutes] = useState(() => {
+    try { const saved = localStorage.getItem("murshid_planner_breakMinutes"); return saved ? JSON.parse(saved) : 5; } catch { return 5; }
+  });
+  const [studyDays, setStudyDays] = useState<number[]>(() => {
+    try { const saved = localStorage.getItem("murshid_planner_studyDays"); return saved ? JSON.parse(saved) : [0, 1, 2, 3, 4, 5, 6]; } catch { return [0, 1, 2, 3, 4, 5, 6]; }
+  });
   const [timerMode, setTimerMode] = useState<"study" | "break">("study");
   const [timerSeconds, setTimerSeconds] = useState(25 * 60);
   const [timerRunning, setTimerRunning] = useState(false);
-  const [plan, setPlan] = useState<StudyBlock[]>([]);
+  const [plan, setPlan] = useState<StudyBlock[]>(() => {
+    try { const saved = localStorage.getItem("murshid_planner_plan"); return saved ? JSON.parse(saved) : []; } catch { return []; }
+  });
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("murshid_planner_exams", JSON.stringify(exams));
+    localStorage.setItem("murshid_planner_dailyHours", JSON.stringify(dailyHours));
+    localStorage.setItem("murshid_planner_startTime", startTime);
+    localStorage.setItem("murshid_planner_studyMinutes", JSON.stringify(studyMinutes));
+    localStorage.setItem("murshid_planner_breakMinutes", JSON.stringify(breakMinutes));
+    localStorage.setItem("murshid_planner_studyDays", JSON.stringify(studyDays));
+    localStorage.setItem("murshid_planner_plan", JSON.stringify(plan));
+  }, [exams, dailyHours, startTime, studyMinutes, breakMinutes, studyDays, plan]);
 
   const sortedExams = useMemo(() => [...exams].sort((a, b) => a.date.localeCompare(b.date)), [exams]);
 
