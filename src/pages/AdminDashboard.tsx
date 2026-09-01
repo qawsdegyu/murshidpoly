@@ -35,6 +35,41 @@ const MASTER_SQL_SCRIPT = `-- ==================================================
 -- شغّل هذا في Supabase SQL Editor مرة واحدة فقط
 -- ====================================================================
 
+-- الخطوة 0: إنشاء جداول مرشد رايد ومرشد سكني
+CREATE TABLE IF NOT EXISTS public.ride_shares (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    driver_name TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    from_location TEXT NOT NULL,
+    to_location TEXT NOT NULL,
+    departure_time TEXT NOT NULL,
+    available_seats INTEGER NOT NULL DEFAULT 3,
+    price_per_seat NUMERIC(5, 2) NOT NULL DEFAULT 1,
+    days TEXT[] NOT NULL DEFAULT '{}',
+    notes TEXT,
+    status TEXT NOT NULL DEFAULT 'pending',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS public.roommate_profiles (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    major TEXT NOT NULL,
+    academic_year TEXT NOT NULL,
+    sleep_time TEXT NOT NULL,
+    study_style TEXT NOT NULL,
+    smoking TEXT NOT NULL,
+    gender TEXT NOT NULL,
+    location_pref TEXT NOT NULL,
+    budget TEXT,
+    notes TEXT,
+    status TEXT NOT NULL DEFAULT 'pending',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- الخطوة 1: دالة is_admin محسّنة (تقرأ من auth.users مباشرة)
 CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS boolean AS $$
@@ -87,6 +122,8 @@ ALTER TABLE public.courses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.resources ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.announcements ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.maintenance_mode ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.ride_shares ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.roommate_profiles ENABLE ROW LEVEL SECURITY;
 
 -- الخطوة 4: حذف policies القديمة
 DO $$
@@ -95,7 +132,7 @@ BEGIN
   FOR t, p IN
     SELECT tablename, policyname FROM pg_policies
     WHERE schemaname = 'public'
-    AND tablename IN ('profiles','professors','buildings','recreation_places','courses','resources','announcements','maintenance_mode')
+    AND tablename IN ('profiles','professors','buildings','recreation_places','courses','resources','announcements','maintenance_mode', 'ride_shares', 'roommate_profiles')
   LOOP
     EXECUTE format('DROP POLICY IF EXISTS %I ON public.%I', p, t);
   END LOOP;
@@ -126,6 +163,16 @@ CREATE POLICY "admin_all_announcements" ON public.announcements TO authenticated
 
 CREATE POLICY "public_read_maintenance" ON public.maintenance_mode FOR SELECT USING (true);
 CREATE POLICY "admin_all_maintenance" ON public.maintenance_mode TO authenticated USING (public.is_admin()) WITH CHECK (public.is_admin());
+
+CREATE POLICY "public_read_rideshares" ON public.ride_shares FOR SELECT USING (status = 'approved');
+CREATE POLICY "own_read_rideshares" ON public.ride_shares FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "own_insert_rideshares" ON public.ride_shares FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "admin_all_rideshares" ON public.ride_shares TO authenticated USING (public.is_admin()) WITH CHECK (public.is_admin());
+
+CREATE POLICY "public_read_roommate_profiles" ON public.roommate_profiles FOR SELECT USING (status = 'approved');
+CREATE POLICY "own_read_roommate_profiles" ON public.roommate_profiles FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "own_insert_roommate_profiles" ON public.roommate_profiles FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "admin_all_roommate_profiles" ON public.roommate_profiles TO authenticated USING (public.is_admin()) WITH CHECK (public.is_admin());
 
 -- الخطوة 6: إضافة أعمدة ناقصة
 ALTER TABLE public.professors ADD COLUMN IF NOT EXISTS rank TEXT;
@@ -347,7 +394,7 @@ export default function AdminDashboard() {
   // Fetch quick stats
   useEffect(() => {
     if (!isUserAdminDB) return;
-    const tables = ["professors", "buildings", "courses", "resources", "announcements"];
+    const tables = ["professors", "buildings", "courses", "resources", "announcements", "ride_shares", "roommate_profiles"];
     Promise.all(tables.map(t =>
       supabase.from(t).select("*", { count: "exact", head: true }).then(({ count }) => ({ t, count: count || 0 }))
     )).then(results => {
@@ -720,8 +767,8 @@ export default function AdminDashboard() {
     { id: "site-settings", icon: SettingsIcon, label: ar ? "محتوى وروابط الموقع" : "Site Content & Links", statKey: null },
     { id: "contact-messages", icon: Mail, label: ar ? "رسائل تواصل معنا" : "Contact Messages", statKey: null },
     { id: "marketplace", icon: Store, label: ar ? "سوق التجار" : "Marketplace Sellers", statKey: null },
-    { id: "rideshare", icon: Car, label: ar ? "مرشد توصيل" : "Murshid Carpool", statKey: null },
-    { id: "roommate", icon: Home, label: ar ? "مرشد سكني" : "Murshid Housing", statKey: null },
+    { id: "rideshare", icon: Car, label: ar ? "مرشد توصيل" : "Murshid Carpool", statKey: "ride_shares" },
+    { id: "roommate", icon: Home, label: ar ? "مرشد سكني" : "Murshid Housing", statKey: "roommate_profiles" },
     { id: "settings", icon: SettingsIcon, label: ar ? "إعدادات النظام" : "Global Settings", statKey: null },
   ].filter(t => {
     if (t.id === "admins") return user?.email?.toLowerCase() === "mocvskhfssr@gmail.com";
