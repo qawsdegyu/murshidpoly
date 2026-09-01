@@ -52,6 +52,16 @@ const DesktopNavbar = memo(() => {
       }
     }
     fetchMaintenance();
+
+    const channel = supabase.channel('maintenance_changes_desktop')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'maintenance_mode' }, () => {
+        fetchMaintenance();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   // Determine active states and labels

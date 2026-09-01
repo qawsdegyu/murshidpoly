@@ -47,6 +47,16 @@ const Sidebar = memo(({ isOpen, onOpenChange }: SidebarProps) => {
       }
     }
     fetchMaintenance();
+
+    const channel = supabase.channel('maintenance_changes_sidebar')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'maintenance_mode' }, () => {
+        fetchMaintenance();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   useEffect(() => {
